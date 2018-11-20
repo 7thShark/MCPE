@@ -1,4 +1,5 @@
 {"name":"Instinct",
 "version":"1.0.0",
 "creator":"Shark",
+"FAQ":"Common Issues:\n\nQ: Why does the launcher hang when I try to open the Waypoints tab?\nA: This happens when the script has been altered. Press the 'Wipe Data' button and restart the launcher.\n\nQ: How do I hack items into realms?\nA: Go to the survival tab, tap 'Set Offhand', then enter the item ID and the amount. Tap 'Add' then move the item from your offhand to your hotbar.\n\nQ: My enchantments don't stay on the item, why?\nA: You have to enchant the item in your hand, then move the item to a crafting table. There's a crafting section in your inventory, move the newly enchanted item there.\n\nQ: The 'Rename' mod doesn't work, why?\nA: Use the rename mod then do the same thing as when you'd enchant an item. Put the item in the crafting section of your inventory.",
 "changelog":" 1.0.0 \nMajor Private Release.\nOver 85 Mods, Including:\n-Waypoints\n-Optifine\n-Coordinates\n-Too Many Items\n-ESP\n-Crosshair\n-Untouchable\nAnd so much more."}
