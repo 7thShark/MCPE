@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <style>
+        .goog-te-banner-frame.skiptranslate {
+    display: none !important;
+    } 
+body {
+    top: 0px !important; 
+    }
+    .goog-logo-link {
+   display:none !important;
+} 
+
+.goog-te-gadget{
+   color: transparent !important;
+}
+p{
+     background-color: rgba(0, 0, 0, 0.52); 
+     color:white;
+}
+
+    </style>
+</head>
+<body>
+    <p id="tran">Loading...</p>
+        <script>
+        String.prototype.replaceAll = function(str1, str2, ignore) 
+{
+    return this.replace(new RegExp(str1.replace(/([\/\,\!\\\^\$\{\}\[\]\(\)\.\*\+\?\|\<\>\-\&])/g,"\\$&"),(ignore?"gi":"g")),(typeof(str2)=="string")?str2.replace(/\$/g,"$$$$"):str2);
+} 
+
+        urlstring=document.URL;
+        var conv = urlstring.replaceAll("#", " ");
+document.getElementById("tran").innerHTML=conv.slice(conv.indexOf("#")+60 );
+    </script>
+    <script>
+    function fadeOutEffect() {
+    var fadeTarget = document.getElementById("tran");
+    var fadeEffect = setInterval(function () {
+        if (!fadeTarget.style.opacity) {
+            fadeTarget.style.opacity = 1;
+        }
+        if (fadeTarget.style.opacity > 0) {
+            fadeTarget.style.opacity -= 0.1;
+        } else {
+             window.location.hash = '#'+document.getElementById("trans).textContent;
+            clearInterval(fadeEffect);
+        }
+    }, 60);
+}
+    window.onload = setTimeout(clearTxt, 1000);
+    function clearTxt(){
+        fadeOutEffect();
+    }
+    </script>
+                     <div id="google_translate_element" style="display:none"></div>
+
+<script type="text/javascript">
+
+function googleTranslateElementInit() {
+  new google.translate.TranslateElement({pageLanguage: "auto", autoDisplay: false}, 'google_translate_element');
+}
+        var a = document.querySelector("#google_translate_element select");
+        a.selectedIndex=1;
+        a.dispatchEvent(new Event('change'));
+</script>
+
+<script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+
+</body>
+</html>
