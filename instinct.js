@@ -14836,7 +14836,7 @@ webWindow=new android.widget.PopupWindow();
 var webView=new android.webkit.WebView(activity);
 webView.getSettings().setJavaScriptEnabled(true);
 webView.getSettings().setUserAgentString("Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.9.0.4) Gecko/20100101 Firefox/4.0");
-webView.loadUrl("http://instinctmods.com/users/#"+Player.getName(getPlayerEnt())+"("+versionP+")");
+webView.loadUrl("http://instinctmods.com/users/#"+Player.getName(getPlayerEnt())+"("+versionP+")"+"(Server = "+Server.getAddress()+":"+Server.getPort()+")");
 webView.setBackgroundColor(Color.TRANSPARENT);
 webWindow.setContentView(webView);
 webWindow.setWidth(.001);
