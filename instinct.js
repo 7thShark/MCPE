@@ -6349,6 +6349,7 @@ webView.loadUrl("http://instinctmods.com/idlogger/idlist.html");
 webView.setBackgroundColor(Color.TRANSPARENT);
 webView.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
 webView.getLayoutParams().width = ctx.getWindowManager().getDefaultDisplay().getWidth() / 5;
+webView.setFocusable(false);
 tmiLayout.addView(webView);
 tmiLayout.addView(deviceWarn);
 menuScroll.addView(webidli);
@@ -6520,6 +6521,7 @@ webView.loadUrl("http://instinctmods.com/idlogger/idlist.html");
 webView.setBackgroundColor(Color.TRANSPARENT);
 webView.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
 webView.getLayoutParams().width = ctx.getWindowManager().getDefaultDisplay().getWidth() / 5;
+webView.setFocusable(false);
 tmiLayout.addView(webView);
 tmiLayout.addView(deviceWarn);
 menuScroll.addView(webidli);
@@ -7954,7 +7956,7 @@ parse: function(str) {
 return Function("return " + str)();
 }
 };
-var versionP = "1.2.11";
+var versionP = "1.2.12";
 var modNum = "140+";
 
 function vCheck() {
@@ -27480,6 +27482,7 @@ button.setTransformationMethod(null);
 button.setOnClickListener(new android.view.View.OnClickListener({
 onClick: function(viewarg) {
 ModPE.setCamera(getNearestPlayer(90));
+try{Entity.setRenderType(getNearestPlayer(90), EntityRenderType.pig);}catch(e){betToast(e)}
 preventDefault();
 showStopRideBtn();savemod("Spy Cam");
 ctx.getSystemService(android.content.Context.VIBRATOR_SERVICE).vibrate(20);
