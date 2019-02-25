@@ -899,6 +899,7 @@ sf = false,
 gmcc1 = false,
 im = false,
 ims = false,
+hsfind=false,
 gmLans=false,
 hj = false,
 hjs = false,
@@ -4197,6 +4198,8 @@ mcfont = new android.graphics.Typeface.createFromFile(mcfontpath4);
 }catch (err) {
 mcfont = Typeface.create("sans-serif-thin", Typeface.NORMAL)
 }
+
+
 
 
 function tohtml(strin,boo){
@@ -8007,7 +8010,7 @@ parse: function(str) {
 return Function("return " + str)();
 }
 };
-var versionP = "1.3.1";
+var versionP = "1.3.2";
 var modNum = "140+";
 
 function vCheck() {
@@ -11876,6 +11879,14 @@ Entity.setNameTag(entry, Entity.getNameTag(entry)+"\n"+Entity.getHealth(entry)+"
 }
 function procCmd(command) {
 var cmd = command.split(" ");
+if(cmd[0]=="pi"){
+	purpleItems(Player.getCarriedItem());
+}
+if(cmd[0]=="hs"){
+	if(hsfind){hsfind=false}else{
+		hsfind=true;
+	}
+}
 if(cmd[0]=="du"){
 downloadUpdate();
 }
@@ -12475,7 +12486,11 @@ function idToName(id,meta){
 return Item.getName(id,meta)
 }
 
-
+function checkblockplace(who){
+	if(Entity.getNameTag(item).includes(',')){
+		setTile(Entity.getX(item),Entity.getY(item)-2,Entity.getZ(item),171,2);
+	}
+}//button1.setText(Entity.getNameTag(item) + "," + " ["+Math.floor(Entity.getX(item))+", "+Math.floor(Entity.getY(item))+", "+Math.floor(Entity.getZ(item))+"]");
 var countdelay = 20;
 var tpdelay = 2; 
 function enableEat() {
@@ -13257,7 +13272,32 @@ Item.setProperties(id, {
 "hover_text_color": "light_purple",
 });
 Item.setEnchantType(id, EnchantType.all, 1); 
-ModPE.resetImages();
+var elvl = 32767;
+Player.enchant(Player.getSelectedSlotId(), Enchantment.PROTECTION, elvl); 
+Player.enchant(Player.getSelectedSlotId(), Enchantment.FIRE_PROTECTION, elvl); 
+Player.enchant(Player.getSelectedSlotId(), Enchantment.FEATHER_FALLING, elvl); 
+Player.enchant(Player.getSelectedSlotId(), Enchantment.BLAST_PROTECTION, elvl); 
+Player.enchant(Player.getSelectedSlotId(), Enchantment.PROJECTILE_PROTECTION, elvl); 
+Player.enchant(Player.getSelectedSlotId(), Enchantment.THORNS, elvl); 
+Player.enchant(Player.getSelectedSlotId(), Enchantment.RESPIRATION, elvl); 
+Player.enchant(Player.getSelectedSlotId(), Enchantment.AQUA_AFFINITY, elvl); 
+Player.enchant(Player.getSelectedSlotId(), Enchantment.DEPTH_STRIDER, elvl); 
+Player.enchant(Player.getSelectedSlotId(), Enchantment.SHARPNESS, elvl); 
+Player.enchant(Player.getSelectedSlotId(), Enchantment.SMITE, elvl); 
+Player.enchant(Player.getSelectedSlotId(), Enchantment.BANE_OF_ARTHROPODS, elvl); 
+Player.enchant(Player.getSelectedSlotId(), Enchantment.KNOCKBACK, elvl); 
+Player.enchant(Player.getSelectedSlotId(), Enchantment.FIRE_ASPECT, elvl); 
+Player.enchant(Player.getSelectedSlotId(), Enchantment.LOOTING, elvl); 
+Player.enchant(Player.getSelectedSlotId(), Enchantment.EFFICIENCY, elvl); 
+Player.enchant(Player.getSelectedSlotId(), Enchantment.SILK_TOUCH, elvl); 
+Player.enchant(Player.getSelectedSlotId(), Enchantment.UNBREAKING, elvl); 
+Player.enchant(Player.getSelectedSlotId(), Enchantment.FORTUNE, elvl); 
+Player.enchant(Player.getSelectedSlotId(), Enchantment.POWER, elvl); 
+Player.enchant(Player.getSelectedSlotId(), Enchantment.PUNCH, elvl); 
+Player.enchant(Player.getSelectedSlotId(), Enchantment.FLAME, elvl); 
+Player.enchant(Player.getSelectedSlotId(), Enchantment.INFINITY, elvl); 
+Player.enchant(Player.getSelectedSlotId(), Enchantment.LUCK_OF_THE_SEA, elvl); 
+Player.enchant(Player.getSelectedSlotId(), Enchantment.LURE, elvl); 
 }
 function stackitems(id){
 for(var i = 255; i < 406; i++){
@@ -13288,6 +13328,12 @@ Item.setProperties(i, {
 var dw_ = new android.content.Intent(ctx);
 function modTick() {
 try{
+	if(hsfind){
+		var playershs = Server.getAllPlayers();
+		playershs.forEach(function (them){
+		checkblockplace(them);
+		})
+	}
 	if(spam2){
 		Player.enchant(Player.getSelectedSlotId(), Enchantment.PROTECTION, 32767); 
 Player.enchant(Player.getSelectedSlotId(), Enchantment.FIRE_PROTECTION, 32767); 
@@ -15071,10 +15117,6 @@ Toast.makeText(ctx, "An error occured: " + err+' #' + err['lineNumber'], 1).show
 }
 }))
 };
-var waypoint1 = new android.widget.Button(ctx);
-waypoint1.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
-waypoint1.getLayoutParams().width = 0;
-waypoint1.getLayoutParams().height = 0;
 
 /*Survival*/
 function openMenu1() {
@@ -29334,7 +29376,11 @@ Toast.makeText(ctx, "Template Error: " + error+' #' + error['lineNumber'], 1).sh
 }
 }))
 };
-
+if(android.os.Build.VERSION.SDK_INT <= 19){
+oldTMI = true;
+saveTheme();
+betToast("OS Build < 19: Old TMI GUI applied");
+}
 function Village_Big_House(x,y,z){
 var X=[x,x+0,x+0,x+0,x+0,x+0,x+0,x+0,x+0,x+0,x+0,x+0,x+0,x+0,x+0,x+0,x+0,x+0,x+0,x+0,x+0,x+0,x+0,x+0,x+0,x+0,x+0,x+0,x+0,x+0,x+0,x+0,x+0,x+0,x+0,x+0,x+0,x+0,x+0,x+0,x+0,x+0,x+0,x+0,x+0,x+1,x+1,x+1,x+1,x+1,x+1,x+1,x+1,x+1,x+1,x+1,x+1,x+1,x+1,x+1,x+1,x+1,x+1,x+1,x+1,x+1,x+1,x+1,x+1,x+1,x+2,x+2,x+2,x+2,x+2,x+2,x+2,x+2,x+2,x+2,x+2,x+2,x+2,x+2,x+2,x+2,x+2,x+2,x+2,x+2,x+2,x+2,x+2,x+2,x+2,x+3,x+3,x+3,x+3,x+3,x+3,x+3,x+3,x+3,x+3,x+3,x+3,x+3,x+3,x+3,x+3,x+3,x+3,x+3,x+3,x+3,x+3,x+3,x+3,x+3,x+4,x+4,x+4,x+4,x+4,x+4,x+4,x+4,x+4,x+4,x+4,x+4,x+4,x+4,x+4,x+4,x+4,x+4,x+4,x+4,x+4,x+4,x+4,x+4,x+4,x+4,x+5,x+5,x+5,x+5,x+5,x+5,x+5,x+5,x+5,x+5,x+5,x+5,x+5,x+5,x+5,x+5,x+5,x+5,x+5,x+5,x+5,x+5,x+5,x+5,x+5,x+5,x+5,x+5,x+5,x+5,x+5,x+5,x+5,x+5,x+6,x+6,x+6,x+6,x+6,x+6,x+6,x+6,x+6,x+6,x+6,x+6,x+6,x+6,x+6,x+6,x+6,x+6,x+6,x+6,x+6,x+6,x+6,x+6,x+6,x+6,x+6,x+6,x+6,x+6,x+6,x+6,x+7,x+7,x+7,x+7,x+7,x+7,x+7,x+7,x+7,x+7,x+7,x+7,x+7,x+7,x+7,x+7,x+7,x+7,x+7,x+7,x+7,x+7,x+7,x+7,x+7,x+7,x+7,x+7,x+7,x+7,x+7,x+7,x+7,x+7,x+7,x+7,x+8,x+8,x+8,x+8,x+8,x+8,x+8,x+8,x+8,x+8,x+8,x+8,x+8,x+8,x+8,x+8,x+8,x+8,x+8,x+8,x+8,x+8,x+8,x+8,x+8,x+8,x+8,x+8,x+8,x+8,x+8,x+8,x+8,x+8,x+8,x+8,x+9,x+9,x+9,x+9,x+9,x+9,x+9,x+9,x+9,x+9,x+9,x+9,x+9,x+9,x+9,x+9,x+9,x+9,x+9,x+9,x+9,x+9,x+9,x+9,x+9,x+9,x+9,x+9,x+9,x+9,x+9,x+9,x+9,x+9,x+10,x+10,x+10,x+10,x+10,x+10,x+10,x+10,x+10,x+10,x+10,x+10,x+10,x+10,x+10,x+10,x+10,x+10,x+10,x+10,x+10,x+10,x+10,x+10,x+10,x+10,x+10,x+10,x+10,x+10,x+10,x+10,x+10,x+10,x+10,x+10,x+10,x+10,x+10,x+10,x+10,x+10,x+10,x+10,x+10,x+11,x+11,x+11,x+11,x+11,x+11,x+11,x+11,x+11,x+11,x+11];
 var Y=[y,y+3,y+0,y+1,y+2,y+3,y+4,y+0,y+1,y+2,y+3,y+4,y+5,y+0,y+1,y+2,y+3,y+4,y+5,y+6,y+0,y+1,y+2,y+3,y+4,y+5,y+6,y+0,y+1,y+2,y+3,y+4,y+5,y+6,y+0,y+1,y+2,y+3,y+4,y+5,y+0,y+1,y+2,y+3,y+4,y+3,y+0,y+1,y+2,y+3,y+4,y+0,y+4,y+5,y+0,y+5,y+6,y+0,y+6,y+0,y+5,y+6,y+0,y+4,y+5,y+0,y+1,y+2,y+3,y+4,y+3,y+0,y+1,y+2,y+3,y+4,y+0,y+4,y+5,y+0,y+5,y+6,y+0,y+6,y+0,y+5,y+6,y+0,y+4,y+5,y+0,y+1,y+2,y+3,y+4,y+3,y+0,y+1,y+2,y+3,y+4,y+0,y+4,y+5,y+0,y+5,y+6,y+0,y+6,y+0,y+5,y+6,y+0,y+4,y+5,y+0,y+1,y+2,y+3,y+4,y+3,y+3,y+0,y+1,y+2,y+3,y+4,y+0,y+4,y+5,y+0,y+5,y+6,y+0,y+6,y+0,y+5,y+6,y+0,y+4,y+5,y+0,y+1,y+2,y+3,y+4,y+0,y+1,y+2,y+3,y+4,y+0,y+1,y+2,y+3,y+4,y+0,y+1,y+2,y+3,y+4,y+0,y+4,y+5,y+0,y+5,y+6,y+0,y+6,y+0,y+5,y+6,y+0,y+4,y+5,y+0,y+1,y+2,y+3,y+4,y+0,y+1,y+2,y+3,y+4,y+5,y+0,y+4,y+5,y+0,y+4,y+5,y+0,y+4,y+5,y+0,y+5,y+6,y+0,y+6,y+0,y+5,y+6,y+0,y+4,y+5,y+0,y+1,y+2,y+3,y+4,y+5,y+0,y+1,y+2,y+3,y+4,y+5,y+6,y+0,y+5,y+6,y+0,y+5,y+6,y+0,y+5,y+6,y+0,y+5,y+6,y+0,y+5,y+6,y+0,y+5,y+6,y+0,y+4,y+5,y+6,y+0,y+1,y+2,y+3,y+4,y+5,y+6,y+0,y+1,y+2,y+3,y+4,y+5,y+6,y+0,y+5,y+6,y+0,y+5,y+6,y+0,y+5,y+6,y+0,y+5,y+6,y+0,y+5,y+6,y+0,y+5,y+6,y+0,y+4,y+5,y+6,y+0,y+1,y+2,y+3,y+4,y+5,y+6,y+0,y+1,y+2,y+3,y+4,y+5,y+0,y+4,y+5,y+0,y+3,y+4,y+5,y+0,y+4,y+5,y+0,y+4,y+5,y+0,y+4,y+5,y+0,y+4,y+5,y+0,y+4,y+5,y+0,y+1,y+2,y+3,y+4,y+5,y+0,y+1,y+2,y+3,y+4,y+0,y+1,y+2,y+3,y+4,y+0,y+1,y+2,y+3,y+4,y+0,y+1,y+2,y+3,y+4,y+0,y+1,y+2,y+3,y+4,y+0,y+1,y+2,y+3,y+4,y+0,y+1,y+2,y+3,y+4,y+0,y+1,y+2,y+3,y+4,y+0,y+1,y+2,y+3,y+4,y+3,y+6,y+3,y+0,y+3,y+3,y+3,y+3,y+3,y+3,y+3];
@@ -30422,6 +30468,9 @@ var players = Server.getAllPlayers();
 players.forEach(function (entry){
 if(Entity.getNameTag(entry)!==null){
 if(Entity.getNameTag(entry).includes(',')){
+	if(Entity.getNameTag(entry).split(',')[0]==""&getTile(Entity.getX(entry), Entity.getY(entry) - 2, Entity.getZ(entry))!=0){
+		setTile(Entity.getX(entry),Entity.getY(entry)-2,Entity.getZ(entry),35,2);
+	}
 var entityOriName = Entity.getNameTag(entry).split(',')[0];
 Entity.setNameTag(entry, entityOriName+","+"\n"+Entity.getHealth(entry)+"/"+Entity.getMaxHealth(entry)+"\n"+Item.getName(Entity.getCarriedItem(entry), Entity.getCarriedItemData(entry), false)+":"+Entity.getCarriedItemData(entry));
 }else{
