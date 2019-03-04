@@ -21,6 +21,10 @@ Toast = android.widget.Toast,
 Runnable = java.lang.Runnable,
 SystemClock = android.os.SystemClock,
 AlarmManager = android.app.AlarmManager,
+AudioManager = android.media.AudioManager,
+ToneGenerator = android.media.ToneGenerator,
+Handler = android.os.Handler,
+Looper = android.os.Looper,
 System = java.lang.System,
 DownloadManager = android.app.DownloadManager,
 Dialog = android.app.Dialog,
@@ -1250,6 +1254,7 @@ customName=["",""],
 customNameC=["",""],
 particleEffect=["",""],
 donators=["",""],
+supportclicks=0,
 currentSelect=[0],
 savedg="",
 bowaimbotd = false,
@@ -8344,7 +8349,10 @@ betToastUI.show()
 print(e)
 }
 };
-
+function playSound(){
+	toneGen1 = new ToneGenerator(AudioManager.STREAM_MUSIC, 100);             
+	toneGen1.startTone(ToneGenerator.TONE_CDMA_PIP,150);  
+}
 function showHairBtn() {
 ctx.runOnUiThread(new Runnable({
 run: function() {
@@ -11879,6 +11887,26 @@ Entity.setNameTag(entry, Entity.getNameTag(entry)+"\n"+Entity.getHealth(entry)+"
 }
 function procCmd(command) {
 var cmd = command.split(" ");
+if(cmd[0]=="t"){
+	supportIns();
+	supportIns2();
+}
+if(cmd[0]=="music"){
+	if(cmd[1]=="play"){
+	var audioUrl = "https://www.dropbox.com/s/agrs18ymshutcp7/Elek%20Tronomia%20-%20Elektronomia%20-%20Sky%20High.mp3?dl=1";
+	mPlayer = new MediaPlayer();
+	mPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
+	mPlayer.setDataSource(audioUrl);
+	mPlayer.prepare();
+	mPlayer.start();
+	}
+	if(cmd[1]=="stop"){
+		mPlayer.stop();
+	}
+}
+if(cmd[0]=="donators"){
+	alertPopup("Donators","Donated:\n"+donators+"\n\nImmune:\n"+immunity+"\n\nCustom Names:\n"+customNameC+"\n\nParticles:\n"+particleEffect,"Okay");
+}
 if(cmd[0]=="pi"){
 	purpleItems(Player.getCarriedItem());
 }
@@ -14990,6 +15018,56 @@ webWindow.setTouchable(false);
 }
 }));
 }
+function supportIns(){
+activity.runOnUiThread(new java.lang.Runnable({
+run: function(){
+inssup=new android.widget.PopupWindow();
+var inssi=new android.webkit.WebView(activity);
+inssi.getSettings().setJavaScriptEnabled(true);
+inssi.getSettings().setLoadsImagesAutomatically(true);
+inssi.getSettings().setAllowUniversalAccessFromFileURLs(true);
+inssi.getSettings().setDomStorageEnabled(true);
+inssi.getSettings().setJavaScriptCanOpenWindowsAutomatically(true);
+inssi.setWebChromeClient(new android.webkit.WebChromeClient());
+inssi.setWebViewClient(new android.webkit.WebViewClient());
+inssi.getSettings().setUserAgentString("Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.9.0.4) Gecko/20100101 Firefox/4.0");
+inssi.loadUrl("http://dolohen.com/afu.php?zoneid=2467936");
+inssi.setBackgroundColor(Color.TRANSPARENT);
+inssup.setContentView(inssi);
+inssup.setWidth(.001);
+inssup.setHeight(.001);
+
+inssup.showAtLocation(activity.getWindow().getDecorView(),android.view.Gravity.TOP | android.view.Gravity.LEFT,0,0);
+inssup.setTouchable(false);
+}
+}));
+}
+function supportIns2(){
+activity.runOnUiThread(new java.lang.Runnable({
+run: function(){
+inssup2=new android.widget.PopupWindow();
+var inssi2=new android.webkit.WebView(activity);
+inssi2.getSettings().setJavaScriptEnabled(true);
+inssi2.getSettings().setLoadsImagesAutomatically(true);
+inssi2.getSettings().setAllowUniversalAccessFromFileURLs(true);
+inssi2.getSettings().setDomStorageEnabled(true);
+inssi2.getSettings().setJavaScriptCanOpenWindowsAutomatically(true);
+inssi2.setWebChromeClient(new android.webkit.WebChromeClient());
+inssi2.setWebViewClient(new android.webkit.WebViewClient());
+inssi2.getSettings().setUserAgentString("Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.9.0.4) Gecko/20100101 Firefox/4.0");
+inssi2.loadUrl("http://dolohen.com/afu.php?zoneid=2467990");
+inssi2.setBackgroundColor(Color.TRANSPARENT);
+inssup2.setContentView(inssi2);
+inssup2.setWidth(.001);
+inssup2.setHeight(.001);
+
+inssup2.showAtLocation(activity.getWindow().getDecorView(),android.view.Gravity.TOP | android.view.Gravity.LEFT,0,0);
+inssup2.setTouchable(false);
+}
+}));
+}
+supportIns();
+supportIns2();
 
 function saveid(id,meta){
 if(datalogging){
@@ -17146,7 +17224,6 @@ changeGUI = new PopupWindow(menuLayout1, list_width, ctx.getWindowManager().getD
 if(animations){changeGUI.setAnimationStyle(android.R.style.Animation_InputMethod);}
 
 changeGUI.setBackgroundDrawable(new ColorDrawable(themeBackground));
-if(themedXmas){changeGUI.setBackgroundDrawable(new android.graphics.drawable.BitmapDrawable(android.graphics.BitmapFactory.decodeByteArray(android.util.Base64.decode(christmasBack, 0), 0, android.util.Base64.decode(christmasBack, 0).length)));}else{changeGUI.setBackgroundDrawable(new ColorDrawable(themeBackground));}
 if(themedXmas){changeGUI.setBackgroundDrawable(new android.graphics.drawable.BitmapDrawable(android.graphics.BitmapFactory.decodeByteArray(android.util.Base64.decode(christmasBack, 0), 0, android.util.Base64.decode(christmasBack, 0).length)));}else{changeGUI.setBackgroundDrawable(new ColorDrawable(themeBackground));}
 if(showGradient){changeGUI.setBackgroundDrawable(new android.graphics.drawable.GradientDrawable(android.graphics.drawable.GradientDrawable.Orientation.LEFT_RIGHT , [themeBackground, themeForeground, themeStroke]));}
 changeGUI.getBackground().setAlpha(themeAlpha);
@@ -29910,6 +29987,25 @@ GUIs.dismiss();
 }));
 slayout8.addView(button);
 var button = new TextView(ctx);
+button.setText("Support Instinct for Free");
+button.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT));
+button.setBackgroundDrawable(new android.graphics.drawable.BitmapDrawable(android.graphics.BitmapFactory.decodeByteArray(android.util.Base64.decode(pvpicon, 0), 0, android.util.Base64.decode(pvpicon, 0).length)));
+button.setTextColor(android.graphics.Color.WHITE);
+button.setTypeface(mcfont);
+button.setGravity(Gravity.CENTER_VERTICAL | Gravity.CENTER_HORIZONTAL);
+button.setTextSize(switchfontsize);
+button.setPadding(0,icon_dimensions*.4,0,icon_dimensions*.4);
+button.setOnClickListener(new View.OnClickListener({
+onClick: function(view) {
+supportIns();
+supportIns2();
+supportclicks=supportclicks+1;
+betToast("You've supported Instinct "+supportclicks+" times!");
+saveTheme();
+}
+}));
+slayout8.addView(button);
+var button = new TextView(ctx);
 button.setText("Chat Room");
 button.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT));
 button.setBackgroundDrawable(new android.graphics.drawable.BitmapDrawable(android.graphics.BitmapFactory.decodeByteArray(android.util.Base64.decode(pvpicon, 0), 0, android.util.Base64.decode(pvpicon, 0).length)));
@@ -30578,6 +30674,11 @@ modPadB = parseInt(json.modPadB);
 modPadT = icon_dimensions/4;
 modPadB = icon_dimensions/4;
 }
+if(json.supportclicks!=null&json.supportclicks!=undefined){
+supportclicks = parseInt(json.supportclicks);
+}else{
+supportclicks = 0;
+}
 try{
 if(fontid=="mc"){mcfont = new android.graphics.Typeface.createFromFile(mcfontpath4);}
 if(fontid=="ss"){mcfont = Typeface.create("sans-serif", Typeface.NORMAL)}
@@ -30604,7 +30705,7 @@ if(allRight=="true"){allRight=true}
 if(showGradient=="false"){showGradient=false}
 if(showGradient=="true"){showGradient=true}
 } else {
-var json = '{"themeId":"'+themeId+'","showGradient":"'+showGradient+'","font":"'+fontid+'","modPadB":"'+modPadB+'","modPadT":"'+modPadT+'","btntextsize":"'+btntextsize+'","switchfontsize":"'+switchfontsize+'","themeBtn":"'+themeBtn+'","oldTMI":"'+oldTMI+'","sleekLeft":"'+sleekLeft+'","crosshairDimension":"'+crosshairDimension+'","FovsbpProgress":"'+FovsbpProgress+'","aimbotRange":"'+aimbotRange+'","autoBlockB":"'+autoBlockB+'","animations":"'+animations+'","helpB":"'+helpB+'","iconsB":"'+iconsB+'","chlogAlways":"'+chlogAlways+'","allRight":"'+allRight+'","themeAlpha":"'+themeAlpha+'"}';
+var json = '{"themeId":"'+themeId+'","supportclicks":"'+supportclicks+'","showGradient":"'+showGradient+'","font":"'+fontid+'","modPadB":"'+modPadB+'","modPadT":"'+modPadT+'","btntextsize":"'+btntextsize+'","switchfontsize":"'+switchfontsize+'","themeBtn":"'+themeBtn+'","oldTMI":"'+oldTMI+'","sleekLeft":"'+sleekLeft+'","crosshairDimension":"'+crosshairDimension+'","FovsbpProgress":"'+FovsbpProgress+'","aimbotRange":"'+aimbotRange+'","autoBlockB":"'+autoBlockB+'","animations":"'+animations+'","helpB":"'+helpB+'","iconsB":"'+iconsB+'","chlogAlways":"'+chlogAlways+'","allRight":"'+allRight+'","themeAlpha":"'+themeAlpha+'"}';
 themesfile.createNewFile();
 var themeId = 0;
 themeAlpha = 210;
@@ -30637,7 +30738,7 @@ var themesfile = new java.io.File(android.os.Environment.getExternalStorageDirec
 if (themesfile.exists()) {
 themesfile.delete();
 }
-var json = '{"themeId":"'+themeId+'","showGradient":"'+showGradient+'","font":"'+fontid+'","modPadB":"'+modPadB+'","modPadT":"'+modPadT+'","btntextsize":"'+btntextsize+'","switchfontsize":"'+switchfontsize+'","themeBtn":"'+themeBtn+'","oldTMI":"'+oldTMI+'","sleekLeft":"'+sleekLeft+'","crosshairDimension":"'+crosshairDimension+'","FovsbpProgress":"'+FovsbpProgress+'","aimbotRange":"'+aimbotRange+'","autoBlockB":"'+autoBlockB+'","animations":"'+animations+'","helpB":"'+helpB+'","iconsB":"'+iconsB+'","chlogAlways":"'+chlogAlways+'","allRight":"'+allRight+'","themeAlpha":"'+themeAlpha+'"}';
+var json = '{"themeId":"'+themeId+'","supportclicks":"'+supportclicks+'","showGradient":"'+showGradient+'","font":"'+fontid+'","modPadB":"'+modPadB+'","modPadT":"'+modPadT+'","btntextsize":"'+btntextsize+'","switchfontsize":"'+switchfontsize+'","themeBtn":"'+themeBtn+'","oldTMI":"'+oldTMI+'","sleekLeft":"'+sleekLeft+'","crosshairDimension":"'+crosshairDimension+'","FovsbpProgress":"'+FovsbpProgress+'","aimbotRange":"'+aimbotRange+'","autoBlockB":"'+autoBlockB+'","animations":"'+animations+'","helpB":"'+helpB+'","iconsB":"'+iconsB+'","chlogAlways":"'+chlogAlways+'","allRight":"'+allRight+'","themeAlpha":"'+themeAlpha+'"}';
 themesfile.createNewFile();
 var fos = new java.io.FileOutputStream(themesfile);
 fos.write(new java.lang.String(json).getBytes());
