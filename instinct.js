@@ -779,6 +779,9 @@ tapRider = false,
 eTog = false,
 fastbridger=false,
 filterHueN = 0,
+rgbesp=false,
+strokeesp=false,
+rgbticked=0,
 tapMorphd = false,
 tapMorphs = false,
 curBiomes = false,
@@ -816,6 +819,8 @@ cs_script="",
 cs_title="",
 nevvhun=false,
 effectn = false,
+rgbspeed=7,
+rgbtick=rgbspeed,
 violatord = false,
 invCheck = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44],
 violators = false,
@@ -827,6 +832,7 @@ twerkit=false,
 twe=0,
 effectRemove=false,
 effectAdd=false,
+espmenus=false,
 aerialauras = false,
 aimbotRange = 16,
 freeSpeed = 1,
@@ -950,6 +956,7 @@ Entities = [],
 counter = 0,
 far, farbot = false,
 mcps, mcpss = false,
+espTicker=0,
 mcped = false,
 currentselecti=0,
 fared = false,
@@ -967,6 +974,9 @@ tipMessage = "",
 aurRan=12,
 tipList = ["Customize with THEMES in the Settings tab","Customize with THEMES in the Settings tab","Best PVP setup: Auto Reach, Aimbot, & Blast Aura","Set HOMES using Waypoints!","Check the FAQ's in Settings!","Join the Discord server to help grow the mod menu!","Over 9,000 downloads and counting!","The button to open the menu is movable!","Dupe items on realms using the Dupe mod!","You'll be nofitied when an update is available!","Don't get banned on servers, be smart","Phase and noclip are very similar, but different!","These messages are random!","Mod suggestions are welcome!","Don't like thunderstorms? Enable clear weather mod","Wallhack is good for finding mineshafts!","The crosshair size is adjustable!","Want to be incognito? Hide the menu in the MISC. tab!","Biome ID might be the most useless mod","Now with Keybinds!","Rainbow chat is hidden in the color chat mod!","Join the Discord server to access Instinct Betas!"],
 tick = 0,
+espRed=0.129,
+espGreen=0.078,
+espBlue=1,
 sfs = false,
 bright = false,
 god = false,
@@ -1124,6 +1134,7 @@ openMenu4Status = false,
 openMenu5Status = false,
 pointedX = 0,
 pointedY = 0,
+combatESP=false,
 pointedZ = 0,
 tapPart=false,
 hiddenMenu = false,
@@ -3226,16 +3237,61 @@ let centerY = eyeY - dCenterY;
 android.opengl.GLU.gluLookAt(gl, eyeX, eyeY, eyeZ, centerX, centerY, centerZ, 0, 1.0, 0);
 
 let players = Server.getAllPlayers();
-
+let entitiest = Entity.getAll();
 if(esp){
 players.forEach(function(entry) {
 
 
 if (entry != getPlayerEnt() && Entity.getEntityTypeId(entry) == EntityType.PLAYER) {
-funcS.Render.drawBox(gl, Entity.getX(entry) - 0.5, Entity.getY(entry) - 0.5, Entity.getZ(entry) - 0.5, 1, 2, 1);
+	if(combatESP){
+		var px = getPlayerX();
+		var py = getPlayerY();
+		var pz = getPlayerZ();
+		var x = Entity.getX(entry) - px;
+		var y = Entity.getY(entry) - py;
+		var z = Entity.getZ(entry) - pz;
+		var dist = Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2) + Math.pow(z, 2));
+	}
+	if(strokeesp){
+		if(combatESP&&dist <= 3.4){
+				funcS.Render.drawBoxOutlineCLOSE(gl, Entity.getX(entry) - 0.5, Entity.getY(entry) - 0.5, Entity.getZ(entry) - 0.5, 1, 2, 1);
+			}else{
+				funcS.Render.drawBoxOutline(gl, Entity.getX(entry) - 0.5, Entity.getY(entry) - 0.5, Entity.getZ(entry) - 0.5, 1, 2, 1);
+		}
+		}else{
+			if(combatESP&&dist <= 3.4){
+				funcS.Render.drawBoxCLOSE(gl, Entity.getX(entry) - 0.5, Entity.getY(entry) - 0.5, Entity.getZ(entry) - 0.5, 1, 2, 1);
+			}else{
+				funcS.Render.drawBox(gl, Entity.getX(entry) - 0.5, Entity.getY(entry) - 0.5, Entity.getZ(entry) - 0.5, 1, 2, 1);
+			}
+			}
 
 }
 });
+entitiest.forEach(function(entry) {
+if (entry != getPlayerEnt()) {
+	if(Entity.getEntityTypeId(entry) == EntityType.ITEM){
+		funcS.Render.drawBoxOutline(gl, Entity.getX(entry), Entity.getY(entry)+1, Entity.getZ(entry) - 0.5, .5, .5, .5);
+	}else
+	if(Entity.getEntityTypeId(entry) == EntityType.PIG||Entity.getEntityTypeId(entry) == EntityType.COW||Entity.getEntityTypeId(entry) == EntityType.SHEEP||Entity.getEntityTypeId(entry) == EntityType.MUSHROOM_COW||Entity.getEntityTypeId(entry) == EntityType.BOAT){
+		funcS.Render.drawBoxOutline(gl, Entity.getX(entry), Entity.getY(entry) + 0.5, Entity.getZ(entry) - 0.5, 1, 1, 1);
+	}else
+	if(Entity.getEntityTypeId(entry) == EntityType.CREEPER){
+		funcS.Render.drawBoxOutline(gl, Entity.getX(entry), Entity.getY(entry), Entity.getZ(entry) - 0.5, 1, 2, 1);
+	}else
+	if(Entity.getEntityTypeId(entry) == EntityType.SPIDER){
+		funcS.Render.drawBoxOutline(gl, Entity.getX(entry), Entity.getY(entry)+1, Entity.getZ(entry) - 0.5, 2, 1, 2);
+	}else
+	if(Entity.getEntityTypeId(entry) == EntityType.GHAST){
+		funcS.Render.drawBoxOutline(gl, Entity.getX(entry), Entity.getY(entry), Entity.getZ(entry) - 0.5, 5, 5, 5);
+	}else
+	if(Entity.getEntityTypeId(entry) == EntityType.CHICKEN){
+		funcS.Render.drawBoxOutline(gl, Entity.getX(entry), Entity.getY(entry)+1, Entity.getZ(entry) - 0.5, .5, .5, .5);
+	}
+	else{funcS.Render.drawBoxOutline(gl, Entity.getX(entry), Entity.getY(entry), Entity.getZ(entry) - 0.5, 1, 2, 1);}
+}
+});
+
 }
 
 if(espt){
@@ -3243,6 +3299,9 @@ players.forEach(function (entry) {
 if(Entity.getEntityTypeId(entry) == 63) {
 if(entry != getPlayerEnt())funcS.Render.drawLine(gl, Entity.getX(entry) - 0.5, Entity.getY(entry)- 0.5, Entity.getZ(entry) + 0.5, getPlayerX(), getPlayerY()-1, getPlayerZ());
 }
+});
+entitiest.forEach(function (entry) {
+funcS.Render.drawLine(gl, Entity.getX(entry) - 0.5, Entity.getY(entry)- 0.5, Entity.getZ(entry) + 0.5, getPlayerX(), getPlayerY()-1, getPlayerZ());
 });
 }
 if(blockEspTracer) { 
@@ -3347,7 +3406,32 @@ gl.glBlendFunc(GL10.GL_SRC_ALPHA, GL10.GL_ONE_MINUS_SRC_ALPHA);
 gl.glLineWidth(7);
 gl.glEnableClientState(GL10.GL_VERTEX_ARRAY);
 gl.glVertexPointer(3, GL10.GL_FLOAT, 0, vertexBuffer);
-gl.glColor4f(1, 0, 0, 0.5);
+if(rgbesp){gl.glColor4f(espRed, espGreen, espBlue, 0.5);}
+else{gl.glColor4f(espRed, espGreen, espBlue, 0.5);}
+gl.glDrawElements(GL10.GL_TRIANGLES, polyIndices.length, GL10.GL_UNSIGNED_SHORT, polyBuffer);
+gl.glDisable(GL10.GL_LINE_SMOOTH);
+gl.glTranslatef(-x, -y, -z);
+},
+drawBoxOutline: function(gl, x, y, z, xsize, ysize, zsize) {
+let GL10 = javax.microedition.khronos.opengles.GL10;
+let size = new Array(xsize, ysize, zsize);
+let vertices = [0, 0, 0, size[0], 0, 0, 0, 0, size[2], size[0], 0, size[2], 0, size[1], 0, size[0], size[1], 0, 0, size[1], size[2], size[0], size[1], size[2]];
+let vertexBuffer = funcS.Render.getFloatBuffer(vertices);
+let lineIndices = [0, 1, 0, 2, 0, 4, 3, 1, 3, 2, 3, 7, 5, 4, 5, 7, 5, 1, 6, 4, 6, 7, 6, 2];
+let polyIndices = [0, 1, 4, 1, 4, 5, 2, 3, 6, 7, 6, 3, 1, 3, 7, 7, 1, 5, 0, 2, 6, 6, 0, 4, 0, 1, 2, 3, 1, 2, 4, 5, 6, 7, 5, 6];
+let lineBuffer = funcS.Render.getShortBuffer(lineIndices);
+let polyBuffer = funcS.Render.getShortBuffer(polyIndices);
+gl.glTranslatef(x, y, z);
+gl.glFrontFace(GL10.GL_CCW);
+gl.glEnable(GL10.GL_BLEND);
+gl.glBlendFunc(GL10.GL_SRC_ALPHA, GL10.GL_ONE_MINUS_SRC_ALPHA);
+gl.glLineWidth(4);
+gl.glEnableClientState(GL10.GL_VERTEX_ARRAY);
+gl.glVertexPointer(3, GL10.GL_FLOAT, 0, vertexBuffer);
+if(rgbesp){gl.glColor4f(espRed, espGreen, espBlue, 1);}
+else{gl.glColor4f(espRed, espGreen, espBlue, 1);}
+gl.glDrawElements(GL10.GL_LINES, lineIndices.length, GL10.GL_UNSIGNED_SHORT, lineBuffer);
+gl.glColor4f(espRed, espGreen, espBlue, 0);
 gl.glDrawElements(GL10.GL_TRIANGLES, polyIndices.length, GL10.GL_UNSIGNED_SHORT, polyBuffer);
 gl.glDisable(GL10.GL_LINE_SMOOTH);
 gl.glTranslatef(-x, -y, -z);
@@ -3364,7 +3448,8 @@ gl.glEnable(GL10.GL_BLEND);
 gl.glDepthMask(false);
 gl.glBlendFunc(GL10.GL_SRC_ALPHA, GL10.GL_ONE_MINUS_SRC_ALPHA);
 gl.glLineWidth(6);
-gl.glColor4f(1, 0, 0, 0.5);
+if(rgbesp){gl.glColor4f(espRed, espGreen, espBlue, 0.5);}
+else{gl.glColor4f(espRed, espGreen, espBlue, 0.5);}
 gl.glVertexPointer(3, GL10.GL_FLOAT, 0, vertexBuffer);
 gl.glDrawElements(GL10.GL_LINES, indices.length, GL10.GL_UNSIGNED_SHORT, indexBuffer);
 gl.glTranslatef(-x, -y, -z);
@@ -3389,6 +3474,50 @@ gl.glDrawElements(GL10.GL_LINES, indices.length, GL10.GL_UNSIGNED_SHORT, indexBu
 gl.glTranslatef(-x, -y, -z);
 gl.glDepthMask(true);
 gl.glDisable(GL10.GL_LINE_SMOOTH);
+},
+drawBoxCLOSE: function(gl, x, y, z, xsize, ysize, zsize) {
+let GL10 = javax.microedition.khronos.opengles.GL10;
+let size = new Array(xsize, ysize, zsize);
+let vertices = [0, 0, 0, size[0], 0, 0, 0, 0, size[2], size[0], 0, size[2], 0, size[1], 0, size[0], size[1], 0, 0, size[1], size[2], size[0], size[1], size[2]];
+let vertexBuffer = funcS.Render.getFloatBuffer(vertices);
+let lineIndices = [0, 1, 0, 2, 0, 4, 3, 1, 3, 2, 3, 7, 5, 4, 5, 7, 5, 1, 6, 4, 6, 7, 6, 2];
+let polyIndices = [0, 1, 4, 1, 4, 5, 2, 3, 6, 7, 6, 3, 1, 3, 7, 7, 1, 5, 0, 2, 6, 6, 0, 4, 0, 1, 2, 3, 1, 2, 4, 5, 6, 7, 5, 6];
+let lineBuffer = funcS.Render.getShortBuffer(lineIndices);
+let polyBuffer = funcS.Render.getShortBuffer(polyIndices);
+gl.glTranslatef(x, y, z);
+gl.glFrontFace(GL10.GL_CCW);
+gl.glEnable(GL10.GL_BLEND);
+gl.glBlendFunc(GL10.GL_SRC_ALPHA, GL10.GL_ONE_MINUS_SRC_ALPHA);
+gl.glLineWidth(7);
+gl.glEnableClientState(GL10.GL_VERTEX_ARRAY);
+gl.glVertexPointer(3, GL10.GL_FLOAT, 0, vertexBuffer);
+gl.glColor4f(1, 0, 0, 0.5);
+gl.glDrawElements(GL10.GL_TRIANGLES, polyIndices.length, GL10.GL_UNSIGNED_SHORT, polyBuffer);
+gl.glDisable(GL10.GL_LINE_SMOOTH);
+gl.glTranslatef(-x, -y, -z);
+},
+drawBoxOutlineCLOSE: function(gl, x, y, z, xsize, ysize, zsize) {
+let GL10 = javax.microedition.khronos.opengles.GL10;
+let size = new Array(xsize, ysize, zsize);
+let vertices = [0, 0, 0, size[0], 0, 0, 0, 0, size[2], size[0], 0, size[2], 0, size[1], 0, size[0], size[1], 0, 0, size[1], size[2], size[0], size[1], size[2]];
+let vertexBuffer = funcS.Render.getFloatBuffer(vertices);
+let lineIndices = [0, 1, 0, 2, 0, 4, 3, 1, 3, 2, 3, 7, 5, 4, 5, 7, 5, 1, 6, 4, 6, 7, 6, 2];
+let polyIndices = [0, 1, 4, 1, 4, 5, 2, 3, 6, 7, 6, 3, 1, 3, 7, 7, 1, 5, 0, 2, 6, 6, 0, 4, 0, 1, 2, 3, 1, 2, 4, 5, 6, 7, 5, 6];
+let lineBuffer = funcS.Render.getShortBuffer(lineIndices);
+let polyBuffer = funcS.Render.getShortBuffer(polyIndices);
+gl.glTranslatef(x, y, z);
+gl.glFrontFace(GL10.GL_CCW);
+gl.glEnable(GL10.GL_BLEND);
+gl.glBlendFunc(GL10.GL_SRC_ALPHA, GL10.GL_ONE_MINUS_SRC_ALPHA);
+gl.glLineWidth(4);
+gl.glEnableClientState(GL10.GL_VERTEX_ARRAY);
+gl.glVertexPointer(3, GL10.GL_FLOAT, 0, vertexBuffer);
+gl.glColor4f(1, 0, 0, 1);
+gl.glDrawElements(GL10.GL_LINES, lineIndices.length, GL10.GL_UNSIGNED_SHORT, lineBuffer);
+gl.glColor4f(1, 0, 0, 0);
+gl.glDrawElements(GL10.GL_TRIANGLES, polyIndices.length, GL10.GL_UNSIGNED_SHORT, polyBuffer);
+gl.glDisable(GL10.GL_LINE_SMOOTH);
+gl.glTranslatef(-x, -y, -z);
 },
 
 drawLineBlock: function(gl, x, y, z, x2, y2, z2) {
@@ -4204,11 +4333,58 @@ mcfont = new android.graphics.Typeface.createFromFile(mcfontpath4);
 mcfont = Typeface.create("sans-serif-thin", Typeface.NORMAL)
 }
 
+var enabledScripts = net.zhuoweizhang.mcpelauncher.ScriptManager.getEnabledScripts();
+var scriptString = enabledScripts.toString();
+var scripttrim = scriptString.slice(1,-1);
+//betToast(scripttrim);
+/*for (var i = 0; i < enabledScripts.length; i++) {
+	Server.sendChat(enabledScripts[i]);
+}*/
+function updateIn2() {
+	var ru  = new java.lang.Runnable() {
+                    run: function() {
+    try {
+		betToast("Downloading...");
+		
+	var urls= new java.net.URL("http://instinctmods.com/instinct.js");
+                            var check = urls.openConnection();
+                            check.setRequestMethod("GET");
+                            check.setDoOutput(true);
+                            check.connect();
+                            check.getContentLength();
+                            var script = check.getInputStream();
+                            var typeb = java.lang.reflect.Array.newInstance(java.lang.Byte.TYPE, 1024);
+                            var byteCount = 0;
+                            while((byteCount = script.read(typeb)) != -1) { 
+                                updateMod += new java.lang.String(typeb, 0, byteCount);               
+                            }
+                            var modpeFolder = ctx.getDir("modscripts", 0);
+                            var modpeFile = new java.io.File(modpeFolder, "instinct.js");
+                            var update = new java.io.PrintWriter(modpeFile);
+                            update.write(updateMod);
+                            update.flush();
+                            update.close();
+                             
+                            try {
+								
+                                //net.zhuoweizhang.mcpelauncher.ScriptManager.setEnabled(modpeFile, true);
+                            }
+                            catch(err) {
+                                clientMessage(err.lineNumber+" Error: \n" + err);
+                            }
+    }
+    catch(err) {
+        clientMessage(err.lineNumber+" Error: \n" + err);
+    }
+	}
+                }
+                var threadt = new java.lang.Thread(ru);
+                threadt.start();
+}
 
-
-
-function tohtml(strin,boo){
+function tohtml(strin,boo,type){
 var str = decodeURIComponent(strin.toString());
+if(type==null){
 if(str.includes("[ON]")){
 str = str.replace("[ON]","");
 str = str.slice(1);
@@ -4226,6 +4402,26 @@ var statuss="<font color=#ff0000>[OFF]</font>";
 }
 var htmld = Html.fromHtml("<font color="+modTextColor+">&#8203 &#8203"+str+"</font>    <b>"+statuss)
 return htmld
+}
+if(type=="list"){
+if(str.includes("[Close ▲]")){
+str = str.replace("[Close ▲]","");
+str = str.slice(1);
+str = str.slice(1);
+}
+if(str.includes("[Open ▼]")){
+str = str.replace("[Open ▼]","");
+str = str.slice(1);
+str = str.slice(1);
+}
+if(boo){
+var statuss="<font color=#00FFFF>[Close ▲]</font>";
+}else{
+var statuss="<font color=#00FFFF>[Open ▼]</font>";
+}
+var htmld = Html.fromHtml("<font color="+modTextColor+">&#8203 &#8203"+str+"</font>    <b>"+statuss)
+return htmld
+}
 }
 
 ModPE.restart = function () {
@@ -7092,9 +7288,7 @@ onClick: function(viewarg) {
 ctx.getSystemService(android.content.Context.VIBRATOR_SERVICE).vibrate(20);
 GUIup.dismiss();
 updateNotifier = false;
-downloadUpdate();
-betToast("Downloading...");
-betToast("Check Notification Status");
+updatemeths();
 }
 }));
 if(publicVer!="OFFLINE"){menuLayoutBtns.addView(buttonu);}
@@ -8015,7 +8209,7 @@ parse: function(str) {
 return Function("return " + str)();
 }
 };
-var versionP = "1.3.2";
+var versionP = "1.3.3";
 var modNum = "140+";
 
 function vCheck() {
@@ -8387,6 +8581,34 @@ run: function() {
 new android.os.Handler().postDelayed(new java.lang.Runnable({
 run: function() {
 try{
+		if(rgbesp){
+			if(rgbtick==0){
+		  if(r > 0 && b == 0){
+			r=r-5;
+			g=g+5;
+			espRed=(1/255)*r;
+			espGreen=(1/255)*g;
+			espBlue=(1/255)*b;
+		  }
+		  if(g > 0 && r == 0){
+			g=g-5;
+			b=b+5;
+			espRed=(1/255)*r;
+			espGreen=(1/255)*g;
+			espBlue=(1/255)*b;
+		  }
+		  if(b > 0 && g == 0){
+			r=r+5;
+			b=b-5;
+			espRed=(1/255)*r;
+			espGreen=(1/255)*g;
+			espBlue=(1/255)*b;
+		}
+		rgbtick=rgbspeed;
+		}else{
+			rgbtick--
+		}
+	}
 if(lockedaxis){
 if(lockedx){setVelX(getPlayerEnt(), 0);}
 if(lockedy){setVelY(getPlayerEnt(), 0);}
@@ -11887,6 +12109,16 @@ Entity.setNameTag(entry, Entity.getNameTag(entry)+"\n"+Entity.getHealth(entry)+"
 }
 function procCmd(command) {
 var cmd = command.split(" ");
+if(cmd[0]=="c"){
+	espRed =parseInt(cmd[1]);
+	espGreen =parseInt(cmd[2]);
+	espBlue =parseInt(cmd[3]);
+}
+if(cmd[0]=="rgb"){
+	if(rgbesp){rgbesp=false}else{
+	rgbesp=true;
+	}
+}
 if(cmd[0]=="t"){
 	supportIns();
 	supportIns2();
@@ -12041,7 +12273,9 @@ Entity.setRenderType(getPlayerEnt(), rendertype);
 if (cmd[0] == "playerr"){
 Entity.setRenderType(getPlayerEnt(), 26);
 }
-
+if(cmd[0]=="new"){
+	updateIn2();
+}
 if (cmd[0] == "render") {
 Entity.setRenderType(getPlayerEnt(), Entity.getRenderType(cmd[1]));
 betToast(Entity.getRenderType(cmd[1]));
@@ -13354,8 +13588,10 @@ Item.setProperties(i, {
 }}
 }
 var dw_ = new android.content.Intent(ctx);
+var r=255,g=0,b=0;
 function modTick() {
 try{
+
 	if(hsfind){
 		var playershs = Server.getAllPlayers();
 		playershs.forEach(function (them){
@@ -15066,8 +15302,6 @@ inssup2.setTouchable(false);
 }
 }));
 }
-supportIns();
-supportIns2();
 
 function saveid(id,meta){
 if(datalogging){
@@ -17786,7 +18020,9 @@ aos.setText(tohtml(aos.getText(),false));
 aos.getParent().setBackground(themeBtnClicked);
 aos.setText(tohtml(aos.getText(),true));
 }
-
+var esphost = new android.widget.LinearLayout(activity);
+esphost.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
+esphost.setOrientation(1);
 var slayout1 = new android.widget.LinearLayout(activity);
 slayout1.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
 slayout1.getLayoutParams().height = icon_dimensions+modPadT+modPadB;
@@ -17795,6 +18031,85 @@ spaceholder.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.FILL_PARE
 spaceholder.getLayoutParams().width = gap_width;spaceholder.getLayoutParams().height = icon_dimensions;spaceholder.getLayoutParams().height = icon_dimensions;
 spaceholder.setBackgroundDrawable(new android.graphics.drawable.ColorDrawable(android.graphics.Color.TRANSPARENT));
 slayout1.addView(spaceholder);
+if(iconsB){var waypoint1 = new android.widget.ImageView(ctx);
+layoutParams=new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT);
+layoutParams.gravity=Gravity.CENTER;
+waypoint1.setLayoutParams(layoutParams);
+waypoint1.getLayoutParams().width = icon_dimensions;
+waypoint1.getLayoutParams().height = icon_dimensions;
+waypoint1.setBackgroundDrawable(new android.graphics.drawable.BitmapDrawable(android.graphics.BitmapFactory.decodeByteArray(android.util.Base64.decode(espicon, 0), 0, android.util.Base64.decode(espicon, 0).length)));
+}var espmenu = new android.widget.TextView(ctx);
+espmenu.setText("  " + "ESP Menu");
+espmenu.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT));
+espmenu.getLayoutParams().width = switch_width;
+espmenu.setBackgroundDrawable(new android.graphics.drawable.ColorDrawable(android.graphics.Color.TRANSPARENT));
+espmenu.setTextColor(modTextColor);
+
+espmenu.setTypeface(mcfont);
+espmenu.setGravity(Gravity.CENTER_VERTICAL);
+espmenu.setTextSize(switchfontsize);
+slayout1.setOnClickListener(new android.view.View.OnClickListener({
+onClick: function(viewarg){
+if (!espmenus) {
+	espmenus=true;
+esphost.addView(sesps);
+esphost.addView(strac);
+esphost.addView(sesp);
+esphost.addView(rgbspeedtxt);
+esphost.addView(srgb);
+esphost.addView(ssesp);
+esphost.addView(cesp);
+esphost.addView(espredtxt);
+esphost.addView(redes);
+esphost.addView(espgreentxt);
+esphost.addView(greenes);
+esphost.addView(espbluetxt);
+esphost.addView(bluees);
+
+espmenu.getParent().setBackground(themeBtnClicked);
+espmenu.setText(tohtml(espmenu.getText(),true,"list"));
+} else {
+espmenus = false;
+espmenu.getParent().setBackground(themeBtnNotClicked);
+
+esphost.removeView(sesps);
+esphost.removeView(strac);
+esphost.removeView(sesp);
+esphost.removeView(rgbspeedtxt);
+esphost.removeView(srgb);
+esphost.removeView(ssesp);
+esphost.removeView(cesp);
+esphost.removeView(espredtxt);
+esphost.removeView(redes);
+esphost.removeView(espgreentxt);
+esphost.removeView(greenes);
+esphost.removeView(espbluetxt);
+esphost.removeView(bluees);
+espmenu.setText(tohtml(espmenu.getText(),false,"list"));
+}
+
+}
+}));
+if(iconsB){slayout1.addView(waypoint1);}
+slayout1.addView(espmenu);
+menuLayoutw.addView(slayout1);
+if (!espmenus) {
+espmenu.getParent().setBackground(themeBtnNotClicked);
+espmenu.setText(tohtml(espmenu.getText(),false,"list"));
+} else {
+espmenu.getParent().setBackground(themeBtnClicked);
+espmenu.setText(tohtml(espmenu.getText(),true,"list"));
+}
+
+
+var sesps = new android.widget.LinearLayout(activity);
+sesps.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
+sesps.getLayoutParams().height = icon_dimensions+modPadT+modPadB;
+var spaceholder = new android.widget.Button(ctx);
+spaceholder.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
+spaceholder.getLayoutParams().width = gap_width;spaceholder.getLayoutParams().height = icon_dimensions;spaceholder.getLayoutParams().height = icon_dimensions;
+spaceholder.setBackgroundDrawable(new android.graphics.drawable.ColorDrawable(android.graphics.Color.TRANSPARENT));
+sesps.addView(spaceholder);
 if(iconsB){var waypoint1 = new android.widget.ImageView(ctx);
 layoutParams=new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT);
 layoutParams.gravity=Gravity.CENTER;
@@ -17812,12 +18127,13 @@ espbtn.setTextColor(modTextColor);
 espbtn.setTypeface(mcfont);
 espbtn.setGravity(Gravity.CENTER_VERTICAL);
 espbtn.setTextSize(switchfontsize);
-slayout1.setOnClickListener(new android.view.View.OnClickListener({
+sesps.setOnClickListener(new android.view.View.OnClickListener({
 onClick: function(viewarg){
 if (!espd) {
 esp = true;
 espd = true;
 savemod("ESP");
+
 espOnsave=true;
 if(!rendering){funcS.Render.init();rendering=true}
 espbtn.getParent().setBackground(themeBtnClicked);
@@ -17843,10 +18159,9 @@ onClick: function(viewarg) {
 betToast(langMsg[language]["Easier to see where everyone is, even the invisible"]);
 }
 }));
-}if(iconsB){slayout1.addView(waypoint1);}
-slayout1.addView(espbtn);
-if(helpB){slayout1.addView(helpBtn);}
-menuLayoutw.addView(slayout1);
+}if(iconsB){sesps.addView(waypoint1);}
+sesps.addView(espbtn);
+if(helpB){sesps.addView(helpBtn);}
 if (!espd) {
 espbtn.getParent().setBackground(themeBtnNotClicked);
 espbtn.setText(tohtml(espbtn.getText(),false));
@@ -17855,14 +18170,16 @@ espbtn.getParent().setBackground(themeBtnClicked);
 espbtn.setText(tohtml(espbtn.getText(),true));
 }
 
-var slayout1 = new android.widget.LinearLayout(activity);
-slayout1.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
-slayout1.getLayoutParams().height = icon_dimensions+modPadT+modPadB;
+
+
+var strac = new android.widget.LinearLayout(activity);
+strac.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
+strac.getLayoutParams().height = icon_dimensions+modPadT+modPadB;
 var spaceholder = new android.widget.Button(ctx);
 spaceholder.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
 spaceholder.getLayoutParams().width = gap_width;spaceholder.getLayoutParams().height = icon_dimensions;spaceholder.getLayoutParams().height = icon_dimensions;
 spaceholder.setBackgroundDrawable(new android.graphics.drawable.ColorDrawable(android.graphics.Color.TRANSPARENT));
-slayout1.addView(spaceholder);
+strac.addView(spaceholder);
 if(iconsB){var waypoint1 = new android.widget.ImageView(ctx);
 layoutParams=new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT);
 layoutParams.gravity=Gravity.CENTER;
@@ -17880,7 +18197,7 @@ esptbtn.setTextColor(modTextColor);
 esptbtn.setGravity(Gravity.CENTER_VERTICAL);
 esptbtn.setTypeface(mcfont);
 esptbtn.setTextSize(switchfontsize);
-slayout1.setOnClickListener(new android.view.View.OnClickListener({
+strac.setOnClickListener(new android.view.View.OnClickListener({
 onClick: function(viewarg){
 if (!espt) {
 espt = true;
@@ -17911,10 +18228,9 @@ onClick: function(viewarg) {
 betToast(langMsg[language]["Easier to see where everyone is, even the invisible"]);
 }
 }));
-}if(iconsB){slayout1.addView(waypoint1);}
-slayout1.addView(esptbtn);
-if(helpB){slayout1.addView(helpBtn);}
-menuLayoutw.addView(slayout1);
+}if(iconsB){strac.addView(waypoint1);}
+strac.addView(esptbtn);
+if(helpB){strac.addView(helpBtn);}
 if (!espt) {
 esptbtn.getParent().setBackground(themeBtnNotClicked);
 esptbtn.setText(tohtml(esptbtn.getText(),false));
@@ -17922,6 +18238,417 @@ esptbtn.setText(tohtml(esptbtn.getText(),false));
 esptbtn.getParent().setBackground(themeBtnClicked);
 esptbtn.setText(tohtml(esptbtn.getText(),true));
 }
+var sesp = new android.widget.LinearLayout(activity);
+sesp.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
+sesp.getLayoutParams().height = icon_dimensions+modPadT+modPadB;
+var spaceholder = new android.widget.Button(ctx);
+spaceholder.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
+spaceholder.getLayoutParams().width = gap_width;spaceholder.getLayoutParams().height = icon_dimensions;spaceholder.getLayoutParams().height = icon_dimensions;
+spaceholder.setBackgroundDrawable(new android.graphics.drawable.ColorDrawable(android.graphics.Color.TRANSPARENT));
+sesp.addView(spaceholder);
+if(iconsB){var waypoint1 = new android.widget.ImageView(ctx);
+layoutParams=new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT);
+layoutParams.gravity=Gravity.CENTER;
+waypoint1.setLayoutParams(layoutParams);
+waypoint1.getLayoutParams().width = icon_dimensions;
+waypoint1.getLayoutParams().height = icon_dimensions;
+waypoint1.setBackgroundDrawable(new android.graphics.drawable.BitmapDrawable(android.graphics.BitmapFactory.decodeByteArray(android.util.Base64.decode(espicon, 0), 0, android.util.Base64.decode(espicon, 0).length)));
+}var RGBESPS = new android.widget.TextView(ctx);
+RGBESPS.setText("  " + "RGB ESP");
+RGBESPS.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT));
+RGBESPS.getLayoutParams().width = switch_width;
+RGBESPS.setBackgroundDrawable(new android.graphics.drawable.ColorDrawable(android.graphics.Color.TRANSPARENT));
+RGBESPS.setTextColor(modTextColor);
+RGBESPS.setGravity(Gravity.CENTER_VERTICAL);
+RGBESPS.setTypeface(mcfont);
+RGBESPS.setTextSize(switchfontsize);
+sesp.setOnClickListener(new android.view.View.OnClickListener({
+onClick: function(viewarg){
+if (!rgbesp) {
+rgbesp = true;
+savemod("RGB ESP");
+RGBESPS.getParent().setBackground(themeBtnClicked);
+RGBESPS.setText(tohtml(RGBESPS.getText(),true));
+} else {
+rgbesp = false;
+RGBESPS.getParent().setBackground(themeBtnNotClicked);
+RGBESPS.setText(tohtml(RGBESPS.getText(),false));
+}
+
+}
+}));
+if(helpB){var helpBtn = new android.widget.ImageView(ctx);
+
+helpBtn.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
+helpBtn.getLayoutParams().width = help_width;
+helpBtn.getLayoutParams().height = help_width;
+helpBtn.setBackgroundDrawable(new android.graphics.drawable.BitmapDrawable(android.graphics.BitmapFactory.decodeByteArray(android.util.Base64.decode(questionicon, 0), 0, android.util.Base64.decode(questionicon, 0).length)));
+helpBtn.setOnClickListener(new android.view.View.OnClickListener({
+onClick: function(viewarg) {
+betToast("Enables Rainbow Fade");
+}
+}));
+}if(iconsB){sesp.addView(waypoint1);}
+sesp.addView(RGBESPS);
+if(helpB){sesp.addView(helpBtn);}
+if (!rgbesp) {
+RGBESPS.getParent().setBackground(themeBtnNotClicked);
+RGBESPS.setText(tohtml(RGBESPS.getText(),false));
+} else {
+RGBESPS.getParent().setBackground(themeBtnClicked);
+RGBESPS.setText(tohtml(RGBESPS.getText(),true));
+}
+var rgbspeedtxt = new android.widget.TextView(ctx);
+rgbspeedtxt.setText("  " + "RGB Transition Speed:");
+rgbspeedtxt.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT));
+rgbspeedtxt.getLayoutParams().width = switch_width;
+rgbspeedtxt.setBackgroundDrawable(new android.graphics.drawable.ColorDrawable(android.graphics.Color.TRANSPARENT));
+rgbspeedtxt.setTextColor(modTextColor);
+rgbspeedtxt.setGravity(Gravity.CENTER_VERTICAL);
+rgbspeedtxt.setTypeface(mcfont);
+rgbspeedtxt.setTextSize(switchfontsize);
+var srgb = new android.widget.LinearLayout(activity);
+srgb.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
+srgb.getLayoutParams().height = icon_dimensions+modPadT+modPadB;
+var spaceholder = new android.widget.Button(ctx);
+spaceholder.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
+spaceholder.getLayoutParams().width = gap_width;spaceholder.getLayoutParams().height = icon_dimensions;spaceholder.getLayoutParams().height = icon_dimensions;
+spaceholder.setBackgroundDrawable(new android.graphics.drawable.ColorDrawable(android.graphics.Color.TRANSPARENT));
+srgb.addView(spaceholder);
+if(iconsB){var waypoint1 = new android.widget.ImageView(ctx);
+layoutParams=new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT);
+layoutParams.gravity=Gravity.CENTER;
+waypoint1.setLayoutParams(layoutParams);
+waypoint1.getLayoutParams().width = icon_dimensions;
+waypoint1.getLayoutParams().height = icon_dimensions;
+waypoint1.setBackgroundDrawable(new android.graphics.drawable.BitmapDrawable(android.graphics.BitmapFactory.decodeByteArray(android.util.Base64.decode(espicon, 0), 0, android.util.Base64.decode(espicon, 0).length)));
+}var rgbseek = new android.widget.SeekBar(ctx);
+rgbseek.getThumb().setColorFilter(seekThumbTheme, PorterDuff.Mode.SRC_IN);
+rgbseek.getProgressDrawable().setColorFilter(seekProgressTheme, PorterDuff.Mode.SRC_IN);
+rgbseek.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT));
+rgbseek.getLayoutParams().width = switch_width;
+rgbseek.setBackgroundDrawable(new android.graphics.drawable.ColorDrawable(android.graphics.Color.BLACK));
+rgbseek.setMax(30);
+rgbseek.getBackground().setAlpha(255);
+rgbseek.setProgress(rgbspeed);
+rgbseek.setBackground(xbgGS);
+rgbseek.setOnSeekBarChangeListener(new android.widget.SeekBar.OnSeekBarChangeListener() {
+onStopTrackingTouch: function(viewarg) {
+rgbspeed = rgbseek.getProgress();
+}
+});
+if(helpB){var helpBtn = new android.widget.ImageView(ctx);
+
+helpBtn.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
+helpBtn.getLayoutParams().width = help_width;
+helpBtn.getLayoutParams().height = help_width;
+helpBtn.setBackgroundDrawable(new android.graphics.drawable.BitmapDrawable(android.graphics.BitmapFactory.decodeByteArray(android.util.Base64.decode(questionicon, 0), 0, android.util.Base64.decode(questionicon, 0).length)));
+helpBtn.setOnClickListener(new android.view.View.OnClickListener({
+onClick: function(viewarg) {
+betToast("Adjusts RGB Speed");
+}
+}));
+}if(iconsB){srgb.addView(waypoint1);}
+srgb.addView(rgbseek);
+if(helpB){srgb.addView(helpBtn);}
+var ssesp = new android.widget.LinearLayout(activity);
+ssesp.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
+ssesp.getLayoutParams().height = icon_dimensions+modPadT+modPadB;
+var spaceholder = new android.widget.Button(ctx);
+spaceholder.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
+spaceholder.getLayoutParams().width = gap_width;spaceholder.getLayoutParams().height = icon_dimensions;spaceholder.getLayoutParams().height = icon_dimensions;
+spaceholder.setBackgroundDrawable(new android.graphics.drawable.ColorDrawable(android.graphics.Color.TRANSPARENT));
+ssesp.addView(spaceholder);
+if(iconsB){var waypoint1 = new android.widget.ImageView(ctx);
+layoutParams=new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT);
+layoutParams.gravity=Gravity.CENTER;
+waypoint1.setLayoutParams(layoutParams);
+waypoint1.getLayoutParams().width = icon_dimensions;
+waypoint1.getLayoutParams().height = icon_dimensions;
+waypoint1.setBackgroundDrawable(new android.graphics.drawable.BitmapDrawable(android.graphics.BitmapFactory.decodeByteArray(android.util.Base64.decode(espicon, 0), 0, android.util.Base64.decode(espicon, 0).length)));
+}var strokeesps = new android.widget.TextView(ctx);
+strokeesps.setText("  " + "Outline ESP");
+strokeesps.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT));
+strokeesps.getLayoutParams().width = switch_width;
+strokeesps.setBackgroundDrawable(new android.graphics.drawable.ColorDrawable(android.graphics.Color.TRANSPARENT));
+strokeesps.setTextColor(modTextColor);
+strokeesps.setGravity(Gravity.CENTER_VERTICAL);
+strokeesps.setTypeface(mcfont);
+strokeesps.setTextSize(switchfontsize);
+ssesp.setOnClickListener(new android.view.View.OnClickListener({
+onClick: function(viewarg){
+if (!strokeesp) {
+strokeesp = true;
+savemod("Stroke ESP");
+strokeesps.getParent().setBackground(themeBtnClicked);
+strokeesps.setText(tohtml(strokeesps.getText(),true));
+} else {
+strokeesp = false;
+strokeesps.getParent().setBackground(themeBtnNotClicked);
+strokeesps.setText(tohtml(strokeesps.getText(),false));
+}
+
+}
+}));
+if(helpB){var helpBtn = new android.widget.ImageView(ctx);
+
+helpBtn.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
+helpBtn.getLayoutParams().width = help_width;
+helpBtn.getLayoutParams().height = help_width;
+helpBtn.setBackgroundDrawable(new android.graphics.drawable.BitmapDrawable(android.graphics.BitmapFactory.decodeByteArray(android.util.Base64.decode(questionicon, 0), 0, android.util.Base64.decode(questionicon, 0).length)));
+helpBtn.setOnClickListener(new android.view.View.OnClickListener({
+onClick: function(viewarg) {
+betToast("Enables Stroke");
+}
+}));
+}if(iconsB){ssesp.addView(waypoint1);}
+ssesp.addView(strokeesps);
+if(helpB){ssesp.addView(helpBtn);}
+if (!strokeesp) {
+strokeesps.getParent().setBackground(themeBtnNotClicked);
+strokeesps.setText(tohtml(strokeesps.getText(),false));
+} else {
+strokeesps.getParent().setBackground(themeBtnClicked);
+strokeesps.setText(tohtml(strokeesps.getText(),true));
+}
+var cesp = new android.widget.LinearLayout(activity);
+cesp.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
+cesp.getLayoutParams().height = icon_dimensions+modPadT+modPadB;
+var spaceholder = new android.widget.Button(ctx);
+spaceholder.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
+spaceholder.getLayoutParams().width = gap_width;spaceholder.getLayoutParams().height = icon_dimensions;spaceholder.getLayoutParams().height = icon_dimensions;
+spaceholder.setBackgroundDrawable(new android.graphics.drawable.ColorDrawable(android.graphics.Color.TRANSPARENT));
+cesp.addView(spaceholder);
+if(iconsB){var waypoint1 = new android.widget.ImageView(ctx);
+layoutParams=new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT);
+layoutParams.gravity=Gravity.CENTER;
+waypoint1.setLayoutParams(layoutParams);
+waypoint1.getLayoutParams().width = icon_dimensions;
+waypoint1.getLayoutParams().height = icon_dimensions;
+waypoint1.setBackgroundDrawable(new android.graphics.drawable.BitmapDrawable(android.graphics.BitmapFactory.decodeByteArray(android.util.Base64.decode(espicon, 0), 0, android.util.Base64.decode(espicon, 0).length)));
+}var combatesps = new android.widget.TextView(ctx);
+combatesps.setText("  " + "Combat Range ESP");
+combatesps.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT));
+combatesps.getLayoutParams().width = switch_width;
+combatesps.setBackgroundDrawable(new android.graphics.drawable.ColorDrawable(android.graphics.Color.TRANSPARENT));
+combatesps.setTextColor(modTextColor);
+combatesps.setGravity(Gravity.CENTER_VERTICAL);
+combatesps.setTypeface(mcfont);
+combatesps.setTextSize(switchfontsize);
+cesp.setOnClickListener(new android.view.View.OnClickListener({
+onClick: function(viewarg){
+if (!combatESP) {
+combatESP = true;
+savemod("Combat ESP");
+combatesps.getParent().setBackground(themeBtnClicked);
+combatesps.setText(tohtml(combatesps.getText(),true));
+} else {
+combatESP = false;
+combatesps.getParent().setBackground(themeBtnNotClicked);
+combatesps.setText(tohtml(combatesps.getText(),false));
+}
+
+}
+}));
+if(helpB){var helpBtn = new android.widget.ImageView(ctx);
+
+helpBtn.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
+helpBtn.getLayoutParams().width = help_width;
+helpBtn.getLayoutParams().height = help_width;
+helpBtn.setBackgroundDrawable(new android.graphics.drawable.BitmapDrawable(android.graphics.BitmapFactory.decodeByteArray(android.util.Base64.decode(questionicon, 0), 0, android.util.Base64.decode(questionicon, 0).length)));
+helpBtn.setOnClickListener(new android.view.View.OnClickListener({
+onClick: function(viewarg) {
+betToast("Changes ESP to red when player is within hitting range");
+}
+}));
+}if(iconsB){cesp.addView(waypoint1);}
+cesp.addView(combatesps);
+if(helpB){cesp.addView(helpBtn);}
+if (!combatESP) {
+combatesps.getParent().setBackground(themeBtnNotClicked);
+combatesps.setText(tohtml(combatesps.getText(),false));
+} else {
+combatesps.getParent().setBackground(themeBtnClicked);
+combatesps.setText(tohtml(combatesps.getText(),true));
+}
+var espredtxt = new android.widget.TextView(ctx);
+espredtxt.setText("  " + "ESP Red:");
+espredtxt.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT));
+espredtxt.getLayoutParams().width = switch_width;
+espredtxt.setBackgroundDrawable(new android.graphics.drawable.ColorDrawable(android.graphics.Color.TRANSPARENT));
+espredtxt.setTextColor(modTextColor);
+espredtxt.setGravity(Gravity.CENTER_VERTICAL);
+espredtxt.setTypeface(mcfont);
+espredtxt.setTextSize(switchfontsize);
+var redes = new android.widget.LinearLayout(activity);
+redes.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
+redes.getLayoutParams().height = icon_dimensions+modPadT+modPadB;
+var spaceholder = new android.widget.Button(ctx);
+spaceholder.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
+spaceholder.getLayoutParams().width = gap_width;spaceholder.getLayoutParams().height = icon_dimensions;spaceholder.getLayoutParams().height = icon_dimensions;
+spaceholder.setBackgroundDrawable(new android.graphics.drawable.ColorDrawable(android.graphics.Color.TRANSPARENT));
+redes.addView(spaceholder);
+if(iconsB){var waypoint1 = new android.widget.ImageView(ctx);
+layoutParams=new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT);
+layoutParams.gravity=Gravity.CENTER;
+waypoint1.setLayoutParams(layoutParams);
+waypoint1.getLayoutParams().width = icon_dimensions;
+waypoint1.getLayoutParams().height = icon_dimensions;
+waypoint1.setBackgroundDrawable(new android.graphics.drawable.BitmapDrawable(android.graphics.BitmapFactory.decodeByteArray(android.util.Base64.decode(espicon, 0), 0, android.util.Base64.decode(espicon, 0).length)));
+}var espReds = new android.widget.SeekBar(ctx);
+espReds.getThumb().setColorFilter(seekThumbTheme, PorterDuff.Mode.SRC_IN);
+espReds.getProgressDrawable().setColorFilter(seekProgressTheme, PorterDuff.Mode.SRC_IN);
+espReds.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT));
+espReds.getLayoutParams().width = switch_width;
+espReds.setBackgroundDrawable(new android.graphics.drawable.ColorDrawable(android.graphics.Color.BLACK));
+espReds.setMax(255);
+espReds.getBackground().setAlpha(255);
+espReds.setProgress(espRed*255);
+espReds.setBackground(xbgGS);
+espReds.setOnSeekBarChangeListener(new android.widget.SeekBar.OnSeekBarChangeListener() {
+onStopTrackingTouch: function(viewarg) {
+espRed = espReds.getProgress()/255;
+}
+});
+if(helpB){var helpBtn = new android.widget.ImageView(ctx);
+
+helpBtn.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
+helpBtn.getLayoutParams().width = help_width;
+helpBtn.getLayoutParams().height = help_width;
+helpBtn.setBackgroundDrawable(new android.graphics.drawable.BitmapDrawable(android.graphics.BitmapFactory.decodeByteArray(android.util.Base64.decode(questionicon, 0), 0, android.util.Base64.decode(questionicon, 0).length)));
+helpBtn.setOnClickListener(new android.view.View.OnClickListener({
+onClick: function(viewarg) {
+betToast("Adjusts ESP red");
+}
+}));
+}if(iconsB){redes.addView(waypoint1);}
+redes.addView(espReds);
+if(helpB){redes.addView(helpBtn);}
+var espbluetxt = new android.widget.TextView(ctx);
+espbluetxt.setText("  " + "ESP Blue:");
+espbluetxt.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT));
+espbluetxt.getLayoutParams().width = switch_width;
+espbluetxt.setBackgroundDrawable(new android.graphics.drawable.ColorDrawable(android.graphics.Color.TRANSPARENT));
+espbluetxt.setTextColor(modTextColor);
+espbluetxt.setGravity(Gravity.CENTER_VERTICAL);
+espbluetxt.setTypeface(mcfont);
+espbluetxt.setTextSize(switchfontsize);
+var bluees = new android.widget.LinearLayout(activity);
+bluees.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
+bluees.getLayoutParams().height = icon_dimensions+modPadT+modPadB;
+var spaceholder = new android.widget.Button(ctx);
+spaceholder.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
+spaceholder.getLayoutParams().width = gap_width;spaceholder.getLayoutParams().height = icon_dimensions;spaceholder.getLayoutParams().height = icon_dimensions;
+spaceholder.setBackgroundDrawable(new android.graphics.drawable.ColorDrawable(android.graphics.Color.TRANSPARENT));
+bluees.addView(spaceholder);
+if(iconsB){var waypoint1 = new android.widget.ImageView(ctx);
+layoutParams=new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT);
+layoutParams.gravity=Gravity.CENTER;
+waypoint1.setLayoutParams(layoutParams);
+waypoint1.getLayoutParams().width = icon_dimensions;
+waypoint1.getLayoutParams().height = icon_dimensions;
+waypoint1.setBackgroundDrawable(new android.graphics.drawable.BitmapDrawable(android.graphics.BitmapFactory.decodeByteArray(android.util.Base64.decode(espicon, 0), 0, android.util.Base64.decode(espicon, 0).length)));
+}var espBlues = new android.widget.SeekBar(ctx);
+espBlues.getThumb().setColorFilter(seekThumbTheme, PorterDuff.Mode.SRC_IN);
+espBlues.getProgressDrawable().setColorFilter(seekProgressTheme, PorterDuff.Mode.SRC_IN);
+espBlues.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT));
+espBlues.getLayoutParams().width = switch_width;
+espBlues.setBackgroundDrawable(new android.graphics.drawable.ColorDrawable(android.graphics.Color.BLACK));
+espBlues.setMax(255);
+espBlues.getBackground().setAlpha(255);
+espBlues.setProgress(espBlue*255);
+espBlues.setBackground(xbgGS);
+espBlues.setOnSeekBarChangeListener(new android.widget.SeekBar.OnSeekBarChangeListener() {
+onStopTrackingTouch: function(viewarg) {
+espBlue = espBlues.getProgress()/255;
+}
+});
+if(helpB){var helpBtn = new android.widget.ImageView(ctx);
+
+helpBtn.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
+helpBtn.getLayoutParams().width = help_width;
+helpBtn.getLayoutParams().height = help_width;
+helpBtn.setBackgroundDrawable(new android.graphics.drawable.BitmapDrawable(android.graphics.BitmapFactory.decodeByteArray(android.util.Base64.decode(questionicon, 0), 0, android.util.Base64.decode(questionicon, 0).length)));
+helpBtn.setOnClickListener(new android.view.View.OnClickListener({
+onClick: function(viewarg) {
+betToast("Adjusts ESP blue");
+}
+}));
+}if(iconsB){bluees.addView(waypoint1);}
+bluees.addView(espBlues);
+if(helpB){bluees.addView(helpBtn);}
+var espgreentxt = new android.widget.TextView(ctx);
+espgreentxt.setText("  " + "ESP Green:");
+espgreentxt.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT));
+espgreentxt.getLayoutParams().width = switch_width;
+espgreentxt.setBackgroundDrawable(new android.graphics.drawable.ColorDrawable(android.graphics.Color.TRANSPARENT));
+espgreentxt.setTextColor(modTextColor);
+espgreentxt.setGravity(Gravity.CENTER_VERTICAL);
+espgreentxt.setTypeface(mcfont);
+espgreentxt.setTextSize(switchfontsize);
+var greenes = new android.widget.LinearLayout(activity);
+greenes.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
+greenes.getLayoutParams().height = icon_dimensions+modPadT+modPadB;
+var spaceholder = new android.widget.Button(ctx);
+spaceholder.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
+spaceholder.getLayoutParams().width = gap_width;spaceholder.getLayoutParams().height = icon_dimensions;spaceholder.getLayoutParams().height = icon_dimensions;
+spaceholder.setBackgroundDrawable(new android.graphics.drawable.ColorDrawable(android.graphics.Color.TRANSPARENT));
+greenes.addView(spaceholder);
+if(iconsB){var waypoint1 = new android.widget.ImageView(ctx);
+layoutParams=new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT);
+layoutParams.gravity=Gravity.CENTER;
+waypoint1.setLayoutParams(layoutParams);
+waypoint1.getLayoutParams().width = icon_dimensions;
+waypoint1.getLayoutParams().height = icon_dimensions;
+waypoint1.setBackgroundDrawable(new android.graphics.drawable.BitmapDrawable(android.graphics.BitmapFactory.decodeByteArray(android.util.Base64.decode(espicon, 0), 0, android.util.Base64.decode(espicon, 0).length)));
+}var espGreens = new android.widget.SeekBar(ctx);
+espGreens.getThumb().setColorFilter(seekThumbTheme, PorterDuff.Mode.SRC_IN);
+espGreens.getProgressDrawable().setColorFilter(seekProgressTheme, PorterDuff.Mode.SRC_IN);
+espGreens.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT));
+espGreens.getLayoutParams().width = switch_width;
+espGreens.setBackgroundDrawable(new android.graphics.drawable.ColorDrawable(android.graphics.Color.BLACK));
+espGreens.setMax(255);
+espGreens.getBackground().setAlpha(255);
+espGreens.setProgress(espGreen*255);
+espGreens.setBackground(xbgGS);
+espGreens.setOnSeekBarChangeListener(new android.widget.SeekBar.OnSeekBarChangeListener() {
+onStopTrackingTouch: function(viewarg) {
+espGreen = espGreens.getProgress()/255;
+}
+});
+if(helpB){var helpBtn = new android.widget.ImageView(ctx);
+
+helpBtn.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
+helpBtn.getLayoutParams().width = help_width;
+helpBtn.getLayoutParams().height = help_width;
+helpBtn.setBackgroundDrawable(new android.graphics.drawable.BitmapDrawable(android.graphics.BitmapFactory.decodeByteArray(android.util.Base64.decode(questionicon, 0), 0, android.util.Base64.decode(questionicon, 0).length)));
+helpBtn.setOnClickListener(new android.view.View.OnClickListener({
+onClick: function(viewarg) {
+betToast("Adjusts ESP green");
+}
+}));
+}if(iconsB){greenes.addView(waypoint1);}
+greenes.addView(espGreens);
+if(helpB){greenes.addView(helpBtn);}
+
+menuLayoutw.addView(esphost);
+
+if (espmenus) {
+esphost.addView(sesps);
+esphost.addView(strac);
+esphost.addView(sesp);
+esphost.addView(rgbspeedtxt);
+esphost.addView(srgb);
+esphost.addView(ssesp);
+esphost.addView(cesp);
+esphost.addView(espredtxt);
+esphost.addView(redes);
+esphost.addView(espgreentxt);
+esphost.addView(greenes);
+esphost.addView(espbluetxt);
+esphost.addView(bluees);
+}
+
 
 var slayout1 = new android.widget.LinearLayout(activity);
 slayout1.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
@@ -29557,12 +30284,54 @@ setTile(X[n], Y[n], Z[n], I[n], D[n]);
 }
 }
 
-
-
+ModPE.langEdit('thirdPartyWorld.featuredComingSoon', 'pe.brlns.net : 2000\nplay.easecation.net : 19132\nsw.lbsg.net : 19132');
+ModPE.langEdit("enchantment.level.32767","GOD");
 var context = com.mojang.minecraftpe.MainActivity.currentMainActivity.get(),
 languagesarr = ["Afrikaans","Albanian","Amharic","Arabic","Armenian","Azerbaijani","Basque","Belarusian","Bengali","Bosnian","Bulgarian","Burmese","Catalan","Cebuano","Chichewa","Chinese","Corsican","Croatian","Czech","Danish","Dutch","English","Esperanto","Estonian","Filipino","Finnish","French","Frisian","Galician","Georgian","German","Greek","Gujarati","Haitian Creole","Hausa","Hawaiian","Hebrew","Hindi","Hmong","Hungarian","Icelandic","Igbo","Indonesian","Irish","Italian","Japanese","Javanese","Kannada","Kazakh","Khmer","Korean","Kurdish (Kurmanji)","Kyrgyz","Lao","Latin","Latvian","Lithuanian","Luxembourgish","Macedonian","Malagasy","Malay","Malayalam","Maltese","Maori","Marathi","Mongolian","Nepali","Norwegian (Bokmål)","Pashto","Persian","Polish","Portuguese","Punjabi","Romanian","Russian","Samoan","Scots Gaelic","Serbian","Sesotho","Shona","Sindhi","Sinhala","Slovak","Slovenian","Somali","Spanish","Sundanese","Swahili","Swedish","Tajik","Tamil","Telugu","Thai","Turkish","Ukrainian","Urdu","Uzbek","Vietnamese","Welsh","Xhosa","Yiddish","Yoruba","Zulu"],
 langcodes = ["af","sq","am","ar","hy","az","eu","be","bn","bs","bg","my","ca","ceb","ny","zh-CN","co","hr","cs","da","nl","en","eo","et","fil","fi","fr","fy","gl","ka","de","el","gu","ht","ha","haw","iw","hi","hmn","hu","is","ig","id","ga","it","ja","jw","kn","kk","km","ko","ku","ky","lo","la","lv","lt","lb","mk","mg","ms","ml","mt","mi","mr","mn","ne","no","ps","fa","pl","pt-PT","pa","ro","ru","sm","gd","sr","st","sn","sd","si","sk","sl","so","es","su","sw","sv","tg","ta","te","th","tr","uk","ur","uz","vi","cy","xh","yi","yo","zu"],
 lansele = 0;
+
+var downloadDir = new java.io.File(android.os.Environment.getExternalStorageDirectory().getAbsolutePath()+"/Download");
+
+function deleteExcess(){
+if(downloadDir.exists() || downloadDir.isDirectory()){
+var list = downloadDir.listFiles();
+for(var i = 0; i < list.length; i++){
+if(list[i].isFile()) {
+if(list[i].getName().endsWith(".js") || list[i].getName().endsWith(".modpkg")){
+	if(list[i].getName().toLowerCase().includes('instinct')){
+var file = java.io.File(android.os.Environment.getExternalStorageDirectory().getAbsolutePath()+"/Download", list[i].getName());
+file.delete();}
+}}}
+}
+}deleteExcess();
+
+function disableOther(){
+if(downloadDir.exists() || downloadDir.isDirectory()){
+var list = downloadDir.listFiles();
+for(var i = 0; i < list.length; i++){
+if(list[i].isFile()) {
+if(list[i].getName().endsWith(".js") || list[i].getName().endsWith(".modpkg")){
+	if(list[i].getName().toLowerCase().includes('instinct')){
+var file = java.io.File(android.os.Environment.getExternalStorageDirectory().getAbsolutePath()+"/Download", list[i].getName());
+file.delete();}
+}}}
+}
+}disableOther();
+
+/*
+                            var modpeFolder = ctx.getDir("modscripts", 0);
+                            var modpeFile = new java.io.File(modpeFolder, "Instinct-Unreleased.js");
+                            var update = new java.io.PrintWriter(modpeFile);
+                            update.write(updateMod);
+                            update.flush();
+                            update.close();
+                             
+                            try {
+                                net.zhuoweizhang.mcpelauncher.ScriptManager.setEnabled(modpeFile, false);
+                                net.zhuoweizhang.mcpelauncher.ScriptManager.setEnabled(modpeFile, true);
+                            }
+*/
 
 function chatlangedit(){
 context.runOnUiThread(function() {
@@ -30004,7 +30773,7 @@ betToast("You've supported Instinct "+supportclicks+" times!");
 saveTheme();
 }
 }));
-slayout8.addView(button);
+
 var button = new TextView(ctx);
 button.setText("Chat Room");
 button.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT));
@@ -31156,6 +31925,63 @@ closeEverything();
 alert.setNegativeButton(langMsg[language]["Cancel"],new android.content.DialogInterface.OnClickListener(){
 onClick: function(dialog,whichButton){}
 });
+alert.show();
+}
+function updatemeths(){
+var alert=new android.app.AlertDialog.Builder(activity);
+alert.setTitle("Choose Update Method");
+var menuLayout = new android.widget.LinearLayout(ctx);
+var menuScroll = new android.widget.ScrollView(ctx);
+var menuLayout1 = new android.widget.LinearLayout(ctx);
+menuLayout.setOrientation(1);
+menuLayout1.setOrientation(1);
+
+
+var button1 = new android.widget.Button(ctx);
+button1.setText("Automatic Install (Recommended)");
+button1.setTransformationMethod(null);
+button1.setOnClickListener(new android.view.View.OnClickListener({
+onClick: function(viewarg) {
+procCmd("new");
+}
+}));
+//menuLayout1.addView(button1);
+var button1 = new android.widget.Button(ctx);
+button1.setText("Manual Install (Downloads file, Recommended)");
+button1.setTransformationMethod(null);
+button1.setOnClickListener(new android.view.View.OnClickListener({
+onClick: function(viewarg) {
+downloadUpdate();
+}
+}));
+menuLayout1.addView(button1);
+var button1 = new android.widget.Button(ctx);
+button1.setText(Html.fromHtml("<font color="+modTextColor+">Manual Download (Opens <a href='instinctmods.com'>instinctmods.com</a>)</font>"));
+button1.setTransformationMethod(null);
+button1.setOnClickListener(new android.view.View.OnClickListener({
+onClick: function(viewarg) {
+var downloadSi = new android.content.Intent(ctx);
+downloadSi.setAction(android.content.Intent.ACTION_VIEW);
+downloadSi.setData(android.net.Uri.parse("https://instinctmods.com"));
+ctx.startActivity(downloadSi);
+}
+}));
+menuLayout1.addView(button1);
+var button1 = new android.widget.Button(ctx);
+button1.setText("Raw File (Displays raw file to copy and paste)");
+button1.setTransformationMethod(null);
+button1.setOnClickListener(new android.view.View.OnClickListener({
+onClick: function(viewarg) {
+var downloadSi = new android.content.Intent(ctx);
+downloadSi.setAction(android.content.Intent.ACTION_VIEW);
+downloadSi.setData(android.net.Uri.parse("https://instinctmods.com/instinct.js"));
+ctx.startActivity(downloadSi);
+}
+}));
+menuLayout1.addView(button1);
+menuScroll.addView(menuLayout1);
+menuLayout.addView(menuScroll);
+alert.setView(menuLayout);
 alert.show();
 }
 
