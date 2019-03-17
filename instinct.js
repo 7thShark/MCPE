@@ -1148,6 +1148,7 @@ canStat=true,
 oldTMI=false,
 debugUic, debugUicd = false,
 aimbotBtn=false,
+rgbmenu=false,
 filterOn = false,
 taptosee, taptoseed = false,
 showAllMenu = true,
@@ -1163,6 +1164,7 @@ levs=false,
 x933q=true,
 magiccarpetParent=false,
 magiccarpets=false,
+vibrations=true,
 showAllMenuStatus = true,
 showAllMenuStatusOpposite = false,
 spaceholderWidth = icon_dimensions*.74,
@@ -1173,6 +1175,7 @@ autoReachd = false,
 foilits=false,
 autoReach, maximalrange = 7,
 aimplayer = true,
+compactView=false,
 chatlinks=false,
 friendName="",
 aimmobs = false,
@@ -1266,6 +1269,16 @@ customNameC=["",""],
 particleEffect=["",""],
 donators=["",""],
 supportclicks=0,
+survivaltab=true,
+pvptab=true,
+waypointtab=true,
+friendtab=true,
+potiontab=true,
+movementtab=true,
+discordtab=true,
+misctab=true,
+presettab=true,
+settingtab=true,
 currentSelect=[0],
 savedg="",
 bowaimbotd = false,
@@ -1281,10 +1294,12 @@ autoBow = false,
 surfacing=false,
 updateMod,noclip2s=false,
 sleekLeft = false,
+stoprideshowing=false,
 
 density = ctx.getResources().getDisplayMetrics().density,
 
 useGIF = false,
+gifback=undefined,
 backOpen=false,
 giflink="https://i.pinimg.com/originals/51/b3/5b/51b35b069fdabf0f5f07eaf8d0829c88.gif",
 gif2="https://i.pinimg.com/originals/b5/5e/3b/b55e3bafe484a0ead34d5e3849bd1e11.gif",
@@ -3347,7 +3362,7 @@ funcS.Render.drawBoxBlock8(gl, entry2[0]-.5, entry2[1]+.5, entry2[2]+.5, 1,1,1);
 });
 }
 if(freecamSon){
-funcS.Render.drawLineFreecam(gl, freeX, freeY+.5, freeZ+.5, getPlayerX(), getPlayerY()-1, getPlayerZ());
+funcS.Render.drawLine(gl, freeX, freeY+.5, freeZ+.5, getPlayerX(), getPlayerY()-1, getPlayerZ());
 }
 }catch(e){betToast(e)}
 }
@@ -4381,7 +4396,11 @@ function updateIn2() {
                 var threadt = new java.lang.Thread(ru);
                 threadt.start();
 }
-
+function restyle(){
+	of.setStroke(1, themeStroke); 
+	of.setColor(android.graphics.Color.BLACK); 
+	of.setCornerRadius(10);
+}
 function tohtml(strin,boo,type){
 var str = decodeURIComponent(strin.toString());
 if(type==null){
@@ -5374,7 +5393,7 @@ menuLayout.addView(ampEt);
 menuLayout.addView(tpBtn);
 tpBtn.setOnClickListener(new android.view.View.OnClickListener() {
 onClick: function(viewarg) {
-ctx.getSystemService(android.content.Context.VIBRATOR_SERVICE).vibrate(20);
+if(vibrations){ctx.getSystemService(android.content.Context.VIBRATOR_SERVICE).vibrate(20);}
 var newamp=parseInt(ampEt.getText());
 var newdur=parseInt(durEt.getText());
 if(newdur>999999){newdur=999999}
@@ -6465,7 +6484,7 @@ menuLayout.addView(etZ);
 menuLayout.addView(tpBtn);
 tpBtn.setOnClickListener(new android.view.View.OnClickListener() {
 onClick: function(viewarg) {
-ctx.getSystemService(android.content.Context.VIBRATOR_SERVICE).vibrate(20);
+if(vibrations){ctx.getSystemService(android.content.Context.VIBRATOR_SERVICE).vibrate(20);}
 var tx = parseInt(etX.getText());
 var tyEt = parseInt(etY.getText());
 var ty = tyEt+2;
@@ -6612,7 +6631,7 @@ tmiMainHor.addView(menuScroll);
 addBtn.setOnClickListener(new android.view.View.OnClickListener() {
 onClick: function(viewarg) {
 
-ctx.getSystemService(android.content.Context.VIBRATOR_SERVICE).vibrate(20);
+if(vibrations){ctx.getSystemService(android.content.Context.VIBRATOR_SERVICE).vibrate(20);}
 tmiRepeat = false;
 if(etId.getText().toString().includes(':')){
 tmiId = etId.getText().toString().split(':')[0];
@@ -6782,7 +6801,7 @@ scrollTMIlay.addView(tmiLayout);
 tmiMainHor.addView(scrollTMIlay);
 tmiMainHor.addView(menuScroll);
 addBtn.setOnClickListener(new android.view.View.OnClickListener() {
-onClick: function(viewarg) {ctx.getSystemService(android.content.Context.VIBRATOR_SERVICE).vibrate(20);
+onClick: function(viewarg) {if(vibrations){ctx.getSystemService(android.content.Context.VIBRATOR_SERVICE).vibrate(20);}
 tmiRepeat = false;
 if(etId.getText().toString().includes(':')){
 tmiId = etId.getText().toString().split(':')[0];
@@ -6874,7 +6893,7 @@ tmiMainHor.addView(menuScroll);
 tmiDialog.show();
 addBtn.setOnClickListener(new android.view.View.OnClickListener() {
 onClick: function(viewarg) {
-ctx.getSystemService(android.content.Context.VIBRATOR_SERVICE).vibrate(20);
+if(vibrations){ctx.getSystemService(android.content.Context.VIBRATOR_SERVICE).vibrate(20);}
 tmiRepeat = false;
 tmiId = parseInt(etId.getText());
 if (etAmount.getText() != "repeat") {
@@ -6895,7 +6914,7 @@ tmiDialog.dismiss();
 });
 cancelBtn.setOnClickListener(new android.view.View.OnClickListener() {
 onClick: function(viewarg) {
-ctx.getSystemService(android.content.Context.VIBRATOR_SERVICE).vibrate(20);
+if(vibrations){ctx.getSystemService(android.content.Context.VIBRATOR_SERVICE).vibrate(20);}
 tmiDialog.dismiss();
 }
 });
@@ -6961,7 +6980,7 @@ tmiMainHor.addView(menuScroll);
 tmiDialog.show();
 addBtn.setOnClickListener(new android.view.View.OnClickListener() {
 onClick: function(viewarg) {
-ctx.getSystemService(android.content.Context.VIBRATOR_SERVICE).vibrate(20);
+if(vibrations){ctx.getSystemService(android.content.Context.VIBRATOR_SERVICE).vibrate(20);}
 tmiRepeat = false;
 tmiId = parseInt(etId.getText());
 if (etAmount.getText() != "repeat") {
@@ -6982,7 +7001,7 @@ tmiDialog.dismiss();
 });
 cancelBtn.setOnClickListener(new android.view.View.OnClickListener() {
 onClick: function(viewarg) {
-ctx.getSystemService(android.content.Context.VIBRATOR_SERVICE).vibrate(20);
+if(vibrations){ctx.getSystemService(android.content.Context.VIBRATOR_SERVICE).vibrate(20);}
 tmiDialog.dismiss();
 }
 });
@@ -7103,7 +7122,7 @@ menuLayout.addView(etX);
 menuLayout.addView(tpBtn);
 tpBtn.setOnClickListener(new android.view.View.OnClickListener() {
 onClick: function(viewarg) {
-ctx.getSystemService(android.content.Context.VIBRATOR_SERVICE).vibrate(20);
+if(vibrations){ctx.getSystemService(android.content.Context.VIBRATOR_SERVICE).vibrate(20);}
 Server.sendChat(etX.getText());
 chatdialog.dismiss();
 
@@ -7285,7 +7304,7 @@ buttonu.setBackground(xbg2);
 buttonu.getBackground().setAlpha(130);
 buttonu.setOnClickListener(new android.view.View.OnClickListener({
 onClick: function(viewarg) {
-ctx.getSystemService(android.content.Context.VIBRATOR_SERVICE).vibrate(20);
+if(vibrations){ctx.getSystemService(android.content.Context.VIBRATOR_SERVICE).vibrate(20);}
 GUIup.dismiss();
 updateNotifier = false;
 updatemeths();
@@ -7561,7 +7580,7 @@ menuLayout.addView(spamSeek);
 menuLayout.addView(tpBtn);
 tpBtn.setOnClickListener(new android.view.View.OnClickListener() {
 onClick: function(viewarg) {
-ctx.getSystemService(android.content.Context.VIBRATOR_SERVICE).vibrate(20);
+if(vibrations){ctx.getSystemService(android.content.Context.VIBRATOR_SERVICE).vibrate(20);}
 spamMsg = etX.getText();
 chatdialog.dismiss();
 
@@ -7645,7 +7664,7 @@ menuLayout.addView(etX);
 menuLayout.addView(tpBtn);
 tpBtn.setOnClickListener(new android.view.View.OnClickListener() {
 onClick: function(viewarg) {
-ctx.getSystemService(android.content.Context.VIBRATOR_SERVICE).vibrate(20);
+if(vibrations){ctx.getSystemService(android.content.Context.VIBRATOR_SERVICE).vibrate(20);}
 autoBlockB = parseInt(etX.getText());
 chatdialog.dismiss();
 
@@ -7765,7 +7784,7 @@ tmiMainHor.addView(menuScroll);
 verticallay.addView(tmiMainHor);
 addBtn.setOnClickListener(new android.view.View.OnClickListener() {
 onClick: function(viewarg) {
-ctx.getSystemService(android.content.Context.VIBRATOR_SERVICE).vibrate(20);
+if(vibrations){ctx.getSystemService(android.content.Context.VIBRATOR_SERVICE).vibrate(20);}
 espBlock = parseInt(etId.getText());
 tmiDialog.dismiss();
 }
@@ -7923,7 +7942,7 @@ menuLayout.addView(etX);
 menuLayout.addView(tpBtn);
 tpBtn.setOnClickListener(new android.view.View.OnClickListener() {
 onClick: function(viewarg) {
-ctx.getSystemService(android.content.Context.VIBRATOR_SERVICE).vibrate(20);
+if(vibrations){ctx.getSystemService(android.content.Context.VIBRATOR_SERVICE).vibrate(20);}
 customItemname = etX.getText();
 chatdialog.dismiss();
 
@@ -8010,7 +8029,7 @@ button2.setTypeface(mcfont);
 button2.setBackground(xbg2);
 button2.setOnClickListener(new android.view.View.OnClickListener({
 onClick: function(viewarg) {
-ctx.getSystemService(android.content.Context.VIBRATOR_SERVICE).vibrate(20);
+if(vibrations){ctx.getSystemService(android.content.Context.VIBRATOR_SERVICE).vibrate(20);}
 Entity.setPosition(getPlayerEnt(), Entity.getX(item), Entity.getY(item)+1, Entity.getZ(item));
 }
 }));
@@ -8125,7 +8144,7 @@ button2.setTypeface(mcfont);
 button2.setBackground(xbg2);
 button2.setOnClickListener(new android.view.View.OnClickListener({
 onClick: function(viewarg) {
-ctx.getSystemService(android.content.Context.VIBRATOR_SERVICE).vibrate(20);
+if(vibrations){ctx.getSystemService(android.content.Context.VIBRATOR_SERVICE).vibrate(20);}
 appendServer(item, serverIps[index], serverPorts[index]);
 betToast("Server " + item + " added to external_servers.txt. Restart game to take effect.");
 }
@@ -8209,7 +8228,7 @@ parse: function(str) {
 return Function("return " + str)();
 }
 };
-var versionP = "1.3.3";
+var versionP = "1.3.4";
 var modNum = "140+";
 
 function vCheck() {
@@ -8365,7 +8384,7 @@ addWLayout.addView(addWBtn);
 addWDialog.show();
 addWBtn.setOnClickListener(new android.view.View.OnClickListener() {
 onClick: function(viewarg) {
-ctx.getSystemService(android.content.Context.VIBRATOR_SERVICE).vibrate(20);
+if(vibrations){ctx.getSystemService(android.content.Context.VIBRATOR_SERVICE).vibrate(20);}
 var lengthEtW = etWayName.getText().length();
 if (lengthEtW > 0) {
 if (lengthEtW < 11) {
@@ -9064,7 +9083,7 @@ themeFinish();
 saveTheme();
 loadTheme();
 saveTheme();
-ctx.getSystemService(android.content.Context.VIBRATOR_SERVICE).vibrate(20);
+if(vibrations){ctx.getSystemService(android.content.Context.VIBRATOR_SERVICE).vibrate(20);}
 if(!contains(banslist,Player.getName(getPlayerEnt()))){
 if (publicVer != undefined||publicVer != "locked") {
 if(publicVer=="OFFLINE"){betToast("Could not connect to the internet. Enable Wi-Fi or Mobile Data");}
@@ -9137,7 +9156,7 @@ addWLayout.addView(faqbtn);
 addWDialog.show();
 addWBtn.setOnClickListener(new android.view.View.OnClickListener() {
 onClick: function(viewarg) {
-ctx.getSystemService(android.content.Context.VIBRATOR_SERVICE).vibrate(20);
+if(vibrations){ctx.getSystemService(android.content.Context.VIBRATOR_SERVICE).vibrate(20);}
 addWDialog.dismiss();
 downloadUpdate();
 betToast("Downloading...");
@@ -9145,7 +9164,7 @@ betToast("Downloading...");
 })
 faqbtn.setOnClickListener(new android.view.View.OnClickListener() {
 onClick: function(viewarg) {
-ctx.getSystemService(android.content.Context.VIBRATOR_SERVICE).vibrate(20);
+if(vibrations){ctx.getSystemService(android.content.Context.VIBRATOR_SERVICE).vibrate(20);}
 addWDialog.dismiss();
 var alert = new android.app.AlertDialog.Builder(ctx);
 alert.setTitle("Instinct FAQ/Help");
@@ -9163,6 +9182,7 @@ print("An error occured: " + err+' #' + err['lineNumber']);
 openUpdateSelect();
 }
 }else{betToast("Your account is banned from using this client, request access on Discord at v7thSharkv#0101")}
+rgbmenu=true;
 }
 }));
 menuBtn.setOnLongClickListener(new android.view.View.OnLongClickListener({
@@ -9224,7 +9244,7 @@ button.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, L
 button.getLayoutParams().width = icon_dimensions*2;
 button.setOnClickListener(new View.OnClickListener({
 onClick: function(viewarg) {
-ctx.getSystemService(android.content.Context.VIBRATOR_SERVICE).vibrate(20);
+if(vibrations){ctx.getSystemService(android.content.Context.VIBRATOR_SERVICE).vibrate(20);}
 if (clipBtn == false) {
 button.setTextColor(android.graphics.Color.GREEN);
 clipBtn = true
@@ -9290,7 +9310,7 @@ button.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, L
 button.getLayoutParams().width = icon_dimensions*2;
 button.setOnClickListener(new View.OnClickListener({
 onClick: function(viewarg) {
-ctx.getSystemService(android.content.Context.VIBRATOR_SERVICE).vibrate(20);
+if(vibrations){ctx.getSystemService(android.content.Context.VIBRATOR_SERVICE).vibrate(20);}
 if (jetpackss == false) {
 button.setTextColor(android.graphics.Color.GREEN);
 jetpackss = true
@@ -9397,7 +9417,7 @@ button.getLayoutParams().width = icon_dimensions*2;
 button.getBackground().setAlpha(70);
 button.setOnClickListener(new View.OnClickListener({
 onClick: function(viewarg) {
-ctx.getSystemService(android.content.Context.VIBRATOR_SERVICE).vibrate(20);
+if(vibrations){ctx.getSystemService(android.content.Context.VIBRATOR_SERVICE).vibrate(20);}
 if (aimbot == false) {
 button.setTextColor(android.graphics.Color.GREEN);
 aimbot = true
@@ -9463,7 +9483,7 @@ button.getLayoutParams().width = icon_dimensions*2;
 button.getBackground().setAlpha(70);
 button.setOnClickListener(new View.OnClickListener({
 onClick: function(viewarg) {
-ctx.getSystemService(android.content.Context.VIBRATOR_SERVICE).vibrate(20);
+if(vibrations){ctx.getSystemService(android.content.Context.VIBRATOR_SERVICE).vibrate(20);}
 if (faimbot == false) {
 button.setTextColor(android.graphics.Color.GREEN);
 faimbot = true
@@ -9529,7 +9549,7 @@ button.getLayoutParams().width = icon_dimensions*2;
 button.getBackground().setAlpha(70);
 button.setOnClickListener(new View.OnClickListener({
 onClick: function(viewarg) {
-ctx.getSystemService(android.content.Context.VIBRATOR_SERVICE).vibrate(20);
+if(vibrations){ctx.getSystemService(android.content.Context.VIBRATOR_SERVICE).vibrate(20);}
 if (autoBridgess == false) {
 button.setTextColor(android.graphics.Color.GREEN);
 autoBridgess = true
@@ -9594,7 +9614,7 @@ button.getLayoutParams().width = icon_dimensions*2;
 button.getBackground().setAlpha(70);
 button.setOnClickListener(new View.OnClickListener({
 onClick: function(viewarg) {
-ctx.getSystemService(android.content.Context.VIBRATOR_SERVICE).vibrate(20);
+if(vibrations){ctx.getSystemService(android.content.Context.VIBRATOR_SERVICE).vibrate(20);}
 toDirectionalVector(playerDir, (getYaw()+90) * Math['PI'] / 180, getPitch() * Math['PI'] / 180 * -1);
 setVelX(getPlayerEnt(), 12 * playerDir[0]);
 setVelZ(getPlayerEnt(), 12 * playerDir[2])
@@ -9656,7 +9676,7 @@ button.getLayoutParams().width = icon_dimensions*2;
 button.getBackground().setAlpha(70);
 button.setOnClickListener(new View.OnClickListener({
 onClick: function(viewarg) {
-ctx.getSystemService(android.content.Context.VIBRATOR_SERVICE).vibrate(20);
+if(vibrations){ctx.getSystemService(android.content.Context.VIBRATOR_SERVICE).vibrate(20);}
 Entity.setOffhandSlot(getPlayerEnt(), tmiId, tmiAmount, tmiDamage);
 }
 }));
@@ -9715,7 +9735,7 @@ button.getLayoutParams().width = icon_dimensions*2;
 button.getBackground().setAlpha(70);
 button.setOnClickListener(new View.OnClickListener({
 onClick: function(viewarg) {
-ctx.getSystemService(android.content.Context.VIBRATOR_SERVICE).vibrate(20);
+if(vibrations){ctx.getSystemService(android.content.Context.VIBRATOR_SERVICE).vibrate(20);}
 if(tntcanOn){tntcanOn=false}
 else{tntcanOn=true}
 }
@@ -9820,7 +9840,7 @@ button.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, L
 button.getLayoutParams().width = icon_dimensions*2;
 button.setOnClickListener(new View.OnClickListener({
 onClick: function(viewarg) {
-ctx.getSystemService(android.content.Context.VIBRATOR_SERVICE).vibrate(20);
+if(vibrations){ctx.getSystemService(android.content.Context.VIBRATOR_SERVICE).vibrate(20);}
 Entity.setPositionRelative(getPlayerEnt(), 0, +1, 0);
 setVelY(Player.getEntity(), 0.00000)
 setVelY(Player.getEntity(), 0.00000)
@@ -9866,7 +9886,7 @@ button.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, L
 button.getLayoutParams().width = icon_dimensions*2;
 button.setOnClickListener(new View.OnClickListener({
 onClick: function(viewarg) {
-ctx.getSystemService(android.content.Context.VIBRATOR_SERVICE).vibrate(20);
+if(vibrations){ctx.getSystemService(android.content.Context.VIBRATOR_SERVICE).vibrate(20);}
 Entity.setPositionRelative(getPlayerEnt(), 0, -1, 0);
 setVelY(Player.getEntity(), 0.00000)
 }
@@ -9926,7 +9946,7 @@ button.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, L
 button.getLayoutParams().width = icon_dimensions*2;
 button.setOnClickListener(new View.OnClickListener({
 onClick: function(viewarg) {
-ctx.getSystemService(android.content.Context.VIBRATOR_SERVICE).vibrate(20);
+if(vibrations){ctx.getSystemService(android.content.Context.VIBRATOR_SERVICE).vibrate(20);}
 toSurface();
 }
 }));
@@ -9969,7 +9989,7 @@ button.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, L
 button.getLayoutParams().width = icon_dimensions*2;
 button.setOnClickListener(new View.OnClickListener({
 onClick: function(viewarg) {
-ctx.getSystemService(android.content.Context.VIBRATOR_SERVICE).vibrate(20);
+if(vibrations){ctx.getSystemService(android.content.Context.VIBRATOR_SERVICE).vibrate(20);}
 toCave();
 }
 }));
@@ -10029,7 +10049,7 @@ button.getLayoutParams().width = icon_dimensions*2;
 button.getBackground().setAlpha(70);
 button.setOnClickListener(new View.OnClickListener({
 onClick: function(viewarg) {
-ctx.getSystemService(android.content.Context.VIBRATOR_SERVICE).vibrate(20);
+if(vibrations){ctx.getSystemService(android.content.Context.VIBRATOR_SERVICE).vibrate(20);}
 if (magiccarpets == false) {
 button.setTextColor(android.graphics.Color.GREEN);
 magiccarpets = true
@@ -10113,6 +10133,11 @@ var menuScroll = new android.widget.ScrollView(ctx);
 var menuLayout1 = new android.widget.LinearLayout(ctx);
 menuLayout.setOrientation(1);
 menuLayout1.setOrientation(1);
+if(compactView){
+	menuLayout.setOrientation(0);
+	menuLayout1.setOrientation(0);
+	var menuScroll = new android.widget.HorizontalScrollView(ctx);
+}
 menuScroll.addView(menuLayout);
 menuLayout1.addView(menuScroll);
 menuLayout.setBackgroundDrawable(new ColorDrawable(themeBackground));
@@ -10139,7 +10164,7 @@ button.setBackground( of );
 button.getBackground().setAlpha(70);
 button.setOnClickListener(new View.OnClickListener({
 onClick: function(viewarg) {
-ctx.getSystemService(android.content.Context.VIBRATOR_SERVICE).vibrate(20);
+if(vibrations){ctx.getSystemService(android.content.Context.VIBRATOR_SERVICE).vibrate(20);}
 if (ctrlzoomtoggle == false) {
 ModPE.setFov(20);
 button.setText("-");
@@ -10168,6 +10193,8 @@ buttonSurvival.setBackgroundDrawable(new android.graphics.drawable.ColorDrawable
 buttonSurvival.setTextColor(modTextColor);
 buttonSurvival.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
 buttonSurvival.getLayoutParams().height = icon_dimensions*tab_height;
+if(compactView){buttonSurvival.getLayoutParams().width = tab_width;}
+if(!survivaltab){buttonSurvival.getLayoutParams().width = 0;buttonSurvival.getLayoutParams().height = 0;}
 buttonSurvival.setGravity(Gravity.CENTER_VERTICAL | Gravity.CENTER_HORIZONTAL);
 buttonSurvival.setBackground(sideMenuStrokeSpace);
 buttonSurvival.getBackground().setAlpha(255);
@@ -10176,7 +10203,7 @@ buttonSurvival.setMaxLines(1);
 buttonSurvival.setTextSize(switchfontsize);
 buttonSurvival.setOnClickListener(new android.view.View.OnClickListener({
 onClick: function(viewarg) {
-ctx.getSystemService(android.content.Context.VIBRATOR_SERVICE).vibrate(20);
+if(vibrations){ctx.getSystemService(android.content.Context.VIBRATOR_SERVICE).vibrate(20);}
 buttonSurvival.setBackground(themeBtnNotClicked);
 buttonPVP.setBackground(sideMenuStrokeSpace);
 buttonWaypoints.setBackground(sideMenuStrokeSpace);
@@ -10235,6 +10262,8 @@ buttonPVP.setBackgroundDrawable(new android.graphics.drawable.ColorDrawable(andr
 buttonPVP.setTextColor(modTextColor);
 buttonPVP.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
 buttonPVP.getLayoutParams().height = icon_dimensions*tab_height;
+if(compactView){buttonPVP.getLayoutParams().width = tab_width;}
+if(!pvptab){buttonPVP.getLayoutParams().width = 0;buttonPVP.getLayoutParams().height = 0;}
 buttonPVP.setGravity(Gravity.CENTER_VERTICAL | Gravity.CENTER_HORIZONTAL);
 buttonPVP.setBackground(sideMenuStrokeSpace);
 buttonPVP.setTypeface(mcfont);
@@ -10242,7 +10271,7 @@ buttonPVP.setMaxLines(1);
 buttonPVP.setTextSize(switchfontsize);
 buttonPVP.setOnClickListener(new android.view.View.OnClickListener({
 onClick: function(viewarg) {
-ctx.getSystemService(android.content.Context.VIBRATOR_SERVICE).vibrate(20);
+if(vibrations){ctx.getSystemService(android.content.Context.VIBRATOR_SERVICE).vibrate(20);}
 buttonSurvival.setBackground(sideMenuStrokeSpace);
 buttonPVP.setBackground(themeBtnNotClicked);
 buttonWaypoints.setBackground(sideMenuStrokeSpace);
@@ -10301,6 +10330,8 @@ buttonWaypoints.setBackgroundDrawable(new android.graphics.drawable.ColorDrawabl
 buttonWaypoints.setTextColor(modTextColor);
 buttonWaypoints.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
 buttonWaypoints.getLayoutParams().height = icon_dimensions*tab_height;
+if(compactView){buttonWaypoints.getLayoutParams().width = tab_width;}
+if(!waypointtab){buttonWaypoints.getLayoutParams().width = 0;buttonWaypoints.getLayoutParams().height = 0;}
 buttonWaypoints.setGravity(Gravity.CENTER_VERTICAL | Gravity.CENTER_HORIZONTAL);
 buttonWaypoints.setBackground(sideMenuStrokeSpace);
 buttonWaypoints.setTypeface(mcfont);
@@ -10308,7 +10339,7 @@ buttonWaypoints.setMaxLines(1);
 buttonWaypoints.setTextSize(switchfontsize);
 buttonWaypoints.setOnClickListener(new android.view.View.OnClickListener({
 onClick: function(viewarg) {
-ctx.getSystemService(android.content.Context.VIBRATOR_SERVICE).vibrate(20);
+if(vibrations){ctx.getSystemService(android.content.Context.VIBRATOR_SERVICE).vibrate(20);}
 buttonSurvival.setBackground(sideMenuStrokeSpace);
 buttonPVP.setBackground(sideMenuStrokeSpace);
 buttonWaypoints.setBackground(themeBtnNotClicked);
@@ -10367,6 +10398,8 @@ buttonFriends.setBackgroundDrawable(new android.graphics.drawable.ColorDrawable(
 buttonFriends.setTextColor(modTextColor);
 buttonFriends.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
 buttonFriends.getLayoutParams().height = icon_dimensions*tab_height;
+if(compactView){buttonFriends.getLayoutParams().width = tab_width;}
+if(!friendtab){buttonFriends.getLayoutParams().width = 0;buttonFriends.getLayoutParams().height = 0;}
 buttonFriends.setGravity(Gravity.CENTER_VERTICAL | Gravity.CENTER_HORIZONTAL);
 buttonFriends.setBackground(sideMenuStrokeSpace);
 buttonFriends.setTypeface(mcfont);
@@ -10374,7 +10407,7 @@ buttonFriends.setMaxLines(1);
 buttonFriends.setTextSize(switchfontsize);
 buttonFriends.setOnClickListener(new android.view.View.OnClickListener({
 onClick: function(viewarg) {
-ctx.getSystemService(android.content.Context.VIBRATOR_SERVICE).vibrate(20);
+if(vibrations){ctx.getSystemService(android.content.Context.VIBRATOR_SERVICE).vibrate(20);}
 buttonSurvival.setBackground(sideMenuStrokeSpace);
 buttonPVP.setBackground(sideMenuStrokeSpace);
 buttonWaypoints.setBackground(sideMenuStrokeSpace);
@@ -10434,6 +10467,8 @@ buttonPotions.setBackgroundDrawable(new android.graphics.drawable.ColorDrawable(
 buttonPotions.setTextColor(modTextColor);
 buttonPotions.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
 buttonPotions.getLayoutParams().height = icon_dimensions*tab_height;
+if(compactView){buttonPotions.getLayoutParams().width = tab_width;}
+if(!potiontab){buttonPotions.getLayoutParams().width = 0;buttonPotions.getLayoutParams().height = 0;}
 buttonPotions.setGravity(Gravity.CENTER_VERTICAL | Gravity.CENTER_HORIZONTAL);
 buttonPotions.setBackground(sideMenuStrokeSpace);
 buttonPotions.setTypeface(mcfont);
@@ -10441,7 +10476,7 @@ buttonPotions.setMaxLines(1);
 buttonPotions.setTextSize(switchfontsize);
 buttonPotions.setOnClickListener(new android.view.View.OnClickListener({
 onClick: function(viewarg) {
-ctx.getSystemService(android.content.Context.VIBRATOR_SERVICE).vibrate(20);
+if(vibrations){ctx.getSystemService(android.content.Context.VIBRATOR_SERVICE).vibrate(20);}
 buttonSurvival.setBackground(sideMenuStrokeSpace);
 buttonPVP.setBackground(sideMenuStrokeSpace);
 buttonWaypoints.setBackground(sideMenuStrokeSpace);
@@ -10500,6 +10535,8 @@ buttonMovement.setBackgroundDrawable(new android.graphics.drawable.ColorDrawable
 buttonMovement.setTextColor(modTextColor);
 buttonMovement.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
 buttonMovement.getLayoutParams().height = icon_dimensions*tab_height;
+if(compactView){buttonMovement.getLayoutParams().width = tab_width;}
+if(!movementtab){buttonMovement.getLayoutParams().width = 0;buttonMovement.getLayoutParams().height = 0;}
 buttonMovement.setGravity(Gravity.CENTER_VERTICAL | Gravity.CENTER_HORIZONTAL);
 buttonMovement.setBackground(sideMenuStrokeSpace);
 buttonMovement.setTypeface(mcfont);
@@ -10507,7 +10544,7 @@ buttonMovement.setMaxLines(1);
 buttonMovement.setTextSize(switchfontsize);
 buttonMovement.setOnClickListener(new android.view.View.OnClickListener({
 onClick: function(viewarg) {
-ctx.getSystemService(android.content.Context.VIBRATOR_SERVICE).vibrate(20);
+if(vibrations){ctx.getSystemService(android.content.Context.VIBRATOR_SERVICE).vibrate(20);}
 buttonSurvival.setBackground(sideMenuStrokeSpace);
 buttonPVP.setBackground(sideMenuStrokeSpace);
 buttonWaypoints.setBackground(sideMenuStrokeSpace);
@@ -10566,6 +10603,8 @@ buttonDis.setBackgroundDrawable(new android.graphics.drawable.ColorDrawable(andr
 buttonDis.setTextColor(modTextColor);
 buttonDis.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
 buttonDis.getLayoutParams().height = icon_dimensions*tab_height;
+if(compactView){buttonDis.getLayoutParams().width = tab_width;}
+if(!discordtab){buttonDis.getLayoutParams().width = 0;buttonDis.getLayoutParams().height = 0;}
 buttonDis.setGravity(Gravity.CENTER_VERTICAL | Gravity.CENTER_HORIZONTAL);
 buttonDis.setBackground(sideMenuStrokeSpace);
 buttonDis.setTypeface(mcfont);
@@ -10573,7 +10612,7 @@ buttonDis.setMaxLines(1);
 buttonDis.setTextSize(switchfontsize);
 buttonDis.setOnClickListener(new android.view.View.OnClickListener({
 onClick: function(viewarg) {
-ctx.getSystemService(android.content.Context.VIBRATOR_SERVICE).vibrate(20);
+if(vibrations){ctx.getSystemService(android.content.Context.VIBRATOR_SERVICE).vibrate(20);}
 buttonSurvival.setBackground(sideMenuStrokeSpace);
 buttonDis.setBackground(themeBtnNotClicked);
 buttonPVP.setBackground(sideMenuStrokeSpace);
@@ -10630,9 +10669,11 @@ menuLayout.addView(buttonDis);
 var buttonMisc = new android.widget.TextView(ctx);
 buttonMisc.setText(langMsg[language]["Misc."]);
 buttonMisc.setBackgroundDrawable(new android.graphics.drawable.ColorDrawable(android.graphics.Color.BLACK));
-buttonMisc.setTextColor(modTextColor);
 buttonMisc.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
 buttonMisc.getLayoutParams().height = icon_dimensions*tab_height;
+if(compactView){buttonMisc.getLayoutParams().width = tab_width;}
+if(!misctab){buttonMisc.getLayoutParams().width = 0;buttonMisc.getLayoutParams().height = 0;}
+buttonMisc.setTextColor(modTextColor);
 buttonMisc.setGravity(Gravity.CENTER_VERTICAL | Gravity.CENTER_HORIZONTAL);
 buttonMisc.setBackground(sideMenuStrokeSpace);
 buttonMisc.setTypeface(mcfont);
@@ -10640,7 +10681,7 @@ buttonMisc.setMaxLines(1);
 buttonMisc.setTextSize(switchfontsize);
 buttonMisc.setOnClickListener(new android.view.View.OnClickListener({
 onClick: function(viewarg) {
-ctx.getSystemService(android.content.Context.VIBRATOR_SERVICE).vibrate(20);
+if(vibrations){ctx.getSystemService(android.content.Context.VIBRATOR_SERVICE).vibrate(20);}
 buttonSurvival.setBackground(sideMenuStrokeSpace);
 buttonPVP.setBackground(sideMenuStrokeSpace);
 buttonWaypoints.setBackground(sideMenuStrokeSpace);
@@ -10700,6 +10741,8 @@ buttonSettings.setBackgroundDrawable(new android.graphics.drawable.ColorDrawable
 buttonSettings.setTextColor(modTextColor);
 buttonSettings.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
 buttonSettings.getLayoutParams().height = icon_dimensions*tab_height;
+if(compactView){buttonSettings.getLayoutParams().width = tab_width;}
+if(!settingtab){buttonSettings.getLayoutParams().width = 0;buttonSettings.getLayoutParams().height = 0;}
 buttonSettings.setGravity(Gravity.CENTER_VERTICAL | Gravity.CENTER_HORIZONTAL);
 buttonSettings.setBackground(sideMenuStrokeSpace);
 buttonSettings.setTypeface(mcfont);
@@ -10707,7 +10750,7 @@ buttonSettings.setMaxLines(1);
 buttonSettings.setTextSize(switchfontsize);
 buttonSettings.setOnClickListener(new android.view.View.OnClickListener({
 onClick: function(viewarg) {
-ctx.getSystemService(android.content.Context.VIBRATOR_SERVICE).vibrate(20);
+if(vibrations){ctx.getSystemService(android.content.Context.VIBRATOR_SERVICE).vibrate(20);}
 buttonSurvival.setBackground(sideMenuStrokeSpace);
 buttonPVP.setBackground(sideMenuStrokeSpace);
 buttonWaypoints.setBackground(sideMenuStrokeSpace);
@@ -10768,6 +10811,8 @@ buttonPresets.setBackgroundDrawable(new android.graphics.drawable.ColorDrawable(
 buttonPresets.setTextColor(modTextColor);
 buttonPresets.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
 buttonPresets.getLayoutParams().height = icon_dimensions*tab_height;
+if(compactView){buttonPresets.getLayoutParams().width = tab_width;}
+if(!presettab){buttonPresets.getLayoutParams().width = 0;buttonPresets.getLayoutParams().height = 0;}
 buttonPresets.setGravity(Gravity.CENTER_VERTICAL | Gravity.CENTER_HORIZONTAL);
 buttonPresets.setBackground(sideMenuStrokeSpace);
 buttonPresets.setTypeface(mcfont);
@@ -10775,7 +10820,7 @@ buttonPresets.setMaxLines(1);
 buttonPresets.setTextSize(switchfontsize);
 buttonPresets.setOnClickListener(new android.view.View.OnClickListener({
 onClick: function(viewarg) {
-ctx.getSystemService(android.content.Context.VIBRATOR_SERVICE).vibrate(20);
+if(vibrations){ctx.getSystemService(android.content.Context.VIBRATOR_SERVICE).vibrate(20);}
 buttonSurvival.setBackground(sideMenuStrokeSpace);
 buttonPVP.setBackground(sideMenuStrokeSpace);
 buttonWaypoints.setBackground(sideMenuStrokeSpace);
@@ -10830,12 +10875,14 @@ openMenu11Status = false;
 }));
 menuLayout.addView(buttonPresets);
 menuLayout.addView(buttonSettings);
-menuC = new PopupWindow(menuLayout1, tab_width, ctx.getWindowManager().getDefaultDisplay().getHeight());
+if(compactView){menuC = new PopupWindow(menuLayout1, list_width, icon_dimensions*tab_height);}else{
+menuC = new PopupWindow(menuLayout1, tab_width, ctx.getWindowManager().getDefaultDisplay().getHeight());}
 if(animations){menuC.setAnimationStyle(android.R.style.Animation_Toast);}
 menuC.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 menuC.getBackground().setAlpha(themeAlpha);
-if(allRight){menuC.showAtLocation(ctx.getWindow().getDecorView(), Gravity.CENTER | Gravity.RIGHT, 0, 0);}else{menuC.showAtLocation(ctx.getWindow().getDecorView(), Gravity.CENTER | Gravity.LEFT, 0, 0);}
-
+if(allRight){menuC.showAtLocation(ctx.getWindow().getDecorView(), Gravity.CENTER | Gravity.RIGHT, 0, 0);}
+if(compactView){menuC.showAtLocation(ctx.getWindow().getDecorView(), Gravity.BOTTOM | Gravity.CENTER, 0, 0);}
+if(!compactView&!allRight){menuC.showAtLocation(ctx.getWindow().getDecorView(), Gravity.CENTER | Gravity.LEFT, 0, 0);}
 } catch (error) {
 Toast.makeText(ctx, "Template Error: " + error+' #' + error['lineNumber'], 1).show();
 }
@@ -12109,16 +12156,6 @@ Entity.setNameTag(entry, Entity.getNameTag(entry)+"\n"+Entity.getHealth(entry)+"
 }
 function procCmd(command) {
 var cmd = command.split(" ");
-if(cmd[0]=="c"){
-	espRed =parseInt(cmd[1]);
-	espGreen =parseInt(cmd[2]);
-	espBlue =parseInt(cmd[3]);
-}
-if(cmd[0]=="rgb"){
-	if(rgbesp){rgbesp=false}else{
-	rgbesp=true;
-	}
-}
 if(cmd[0]=="t"){
 	supportIns();
 	supportIns2();
@@ -12330,6 +12367,7 @@ betToast(Player.getDimension())
 };
 
 function closeEverything() {
+	restyle();
 themeFinish();
 if (themeBtn == "red") {
 themeId = 0;
@@ -12493,12 +12531,14 @@ modTextColor = modTextColorBlack;
 }
 
 
-ctx.getSystemService(android.content.Context.VIBRATOR_SERVICE).vibrate(20);
+if(vibrations){ctx.getSystemService(android.content.Context.VIBRATOR_SERVICE).vibrate(20);}
 if (showAllMenu) {
 menuC.dismiss();
 GUI.update();
 mopen = false;
-if(backOpen){guiBackgroundGif.dismiss();backOpen=false;}
+if(backOpen){try{guiBackgroundGif.dismiss();backOpen=false;} catch (error) {
+Toast.makeText(ctx, "Template Error: " + error+' #' + error['lineNumber'], 1).show();
+}}
 
 if (openMenu1Status == true&&!menuFailed1) {
 changeGUI.dismiss();
@@ -13631,19 +13671,9 @@ if(Player.getName(getPlayerEnt())!="Steve"||Player.getName(getPlayerEnt())!=""){
 if(disSpeed){
 var playerSpeed = Math.sqrt(Math.pow(Entity.getVelX(getPlayerEnt()), 2) + Math.pow(Entity.getVelZ(getPlayerEnt()), 2));
 var fixedS =playerSpeed.toFixed(2);
-if(fixedS==0.00){clientMessage("Standing");}
-if(fixedS==0.12){clientMessage("Walking");}
-if(fixedS==0.13||fixedS==0.14){clientMessage("Walking (Changed Level)");}
-if(fixedS==0.15||fixedS==0.16){clientMessage("Sprinting");}5.62
-if(fixedS==0.04){clientMessage("Sneaking");}
-if(fixedS==0.05){clientMessage("Sneaking (Up)");}
-if(fixedS==0.26){clientMessage("Sprinting (Up)");}
-if(fixedS==0.17){clientMessage("Sprinting (Down)");}
-if(fixedS==0.49){clientMessage("Fly Walk");}
-if(fixedS==0.03||fixedS==0.01){clientMessage("Soulsand");}
-if(fixedS==0.24||fixedS==0.23){clientMessage("Ice Sprinting");}
-if(fixedS==0.18||fixedS==0.17){clientMessage("Ice Walking");}
-if(fixedS>0.60){clientMessage("Fly Sprint");}
+var formulatedSpeed = Math.floor((fixedS/0.027797) * 100) / 100;
+
+clientMessage(formulatedSpeed+" m/S");
 }
 if(realmnfd&&!funcS.Player.onGround()&&Entity.getVelY(Player.getEntity()) < -.5){
 if(getTile(getPlayerX(), getPlayerY() - 7, getPlayerZ())!=0){
@@ -13945,7 +13975,7 @@ if(tntcanOn==true && getPitch(getPlayerEnt())>pitchtrigger){ var playerYaw = Ent
 if(friendList_.isFriend(Entity.getNameTag(getNearestPlayer(100)))&&Entity.getEntityTypeId(getNearestPlayer(100)) == EntityType.PLAYER||contains(immunity,Entity.getNameTag(getNearestPlayer(100)))&&Entity.getEntityTypeId(getNearestPlayer(100)) == EntityType.PLAYER){Entity.setCollisionSize(getNearestPlayer(100), 0, 0);}
 if(hiddenMenu&&!mopen&&!sleekMenuOn&&Entity.isSneaking(getPlayerEnt())&&Player.getSelectedSlotId() == 0){
 Player.setSelectedSlotId(1);
-ctx.getSystemService(android.content.Context.VIBRATOR_SERVICE).vibrate(20);
+if(vibrations){ctx.getSystemService(android.content.Context.VIBRATOR_SERVICE).vibrate(20);}
 
 if(!contains(banslist,Player.getName(getPlayerEnt()))){
 if (publicVer != undefined||publicVer != "locked") {
@@ -14016,7 +14046,7 @@ addWLayout.addView(faqbtn);
 addWDialog.show();
 addWBtn.setOnClickListener(new android.view.View.OnClickListener() {
 onClick: function(viewarg) {
-ctx.getSystemService(android.content.Context.VIBRATOR_SERVICE).vibrate(20);
+if(vibrations){ctx.getSystemService(android.content.Context.VIBRATOR_SERVICE).vibrate(20);}
 addWDialog.dismiss();
 downloadUpdate();
 betToast("Downloading...");
@@ -14024,7 +14054,7 @@ betToast("Downloading...");
 })
 faqbtn.setOnClickListener(new android.view.View.OnClickListener() {
 onClick: function(viewarg) {
-ctx.getSystemService(android.content.Context.VIBRATOR_SERVICE).vibrate(20);
+if(vibrations){ctx.getSystemService(android.content.Context.VIBRATOR_SERVICE).vibrate(20);}
 addWDialog.dismiss();
 var alert = new android.app.AlertDialog.Builder(ctx);
 alert.setTitle("Instinct FAQ/Help");
@@ -14161,7 +14191,11 @@ var item = Player.getCarriedItem();
 var count = Player.getCarriedItemCount();
 var meta = Player.getCarriedItemData();
 var time = Math.floor(Level.getTime());
-ModPE.showTipMessage(ChatColor.YELLOW+"X: " + x + ", Y: " + y + ", Z: " + z +ChatColor.GREEN+"\nWorld Time: " + time + ChatColor.RED+"\nID, Meta, Amount: " + item + ":" + meta + ":" + count+"\nPointed ID: " + Player.getPointedBlockId()+"\nSelected Slot: "+Player.getSelectedSlotId());
+var playerSpeed = Math.sqrt(Math.pow(Entity.getVelX(getPlayerEnt()), 2) + Math.pow(Entity.getVelZ(getPlayerEnt()), 2));
+var fixedS =playerSpeed.toFixed(2);
+var formulatedSpeed = Math.floor((fixedS/0.027797) * 100) / 100;
+
+ModPE.showTipMessage(ChatColor.YELLOW+"X: " + x + ", Y: " + y + ", Z: " + z +ChatColor.GREEN+"\nWorld Time: " + time + ChatColor.RED+"\nID, Meta, Amount: " + item + ":" + meta + ":" + count+"\nPointed ID: " + Player.getPointedBlockId()+"\nSelected Slot: "+Player.getSelectedSlotId()+"\nEntity Id: "+Entity.getEntityTypeId(Player.getPointedEntity())+"\nSpeed: "+formulatedSpeed+" m/S");
 }
 if (crouchtpss == true && Entity['isSneaking'](Player['getEntity']()) == true) {
 setVelY(getPlayerEnt(), -0.003);
@@ -14412,7 +14446,7 @@ if(max_dura_handEnemy==-1||max_dura_handEnemy==0){handDataEnemy.setText("No Swor
 if(windowOpen){
 if(webviewList!=undefined){
 if(webviewList.getUrl()==lstUrl){
-}else{lstUrl=webviewList.getUrl();stateChng(lstUrl);webviewList.loadUrl(websiteurl);}}
+}else{lstUrl=webviewList.getUrl();stateChng(lstUrl);}}
 }
 if(chatTranslator){
 if(translateView!=undefined){
@@ -14423,8 +14457,9 @@ if(!lstUrlTran.startsWith("http://instinctmods.com/translator.html#"+translatela
 sendToChat(decodeURIComponent(lstUrlTran))}
 }}
 }
+
 }
-catch(err){}}}));
+catch(err){clientMessage(err)}}}));
 }catch(e){}
 };
 function sendToChat(string){
@@ -15415,7 +15450,7 @@ button.setBackground( of );
 button.getBackground().setAlpha(120);
 button.setOnClickListener(new View.OnClickListener({
 onClick: function(viewarg) {
-ctx.getSystemService(android.content.Context.VIBRATOR_SERVICE).vibrate(20);
+if(vibrations){ctx.getSystemService(android.content.Context.VIBRATOR_SERVICE).vibrate(20);}
 disableCam();
 }
 }));
@@ -15520,7 +15555,7 @@ addWLayout.addView(addWBtn);
 addWDialog.show();
 addWBtn.setOnClickListener(new android.view.View.OnClickListener() {
 onClick: function(viewarg) {
-ctx.getSystemService(android.content.Context.VIBRATOR_SERVICE).vibrate(20);
+if(vibrations){ctx.getSystemService(android.content.Context.VIBRATOR_SERVICE).vibrate(20);}
 addWDialog.dismiss();
 var downloadSi = new android.content.Intent(ctx);
 downloadSi.setAction(android.content.Intent.ACTION_VIEW);
@@ -15691,7 +15726,7 @@ button.setGravity(Gravity.CENTER_VERTICAL);;
 slayout1.setOnClickListener(new android.view.View.OnClickListener({
 onClick: function(viewarg) {
 savemod("Enchant");
-ctx.getSystemService(android.content.Context.VIBRATOR_SERVICE).vibrate(20);
+if(vibrations){ctx.getSystemService(android.content.Context.VIBRATOR_SERVICE).vibrate(20);}
 openEnchantSelect();
 closeEverything();
 }
@@ -15813,7 +15848,7 @@ button.getLayoutParams().width = icon_dimensions*2;
 button.getBackground().setAlpha(70);
 button.setOnClickListener(new View.OnClickListener({
 onClick: function(viewarg) {
-ctx.getSystemService(android.content.Context.VIBRATOR_SERVICE).vibrate(20);
+if(vibrations){ctx.getSystemService(android.content.Context.VIBRATOR_SERVICE).vibrate(20);}
 if (ctrlzoomtoggle == false) {
 ModPE.setFov(20);
 button.setText("-");
@@ -16674,7 +16709,7 @@ slayout1.setOnClickListener(new android.view.View.OnClickListener({
 onClick: function(viewarg) {
 Level.setTime(0);
 savemod("Day");
-ctx.getSystemService(android.content.Context.VIBRATOR_SERVICE).vibrate(20);
+if(vibrations){ctx.getSystemService(android.content.Context.VIBRATOR_SERVICE).vibrate(20);}
 }
 }));
 if(helpB){var helpBtn = new android.widget.ImageView(ctx);
@@ -16723,7 +16758,7 @@ slayout1.setOnClickListener(new android.view.View.OnClickListener({
 onClick: function(viewarg) {
 Level.setTime(90000);
 savemod("Night");
-ctx.getSystemService(android.content.Context.VIBRATOR_SERVICE).vibrate(20);
+if(vibrations){ctx.getSystemService(android.content.Context.VIBRATOR_SERVICE).vibrate(20);}
 }
 }));
 if(helpB){var helpBtn = new android.widget.ImageView(ctx);
@@ -16771,7 +16806,7 @@ button.setGravity(Gravity.CENTER_VERTICAL);
 slayout1.setOnClickListener(new android.view.View.OnClickListener({
 onClick: function(viewarg) {
 savemod("Rename");
-ctx.getSystemService(android.content.Context.VIBRATOR_SERVICE).vibrate(20);
+if(vibrations){ctx.getSystemService(android.content.Context.VIBRATOR_SERVICE).vibrate(20);}
 renamePopup();
 closeEverything();
 }
@@ -16872,7 +16907,7 @@ button.setBackground(themeBtnNotClicked);
 button.setGravity(Gravity.CENTER_VERTICAL);
 slayout1.setOnClickListener(new android.view.View.OnClickListener({
 onClick: function(viewarg) {
-ctx.getSystemService(android.content.Context.VIBRATOR_SERVICE).vibrate(20);
+if(vibrations){ctx.getSystemService(android.content.Context.VIBRATOR_SERVICE).vibrate(20);}
 confirmSuicide();
 closeEverything();
 savemod("Suicide");
@@ -16920,7 +16955,7 @@ button.setBackground(themeBtnNotClicked);
 button.setGravity(Gravity.CENTER_VERTICAL);
 slayout1.setOnClickListener(new android.view.View.OnClickListener({
 onClick: function(viewarg) {
-ctx.getSystemService(android.content.Context.VIBRATOR_SERVICE).vibrate(20);
+if(vibrations){ctx.getSystemService(android.content.Context.VIBRATOR_SERVICE).vibrate(20);}
 confirmClear();
 closeEverything();
 savemod("Clear Inventory");
@@ -17138,7 +17173,7 @@ button.setGravity(Gravity.CENTER_VERTICAL);;
 slayout1.setOnClickListener(new android.view.View.OnClickListener({
 onClick: function(viewarg) {
 savemod("Diamond Kit");
-ctx.getSystemService(android.content.Context.VIBRATOR_SERVICE).vibrate(20);
+if(vibrations){ctx.getSystemService(android.content.Context.VIBRATOR_SERVICE).vibrate(20);}
 Player.setArmorSlot(0, 310, 0); Player.setArmorSlot(1, 311, 0); Player.setArmorSlot(2, 312, 0); Player.setArmorSlot(3, 313, 0); Player.addItemInventory(276, 1, 0); Player.addItemInventory(277, 1, 0); Player.addItemInventory(278, 1, 0); Player.addItemInventory(279, 1, 0);
 }
 }));
@@ -17185,7 +17220,7 @@ button.setGravity(Gravity.CENTER_VERTICAL);;
 slayout1.setOnClickListener(new android.view.View.OnClickListener({
 onClick: function(viewarg) {
 savemod("Structures");
-ctx.getSystemService(android.content.Context.VIBRATOR_SERVICE).vibrate(20);
+if(vibrations){ctx.getSystemService(android.content.Context.VIBRATOR_SERVICE).vibrate(20);}
 blockbuilder();}
 }));
 if(helpB){var helpBtn = new android.widget.ImageView(ctx);
@@ -17436,7 +17471,7 @@ tmiLayout.addView(cancelBtn);
 confirmClearDialog.show();
 addBtn.setOnClickListener(new android.view.View.OnClickListener() {
 onClick: function(viewarg) {
-ctx.getSystemService(android.content.Context.VIBRATOR_SERVICE).vibrate(20);
+if(vibrations){ctx.getSystemService(android.content.Context.VIBRATOR_SERVICE).vibrate(20);}
 
 invCheck.forEach(clearingInv);
 confirmClearDialog.dismiss();
@@ -17444,7 +17479,7 @@ confirmClearDialog.dismiss();
 });
 cancelBtn.setOnClickListener(new android.view.View.OnClickListener() {
 onClick: function(viewarg) {
-ctx.getSystemService(android.content.Context.VIBRATOR_SERVICE).vibrate(20);
+if(vibrations){ctx.getSystemService(android.content.Context.VIBRATOR_SERVICE).vibrate(20);}
 confirmClearDialog.dismiss();
 }
 });
@@ -17454,8 +17489,10 @@ betToast("An error occured: " + err+' #' + err['lineNumber']);
 }
 }));
 };
+if(compactView){changeGUI = new PopupWindow(menuLayout1, list_width, ctx.getWindowManager().getDefaultDisplay().getHeight()-(icon_dimensions*tab_height));
+}else{
 changeGUI = new PopupWindow(menuLayout1, list_width, ctx.getWindowManager().getDefaultDisplay().getHeight());
-if(animations){changeGUI.setAnimationStyle(android.R.style.Animation_InputMethod);}
+}if(animations){changeGUI.setAnimationStyle(android.R.style.Animation_InputMethod);}
 
 changeGUI.setBackgroundDrawable(new ColorDrawable(themeBackground));
 if(themedXmas){changeGUI.setBackgroundDrawable(new android.graphics.drawable.BitmapDrawable(android.graphics.BitmapFactory.decodeByteArray(android.util.Base64.decode(christmasBack, 0), 0, android.util.Base64.decode(christmasBack, 0).length)));}else{changeGUI.setBackgroundDrawable(new ColorDrawable(themeBackground));}
@@ -17463,7 +17500,10 @@ if(showGradient){changeGUI.setBackgroundDrawable(new android.graphics.drawable.G
 changeGUI.getBackground().setAlpha(themeAlpha);
 if(allRight){
 changeGUI.showAtLocation(ctx.getWindow().getDecorView(), Gravity.RIGHT | Gravity.CENTER, +left_width, 0);
-}else{changeGUI.showAtLocation(ctx.getWindow().getDecorView(), Gravity.LEFT | Gravity.CENTER, +left_width, 0);}
+}if(compactView){
+	changeGUI.showAtLocation(ctx.getWindow().getDecorView(), Gravity.TOP | Gravity.CENTER, 0, 0);
+}
+if(!compactView&!allRight){changeGUI.showAtLocation(ctx.getWindow().getDecorView(), Gravity.LEFT | Gravity.CENTER, +left_width, 0);}
 } catch (error) {
 Toast.makeText(ctx, "Template Error: " + error+' #' + error['lineNumber'], 1).show();
 menuFailed1=true;
@@ -17534,7 +17574,7 @@ button.setBackground( of );
 button.getBackground().setAlpha(130);
 button.setOnClickListener(new View.OnClickListener({
 onClick: function(viewarg) {
-ctx.getSystemService(android.content.Context.VIBRATOR_SERVICE).vibrate(20);
+if(vibrations){ctx.getSystemService(android.content.Context.VIBRATOR_SERVICE).vibrate(20);}
 if (quickturnd == false) {
 quickturnd = true;
 var playerDir = [0, 0, 0];
@@ -19874,7 +19914,7 @@ button.setTextSize(switchfontsize);
 slayout1.setOnClickListener(new android.view.View.OnClickListener({
 onClick: function(viewarg) {
 avoidTune();
-ctx.getSystemService(android.content.Context.VIBRATOR_SERVICE).vibrate(20);
+if(vibrations){ctx.getSystemService(android.content.Context.VIBRATOR_SERVICE).vibrate(20);}
 }
 }));
 if(helpB){var helpBtn = new android.widget.ImageView(ctx);
@@ -19958,7 +19998,7 @@ tpDialog.dismiss();
 });
 cancelBtn.setOnClickListener(new android.view.View.OnClickListener() {
 onClick: function(viewarg) {
-ctx.getSystemService(android.content.Context.VIBRATOR_SERVICE).vibrate(20);
+if(vibrations){ctx.getSystemService(android.content.Context.VIBRATOR_SERVICE).vibrate(20);}
 tpDialog.dismiss();
 }
 });
@@ -20236,7 +20276,7 @@ button.setTypeface(mcfont);
 button.setTextSize(switchfontsize);
 button.setGravity(Gravity.CENTER_VERTICAL);
 slayout1.setOnClickListener(new android.view.View.OnClickListener({
-onClick: function(viewarg) {savemod("Reset Hitboxes");resetBoxes();ctx.getSystemService(android.content.Context.VIBRATOR_SERVICE).vibrate(20);
+onClick: function(viewarg) {savemod("Reset Hitboxes");resetBoxes();if(vibrations){ctx.getSystemService(android.content.Context.VIBRATOR_SERVICE).vibrate(20);}
 }
 }));
 if(helpB){var helpBtn = new android.widget.ImageView(ctx);
@@ -20263,7 +20303,10 @@ button.getLayoutParams().height = 15;
 button.getBackground().setAlpha(0);
 hitboxbox.addView(button);
 menuLayoutw.addView(hitboxbox);
+if(compactView){changeGUI2 = new PopupWindow(menuLayout1, list_width, ctx.getWindowManager().getDefaultDisplay().getHeight()-(icon_dimensions*tab_height));
+}else{
 changeGUI2 = new PopupWindow(menuLayout1, list_width, ctx.getWindowManager().getDefaultDisplay().getHeight());
+}
 if(animations){changeGUI2.setAnimationStyle(android.R.style.Animation_InputMethod);}
 
 changeGUI2.setBackgroundDrawable(new ColorDrawable(themeBackground));
@@ -20271,8 +20314,12 @@ if(themedXmas){changeGUI2.setBackgroundDrawable(new android.graphics.drawable.Bi
 if(showGradient){changeGUI2.setBackgroundDrawable(new android.graphics.drawable.GradientDrawable(android.graphics.drawable.GradientDrawable.Orientation.LEFT_RIGHT , [themeBackground, themeForeground, themeStroke]));}
 changeGUI2.getBackground().setAlpha(themeAlpha);
 if(allRight){
-changeGUI2.showAtLocation(ctx.getWindow().getDecorView(), Gravity.RIGHT | Gravity.CENTER, +left_width, 0);
-}else{changeGUI2.showAtLocation(ctx.getWindow().getDecorView(), Gravity.LEFT | Gravity.CENTER, +left_width, 0);}
+	changeGUI2.showAtLocation(ctx.getWindow().getDecorView(), Gravity.RIGHT | Gravity.CENTER, +left_width, 0);
+}
+if(compactView){
+	changeGUI2.showAtLocation(ctx.getWindow().getDecorView(), Gravity.TOP | Gravity.CENTER, 0, 0);
+}
+if(!compactView&!allRight){changeGUI2.showAtLocation(ctx.getWindow().getDecorView(), Gravity.LEFT | Gravity.CENTER, +left_width, 0);}
 } catch (error) {
 Toast.makeText(ctx, "Template Error: " + error+' #' + error['lineNumber'], 1).show();
 menuFailed2=true;
@@ -20354,8 +20401,10 @@ CreateButton(i).getParent().removeView(CreateButton(i));
 menuLayoutw.addView(CreateButton(i));
 }
 }
+if(compactView){changeGUI3 = new PopupWindow(menuLayout1, list_width, ctx.getWindowManager().getDefaultDisplay().getHeight()-(icon_dimensions*tab_height));
+}else{
 changeGUI3 = new PopupWindow(menuLayout1, list_width, ctx.getWindowManager().getDefaultDisplay().getHeight());
-if(animations){changeGUI3.setAnimationStyle(android.R.style.Animation_InputMethod);}
+}if(animations){changeGUI3.setAnimationStyle(android.R.style.Animation_InputMethod);}
 
 changeGUI3.setBackgroundDrawable(new ColorDrawable(themeBackground));
 if(themedXmas){changeGUI3.setBackgroundDrawable(new android.graphics.drawable.BitmapDrawable(android.graphics.BitmapFactory.decodeByteArray(android.util.Base64.decode(christmasBack, 0), 0, android.util.Base64.decode(christmasBack, 0).length)));}else{changeGUI3.setBackgroundDrawable(new ColorDrawable(themeBackground));}
@@ -20363,7 +20412,10 @@ if(showGradient){changeGUI3.setBackgroundDrawable(new android.graphics.drawable.
 changeGUI3.getBackground().setAlpha(themeAlpha);
 if(allRight){
 changeGUI3.showAtLocation(ctx.getWindow().getDecorView(), Gravity.RIGHT | Gravity.CENTER, +left_width, 0);
-}else{changeGUI3.showAtLocation(ctx.getWindow().getDecorView(), Gravity.LEFT | Gravity.CENTER, +left_width, 0);}
+}if(compactView){
+	changeGUI3.showAtLocation(ctx.getWindow().getDecorView(), Gravity.TOP | Gravity.CENTER, 0, 0);
+}
+if(!compactView&!allRight){changeGUI3.showAtLocation(ctx.getWindow().getDecorView(), Gravity.LEFT | Gravity.CENTER, +left_width, 0);}
 } catch (error) {
 Toast.makeText(ctx, "Template Error: " + error+' #' + error['lineNumber'], 1).show();
 menuFailed3=true;
@@ -20447,7 +20499,7 @@ slayout1.setOnClickListener(new android.view.View.OnClickListener({
 onClick: function(viewarg) {if (getPlayerX() != 0 &getPlayerZ() != 0) {
 canPreset = true;
 savemod("Remove All Effects");
-ctx.getSystemService(android.content.Context.VIBRATOR_SERVICE).vibrate(20);
+if(vibrations){ctx.getSystemService(android.content.Context.VIBRATOR_SERVICE).vibrate(20);}
 }
 if (canPreset) {
 Entity.removeAllEffects(getPlayerEnt());
@@ -20510,7 +20562,7 @@ onClick: function(viewarg) {
 savemod("Add XP");
 Player.addExp(100000000);
 betToast(langMsg[language]["Added experience"]);
-ctx.getSystemService(android.content.Context.VIBRATOR_SERVICE).vibrate(20);
+if(vibrations){ctx.getSystemService(android.content.Context.VIBRATOR_SERVICE).vibrate(20);}
 }
 }));
 if(iconsB){slayout1.addView(waypoint1);}
@@ -21120,7 +21172,7 @@ onClick: function(viewarg) {
 savemod("Heal");
 Entity.addEffect(Player.getEntity(), MobEffect.heal, 999999, 2000, false, false);
 betToast(langMsg[language]["Healed"]);
-ctx.getSystemService(android.content.Context.VIBRATOR_SERVICE).vibrate(20);
+if(vibrations){ctx.getSystemService(android.content.Context.VIBRATOR_SERVICE).vibrate(20);}
 }
 }));
 if(iconsB){slayout1.addView(waypoint1);}
@@ -21950,8 +22002,10 @@ swiftSwi.getParent().setBackground(themeBtnClicked);
 swiftSwi.setText(tohtml(swiftSwi.getText(),true));}
 
 
+if(compactView){changeGUI4 = new PopupWindow(menuLayout1, list_width, ctx.getWindowManager().getDefaultDisplay().getHeight()-(icon_dimensions*tab_height));
+}else{
 changeGUI4 = new PopupWindow(menuLayout1, list_width, ctx.getWindowManager().getDefaultDisplay().getHeight());
-if(animations){changeGUI4.setAnimationStyle(android.R.style.Animation_InputMethod);}
+}if(animations){changeGUI4.setAnimationStyle(android.R.style.Animation_InputMethod);}
 
 changeGUI4.setBackgroundDrawable(new ColorDrawable(themeBackground));
 if(themedXmas){changeGUI4.setBackgroundDrawable(new android.graphics.drawable.BitmapDrawable(android.graphics.BitmapFactory.decodeByteArray(android.util.Base64.decode(christmasBack, 0), 0, android.util.Base64.decode(christmasBack, 0).length)));}else{changeGUI4.setBackgroundDrawable(new ColorDrawable(themeBackground));}
@@ -21959,7 +22013,10 @@ if(showGradient){changeGUI4.setBackgroundDrawable(new android.graphics.drawable.
 changeGUI4.getBackground().setAlpha(themeAlpha);
 if(allRight){
 changeGUI4.showAtLocation(ctx.getWindow().getDecorView(), Gravity.RIGHT | Gravity.CENTER, +left_width, 0);
-}else{changeGUI4.showAtLocation(ctx.getWindow().getDecorView(), Gravity.LEFT | Gravity.CENTER, +left_width, 0);}
+}if(compactView){
+	changeGUI4.showAtLocation(ctx.getWindow().getDecorView(), Gravity.TOP | Gravity.CENTER, 0, 0);
+}
+if(!compactView&!allRight){changeGUI4.showAtLocation(ctx.getWindow().getDecorView(), Gravity.LEFT | Gravity.CENTER, +left_width, 0);}
 } catch (error) {
 Toast.makeText(ctx, "Template Error: " + error+' #' + error['lineNumber'], 1).show();
 menuFailed4=true;
@@ -23174,7 +23231,7 @@ button.setBackground(themeBtnNotClicked);
 button.setGravity(android.view.Gravity.CENTER_VERTICAL);
 slayout1.setOnClickListener(new android.view.View.OnClickListener({
 onClick: function(viewarg) {
-ctx.getSystemService(android.content.Context.VIBRATOR_SERVICE).vibrate(20);
+if(vibrations){ctx.getSystemService(android.content.Context.VIBRATOR_SERVICE).vibrate(20);}
 bridgePopup();savemod("Scaffold ID");
 closeEverything();
 }
@@ -24107,7 +24164,7 @@ slayout1.setOnClickListener(new android.view.View.OnClickListener({
 onClick: function(viewarg) {
 savemod("Launch");
 setVelY(Player.getEntity(), 8)
-ctx.getSystemService(android.content.Context.VIBRATOR_SERVICE).vibrate(20);
+if(vibrations){ctx.getSystemService(android.content.Context.VIBRATOR_SERVICE).vibrate(20);}
 }
 }));
 if(helpB){var helpBtn = new android.widget.ImageView(ctx);
@@ -24154,7 +24211,7 @@ button.setGravity(android.view.Gravity.CENTER_VERTICAL);
 slayout1.setOnClickListener(new android.view.View.OnClickListener({
 onClick: function(viewarg) {
 savemod("TP to Deathpoint");
-ctx.getSystemService(android.content.Context.VIBRATOR_SERVICE).vibrate(20);
+if(vibrations){ctx.getSystemService(android.content.Context.VIBRATOR_SERVICE).vibrate(20);}
 if(deathX!=0&deathY!=0&deathZ!=0){
 setPosition(getPlayerEnt(), deathX, deathY + 0.3, deathZ);}else{betToast(langMsg[language]["You haven't died yet!"])}
 }
@@ -24203,7 +24260,7 @@ button.setGravity(android.view.Gravity.CENTER_VERTICAL);
 slayout1.setOnClickListener(new android.view.View.OnClickListener({
 onClick: function(viewarg) {
 savemod("TP to Nearest");
-ctx.getSystemService(android.content.Context.VIBRATOR_SERVICE).vibrate(20);
+if(vibrations){ctx.getSystemService(android.content.Context.VIBRATOR_SERVICE).vibrate(20);}
 var ent = getNearestEntity(1000);
 if(Entity.getX(ent)!=0&Entity.getY(ent)!=-2&Entity.getZ(ent)!=-1){
 setPosition(getPlayerEnt(), Entity.getX(ent), Entity.getY(ent) + 0.3, Entity.getZ(ent) - 0.2);}
@@ -24254,7 +24311,7 @@ slayout1.setOnClickListener(new android.view.View.OnClickListener({
 onClick: function(viewarg) {
 savemod("Player Teleports");
 openTeleportList();
-ctx.getSystemService(android.content.Context.VIBRATOR_SERVICE).vibrate(20);
+if(vibrations){ctx.getSystemService(android.content.Context.VIBRATOR_SERVICE).vibrate(20);}
 }
 }));
 if(helpB){var helpBtn = new android.widget.ImageView(ctx);
@@ -24332,7 +24389,7 @@ changeGUI7.dismiss();
 openMenu7Status = false;
 }
 GUIclose.dismiss();
-ctx.getSystemService(android.content.Context.VIBRATOR_SERVICE).vibrate(20);
+if(vibrations){ctx.getSystemService(android.content.Context.VIBRATOR_SERVICE).vibrate(20);}
 teleportation();
 if (colormychatd == true) {
 GUIs.dismiss();
@@ -24386,7 +24443,7 @@ gamespeedset = 20;
 savemod("Default Gamespeed");
 ModPE.setGameSpeed(gamespeedset);
 betToast(langMsg[language]["Speed: Default"]);
-ctx.getSystemService(android.content.Context.VIBRATOR_SERVICE).vibrate(20);
+if(vibrations){ctx.getSystemService(android.content.Context.VIBRATOR_SERVICE).vibrate(20);}
 }
 }));
 if(helpB){var helpBtn = new android.widget.ImageView(ctx);
@@ -24464,11 +24521,6 @@ var goalZ = 0;
 var slayout1 = new android.widget.LinearLayout(activity);
 slayout1.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
 slayout1.getLayoutParams().height = icon_dimensions+modPadT+modPadB;
-var spaceholder = new android.widget.Button(ctx);
-spaceholder.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
-spaceholder.getLayoutParams().width = gap_width;spaceholder.getLayoutParams().height = icon_dimensions;
-spaceholder.setBackgroundDrawable(new android.graphics.drawable.ColorDrawable(android.graphics.Color.TRANSPARENT));
-slayout1.addView(spaceholder);
 var button = new android.widget.TextView(ctx);
 button.setText(langMsg[language]["Quick TP"]);
 button.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT));
@@ -24485,48 +24537,51 @@ hitboxbox.setOrientation(1);
 var button = new android.widget.Button(ctx);
 button.setText("X: +1k");
 button.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
-button.getLayoutParams().width = switchWidth / tpQuickwidth;
+button.getLayoutParams().width = list_width / tpQuickwidth;
 button.setBackgroundDrawable(new android.graphics.drawable.ColorDrawable(android.graphics.Color.TRANSPARENT));
 button.setTextColor(modTextColor);
 button.setTextSize(btntextsize);
-button.setBackground(themeBtnNotClicked);
+button.setBackground(of);
+button.getBackground().setAlpha(70);
 button.setTypeface(mcfont);
 button.setTextSize(switchfontsize);
 button.setOnClickListener(new android.view.View.OnClickListener({
 onClick: function(viewarg) {
-ctx.getSystemService(android.content.Context.VIBRATOR_SERVICE).vibrate(20);
+if(vibrations){ctx.getSystemService(android.content.Context.VIBRATOR_SERVICE).vibrate(20);}
 Entity.setPosition(getPlayerEnt(), Entity.getX(getPlayerEnt())+1000, Entity.getY(getPlayerEnt()), Entity.getZ(getPlayerEnt()));
 }
 }));
 var button2 = new android.widget.Button(ctx);
 button2.setText("+10k");
 button2.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
-button2.getLayoutParams().width = switchWidth / tpQuickwidth;
+button2.getLayoutParams().width = list_width / tpQuickwidth;
 button2.setBackgroundDrawable(new android.graphics.drawable.ColorDrawable(android.graphics.Color.TRANSPARENT));
 button2.setTextColor(modTextColor);
 button2.setTextSize(btntextsize);
-button2.setBackground(themeBtnNotClicked);
+button2.setBackground(of);
+button2.getBackground().setAlpha(70);
 button2.setTypeface(mcfont);
 button2.setTextSize(switchfontsize);
 button2.setOnClickListener(new android.view.View.OnClickListener({
 onClick: function(viewarg) {
-ctx.getSystemService(android.content.Context.VIBRATOR_SERVICE).vibrate(20);
+if(vibrations){ctx.getSystemService(android.content.Context.VIBRATOR_SERVICE).vibrate(20);}
 Entity.setPosition(getPlayerEnt(), Entity.getX(getPlayerEnt())+10000, Entity.getY(getPlayerEnt()), Entity.getZ(getPlayerEnt()));
 }
 }));
 var button3 = new android.widget.Button(ctx);
 button3.setText("+100k");
 button3.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
-button3.getLayoutParams().width = switchWidth / tpQuickwidth;
+button3.getLayoutParams().width = list_width / tpQuickwidth;
 button3.setBackgroundDrawable(new android.graphics.drawable.ColorDrawable(android.graphics.Color.TRANSPARENT));
 button3.setTextColor(modTextColor);
 button3.setTextSize(btntextsize);
-button3.setBackground(themeBtnNotClicked);
+button3.setBackground(of);
+button3.getBackground().setAlpha(70);
 button3.setTypeface(mcfont);
 button3.setTextSize(switchfontsize);
 button3.setOnClickListener(new android.view.View.OnClickListener({
 onClick: function(viewarg) {
-ctx.getSystemService(android.content.Context.VIBRATOR_SERVICE).vibrate(20);
+if(vibrations){ctx.getSystemService(android.content.Context.VIBRATOR_SERVICE).vibrate(20);}
 Entity.setPosition(getPlayerEnt(), Entity.getX(getPlayerEnt())+100000, Entity.getY(getPlayerEnt()), Entity.getZ(getPlayerEnt()));
 }
 }));
@@ -24538,56 +24593,54 @@ hitboxbox.addView(slayout1);
 var slayout1 = new android.widget.LinearLayout(activity);
 slayout1.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
 slayout1.getLayoutParams().height = icon_dimensions+modPadT+modPadB;
-var spaceholder = new android.widget.Button(ctx);
-spaceholder.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
-spaceholder.getLayoutParams().width = gap_width;spaceholder.getLayoutParams().height = icon_dimensions;
-spaceholder.setBackgroundDrawable(new android.graphics.drawable.ColorDrawable(android.graphics.Color.TRANSPARENT));
-slayout1.addView(spaceholder);
 var button = new android.widget.Button(ctx);
 button.setText("X: -1k");
 button.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
-button.getLayoutParams().width = switchWidth / tpQuickwidth;
+button.getLayoutParams().width = list_width / tpQuickwidth;
 button.setBackgroundDrawable(new android.graphics.drawable.ColorDrawable(android.graphics.Color.TRANSPARENT));
 button.setTextColor(modTextColor);
 button.setTextSize(btntextsize);
-button.setBackground(themeBtnNotClicked);
+button.setBackground(of);
+button.getBackground().setAlpha(70);
 button.setTypeface(mcfont);
 button.setTextSize(switchfontsize);
 button.setOnClickListener(new android.view.View.OnClickListener({
 onClick: function(viewarg) {
-ctx.getSystemService(android.content.Context.VIBRATOR_SERVICE).vibrate(20);
+if(vibrations){ctx.getSystemService(android.content.Context.VIBRATOR_SERVICE).vibrate(20);}
 Entity.setPosition(getPlayerEnt(), Entity.getX(getPlayerEnt())-1000, Entity.getY(getPlayerEnt()), Entity.getZ(getPlayerEnt()));
 }
 }));
 var button2 = new android.widget.Button(ctx);
 button2.setText("-10k");
 button2.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
-button2.getLayoutParams().width = switchWidth / tpQuickwidth;
+button2.getLayoutParams().width = list_width / tpQuickwidth;
 button2.setBackgroundDrawable(new android.graphics.drawable.ColorDrawable(android.graphics.Color.TRANSPARENT));
 button2.setTextColor(modTextColor);
 button2.setTextSize(btntextsize);
-button2.setBackground(themeBtnNotClicked);
+button2.setBackground(of);
+button2.getBackground().setAlpha(70);
 button2.setTypeface(mcfont);
 button2.setTextSize(switchfontsize);
 button2.setOnClickListener(new android.view.View.OnClickListener({
 onClick: function(viewarg) {
-ctx.getSystemService(android.content.Context.VIBRATOR_SERVICE).vibrate(20);
+if(vibrations){ctx.getSystemService(android.content.Context.VIBRATOR_SERVICE).vibrate(20);}
 Entity.setPosition(getPlayerEnt(), Entity.getX(getPlayerEnt())-10000, Entity.getY(getPlayerEnt()), Entity.getZ(getPlayerEnt()));
 }
 }));
 var button3 = new android.widget.Button(ctx);
 button3.setText("-100k");
 button3.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
-button3.getLayoutParams().width = switchWidth / tpQuickwidth;
+button3.getLayoutParams().width = list_width / tpQuickwidth;
 button3.setBackgroundDrawable(new android.graphics.drawable.ColorDrawable(android.graphics.Color.TRANSPARENT));
 button3.setTextColor(modTextColor);
 button3.setTextSize(btntextsize);
-button3.setBackground(themeBtnNotClicked);
+button3.setBackground(of);
+button3.getBackground().setAlpha(70);
 button3.setTypeface(mcfont);
 button3.setTextSize(switchfontsize);
 button3.setOnClickListener(new android.view.View.OnClickListener({
 onClick: function(viewarg) {
-ctx.getSystemService(android.content.Context.VIBRATOR_SERVICE).vibrate(20);
+if(vibrations){ctx.getSystemService(android.content.Context.VIBRATOR_SERVICE).vibrate(20);}
 Entity.setPosition(getPlayerEnt(), Entity.getX(getPlayerEnt())-100000, Entity.getY(getPlayerEnt()), Entity.getZ(getPlayerEnt()));
 }
 }));
@@ -24599,56 +24652,54 @@ hitboxbox.addView(slayout1);
 var slayout1 = new android.widget.LinearLayout(activity);
 slayout1.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
 slayout1.getLayoutParams().height = icon_dimensions+modPadT+modPadB;
-var spaceholder = new android.widget.Button(ctx);
-spaceholder.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
-spaceholder.getLayoutParams().width = gap_width;spaceholder.getLayoutParams().height = icon_dimensions;
-spaceholder.setBackgroundDrawable(new android.graphics.drawable.ColorDrawable(android.graphics.Color.TRANSPARENT));
-slayout1.addView(spaceholder);
 var button = new android.widget.Button(ctx);
 button.setText("Z: +1k");
 button.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
-button.getLayoutParams().width = switchWidth / tpQuickwidth;
+button.getLayoutParams().width = list_width / tpQuickwidth;
 button.setBackgroundDrawable(new android.graphics.drawable.ColorDrawable(android.graphics.Color.TRANSPARENT));
 button.setTextColor(modTextColor);
 button.setTextSize(btntextsize);
-button.setBackground(themeBtnNotClicked);
+button.setBackground(of);
+button.getBackground().setAlpha(70);
 button.setTypeface(mcfont);
 button.setTextSize(switchfontsize);
 button.setOnClickListener(new android.view.View.OnClickListener({
 onClick: function(viewarg) {
-ctx.getSystemService(android.content.Context.VIBRATOR_SERVICE).vibrate(20);
+if(vibrations){ctx.getSystemService(android.content.Context.VIBRATOR_SERVICE).vibrate(20);}
 Entity.setPosition(getPlayerEnt(), Entity.getX(getPlayerEnt()), Entity.getY(getPlayerEnt()), Entity.getZ(getPlayerEnt())+1000);
 }
 }));
 var button2 = new android.widget.Button(ctx);
 button2.setText("+10k");
 button2.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
-button2.getLayoutParams().width = switchWidth / tpQuickwidth;
+button2.getLayoutParams().width = list_width / tpQuickwidth;
 button2.setBackgroundDrawable(new android.graphics.drawable.ColorDrawable(android.graphics.Color.TRANSPARENT));
 button2.setTextColor(modTextColor);
 button2.setTextSize(btntextsize);
-button2.setBackground(themeBtnNotClicked);
+button2.setBackground(of);
+button2.getBackground().setAlpha(70);
 button2.setTypeface(mcfont);
 button2.setTextSize(switchfontsize);
 button2.setOnClickListener(new android.view.View.OnClickListener({
 onClick: function(viewarg) {
-ctx.getSystemService(android.content.Context.VIBRATOR_SERVICE).vibrate(20);
+if(vibrations){ctx.getSystemService(android.content.Context.VIBRATOR_SERVICE).vibrate(20);}
 Entity.setPosition(getPlayerEnt(), Entity.getX(getPlayerEnt()), Entity.getY(getPlayerEnt()), Entity.getZ(getPlayerEnt())+10000);
 }
 }));
 var button3 = new android.widget.Button(ctx);
 button3.setText("+100k");
 button3.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
-button3.getLayoutParams().width = switchWidth / tpQuickwidth;
+button3.getLayoutParams().width = list_width / tpQuickwidth;
 button3.setBackgroundDrawable(new android.graphics.drawable.ColorDrawable(android.graphics.Color.TRANSPARENT));
 button3.setTextColor(modTextColor);
 button3.setTextSize(btntextsize);
-button3.setBackground(themeBtnNotClicked);
+button3.setBackground(of);
+button3.getBackground().setAlpha(70);
 button3.setTypeface(mcfont);
 button3.setTextSize(switchfontsize);
 button3.setOnClickListener(new android.view.View.OnClickListener({
 onClick: function(viewarg) {
-ctx.getSystemService(android.content.Context.VIBRATOR_SERVICE).vibrate(20);
+if(vibrations){ctx.getSystemService(android.content.Context.VIBRATOR_SERVICE).vibrate(20);}
 Entity.setPosition(getPlayerEnt(), Entity.getX(getPlayerEnt()), Entity.getY(getPlayerEnt()), Entity.getZ(getPlayerEnt())+100000);
 }
 }));
@@ -24660,56 +24711,54 @@ hitboxbox.addView(slayout1);
 var slayout1 = new android.widget.LinearLayout(activity);
 slayout1.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
 slayout1.getLayoutParams().height = icon_dimensions+modPadT+modPadB;
-var spaceholder = new android.widget.Button(ctx);
-spaceholder.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
-spaceholder.getLayoutParams().width = gap_width;spaceholder.getLayoutParams().height = icon_dimensions;
-spaceholder.setBackgroundDrawable(new android.graphics.drawable.ColorDrawable(android.graphics.Color.TRANSPARENT));
-slayout1.addView(spaceholder);
 var button = new android.widget.Button(ctx);
 button.setText("Z: -1k");
 button.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
-button.getLayoutParams().width = switchWidth / tpQuickwidth;
+button.getLayoutParams().width = list_width / tpQuickwidth;
 button.setBackgroundDrawable(new android.graphics.drawable.ColorDrawable(android.graphics.Color.TRANSPARENT));
 button.setTextColor(modTextColor);
 button.setTextSize(btntextsize);
-button.setBackground(themeBtnNotClicked);
+button.setBackground(of);
+button.getBackground().setAlpha(70);
 button.setTypeface(mcfont);
 button.setTextSize(switchfontsize);
 button.setOnClickListener(new android.view.View.OnClickListener({
 onClick: function(viewarg) {
-ctx.getSystemService(android.content.Context.VIBRATOR_SERVICE).vibrate(20);
+if(vibrations){ctx.getSystemService(android.content.Context.VIBRATOR_SERVICE).vibrate(20);}
 Entity.setPosition(getPlayerEnt(), Entity.getX(getPlayerEnt()), Entity.getY(getPlayerEnt()), Entity.getZ(getPlayerEnt())-1000);
 }
 }));
 var button2 = new android.widget.Button(ctx);
 button2.setText("-10k");
 button2.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
-button2.getLayoutParams().width = switchWidth / tpQuickwidth;
+button2.getLayoutParams().width = list_width / tpQuickwidth;
 button2.setBackgroundDrawable(new android.graphics.drawable.ColorDrawable(android.graphics.Color.TRANSPARENT));
 button2.setTextColor(modTextColor);
 button2.setTextSize(btntextsize);
-button2.setBackground(themeBtnNotClicked);
+button2.setBackground(of);
+button2.getBackground().setAlpha(70);
 button2.setTypeface(mcfont);
 button2.setTextSize(switchfontsize);
 button2.setOnClickListener(new android.view.View.OnClickListener({
 onClick: function(viewarg) {
-ctx.getSystemService(android.content.Context.VIBRATOR_SERVICE).vibrate(20);
+if(vibrations){ctx.getSystemService(android.content.Context.VIBRATOR_SERVICE).vibrate(20);}
 Entity.setPosition(getPlayerEnt(), Entity.getX(getPlayerEnt()), Entity.getY(getPlayerEnt()), Entity.getZ(getPlayerEnt())-10000);
 }
 }));
 var button3 = new android.widget.Button(ctx);
 button3.setText("-100k");
 button3.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
-button3.getLayoutParams().width = switchWidth / tpQuickwidth;
+button3.getLayoutParams().width = list_width / tpQuickwidth;
 button3.setBackgroundDrawable(new android.graphics.drawable.ColorDrawable(android.graphics.Color.TRANSPARENT));
 button3.setTextColor(modTextColor);
 button3.setTextSize(btntextsize);
-button3.setBackground(themeBtnNotClicked);
+button3.setBackground(of);
+button3.getBackground().setAlpha(70);
 button3.setTypeface(mcfont);
 button3.setTextSize(switchfontsize);
 button3.setOnClickListener(new android.view.View.OnClickListener({
 onClick: function(viewarg) {
-ctx.getSystemService(android.content.Context.VIBRATOR_SERVICE).vibrate(20);
+if(vibrations){ctx.getSystemService(android.content.Context.VIBRATOR_SERVICE).vibrate(20);}
 Entity.setPosition(getPlayerEnt(), Entity.getX(getPlayerEnt()), Entity.getY(getPlayerEnt()), Entity.getZ(getPlayerEnt())-100000);
 }
 }));
@@ -24721,15 +24770,20 @@ hitboxbox.addView(slayout1);
 menuLayoutw.addView(hitboxbox);
 
 
+if(compactView){changeGUI5 = new PopupWindow(menuLayout1, list_width, ctx.getWindowManager().getDefaultDisplay().getHeight()-(icon_dimensions*tab_height));
+}else{
 changeGUI5 = new PopupWindow(menuLayout1, list_width, ctx.getWindowManager().getDefaultDisplay().getHeight());
-if(animations){changeGUI5.setAnimationStyle(android.R.style.Animation_InputMethod);}
+}if(animations){changeGUI5.setAnimationStyle(android.R.style.Animation_InputMethod);}
 changeGUI5.setBackgroundDrawable(new ColorDrawable(themeBackground));
 if(themedXmas){changeGUI5.setBackgroundDrawable(new android.graphics.drawable.BitmapDrawable(android.graphics.BitmapFactory.decodeByteArray(android.util.Base64.decode(christmasBack, 0), 0, android.util.Base64.decode(christmasBack, 0).length)));}else{changeGUI5.setBackgroundDrawable(new ColorDrawable(themeBackground));}
 if(showGradient){changeGUI5.setBackgroundDrawable(new android.graphics.drawable.GradientDrawable(android.graphics.drawable.GradientDrawable.Orientation.LEFT_RIGHT , [themeBackground, themeForeground, themeStroke]));}
 changeGUI5.getBackground().setAlpha(themeAlpha);
 if(allRight){
 changeGUI5.showAtLocation(ctx.getWindow().getDecorView(), Gravity.RIGHT | Gravity.CENTER, +left_width, 0);
-}else{changeGUI5.showAtLocation(ctx.getWindow().getDecorView(), Gravity.LEFT | Gravity.CENTER, +left_width, 0);}
+}if(compactView){
+	changeGUI5.showAtLocation(ctx.getWindow().getDecorView(), Gravity.TOP | Gravity.CENTER, 0, 0);
+}
+if(!compactView&!allRight){changeGUI5.showAtLocation(ctx.getWindow().getDecorView(), Gravity.LEFT | Gravity.CENTER, +left_width, 0);}
 } catch (error) {
 Toast.makeText(ctx, "Template Error: " + error+' #' + error['lineNumber'], 1).show();
 menuFailed5=true;
@@ -24778,6 +24832,8 @@ button.setBackground(title);
 menuLayoutw.addView(button);
 
 function showStopRideBtn() {
+	if(!stoprideshowing){
+		stoprideshowing=true;
 let moving7 = false;
 let dx7 = 0;
 let dy7 = 0;
@@ -24803,7 +24859,7 @@ onClick: function(viewarg){
 ModPE.setCamera(getPlayerEnt());
 taptoseed = false;
 GUIri.dismiss();
-
+stoprideshowing=false;
 }
 }));
 button.setOnLongClickListener(new android.view.View.OnLongClickListener({
@@ -24850,6 +24906,7 @@ Toast.makeText(ctx, "An error occured: " + err+' #' + err['lineNumber'], 1).show
 }
 }
 }))
+}
 };
 var slayout1 = new android.widget.LinearLayout(activity);
 slayout1.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
@@ -24949,7 +25006,7 @@ button.setBackground(themeBtnNotClicked);
 button.setGravity(android.view.Gravity.CENTER_VERTICAL);
 slayout1.setOnClickListener(new android.view.View.OnClickListener({
 onClick: function(viewarg) {
-ctx.getSystemService(android.content.Context.VIBRATOR_SERVICE).vibrate(20);
+if(vibrations){ctx.getSystemService(android.content.Context.VIBRATOR_SERVICE).vibrate(20);}
 spamPopup();savemod("Custom Spam");
 closeEverything();
 }
@@ -25197,7 +25254,7 @@ button.setBackground(themeBtnNotClicked);
 button.setGravity(android.view.Gravity.CENTER_VERTICAL);
 slayout1.setOnClickListener(new android.view.View.OnClickListener({
 onClick: function(viewarg) {
-ctx.getSystemService(android.content.Context.VIBRATOR_SERVICE).vibrate(20);
+if(vibrations){ctx.getSystemService(android.content.Context.VIBRATOR_SERVICE).vibrate(20);}
 stackitems();savemod("Stackable Items");
 alertPopup("Warning!","Some stacked items can disappear upon relogging","Okay");
 }
@@ -26467,7 +26524,7 @@ button.setBackground(themeBtnNotClicked);
 button.setGravity(android.view.Gravity.CENTER_VERTICAL);
 slayout1.setOnClickListener(new android.view.View.OnClickListener({
 onClick: function(viewarg) {
-ctx.getSystemService(android.content.Context.VIBRATOR_SERVICE).vibrate(20);
+if(vibrations){ctx.getSystemService(android.content.Context.VIBRATOR_SERVICE).vibrate(20);}
 espPopup();
 closeEverything();
 }
@@ -26710,7 +26767,7 @@ var alert = new android.app.AlertDialog.Builder(ctx);
 alert.setMessage(chatLogtxt);
 var dialog = alert.create();
 dialog.show();
-ctx.getSystemService(android.content.Context.VIBRATOR_SERVICE).vibrate(20);
+if(vibrations){ctx.getSystemService(android.content.Context.VIBRATOR_SERVICE).vibrate(20);}
 }
 }));
 if(iconsB){slayout1.addView(waypoint1);}
@@ -26746,7 +26803,7 @@ slayout1.setOnClickListener(new android.view.View.OnClickListener({
 onClick: function(viewarg) {
 savemod("Delete Log");
 deleteLog();
-ctx.getSystemService(android.content.Context.VIBRATOR_SERVICE).vibrate(20);
+if(vibrations){ctx.getSystemService(android.content.Context.VIBRATOR_SERVICE).vibrate(20);}
 }
 }));
 if(iconsB){slayout1.addView(waypoint1);}
@@ -26851,11 +26908,11 @@ button.setTextSize(switchfontsize);
 button.setGravity(android.view.Gravity.CENTER_VERTICAL);
 slayout1.setOnClickListener(new android.view.View.OnClickListener({
 onClick: function(viewarg) {
-ModPE.setCamera(getNearestPlayer(90));
-try{Entity.setRenderType(getNearestPlayer(90), EntityRenderType.pig);}catch(e){betToast(e)}
+ModPE.setCamera(getNearestPlayer(900));
+try{Entity.setRenderType(getNearestPlayer(900), EntityRenderType.pig);}catch(e){betToast(e)}
 preventDefault();
 showStopRideBtn();savemod("Spy Cam");
-ctx.getSystemService(android.content.Context.VIBRATOR_SERVICE).vibrate(20);
+if(vibrations){ctx.getSystemService(android.content.Context.VIBRATOR_SERVICE).vibrate(20);}
 }
 }));
 if(helpB){var helpBtn = new android.widget.ImageView(ctx);
@@ -26902,7 +26959,7 @@ button.setGravity(android.view.Gravity.CENTER_VERTICAL);
 slayout1.setOnClickListener(new android.view.View.OnClickListener({
 onClick: function(viewarg) {
 savemod("Servers");
-ctx.getSystemService(android.content.Context.VIBRATOR_SERVICE).vibrate(20);
+if(vibrations){ctx.getSystemService(android.content.Context.VIBRATOR_SERVICE).vibrate(20);}
 if (serverSelect) {
 GUIse.dismiss();
 serverSelect = false;
@@ -26957,7 +27014,7 @@ button.setGravity(android.view.Gravity.CENTER_VERTICAL);
 slayout1.setOnClickListener(new android.view.View.OnClickListener({
 onClick: function(viewarg) {
 savemod("IP Address");
-ctx.getSystemService(android.content.Context.VIBRATOR_SERVICE).vibrate(20);
+if(vibrations){ctx.getSystemService(android.content.Context.VIBRATOR_SERVICE).vibrate(20);}
 betToast("IP: " + Server.getAddress());
 betToast("IP: " + Server.getAddress());
 }
@@ -27004,7 +27061,7 @@ button.setBackground(themeBtnNotClicked);
 button.setGravity(android.view.Gravity.CENTER_VERTICAL);
 slayout1.setOnClickListener(new android.view.View.OnClickListener({
 onClick: function(viewarg) {
-ctx.getSystemService(android.content.Context.VIBRATOR_SERVICE).vibrate(20);
+if(vibrations){ctx.getSystemService(android.content.Context.VIBRATOR_SERVICE).vibrate(20);}
 chatPopup();savemod("Sneak Chat");
 closeEverything();
 }
@@ -27024,8 +27081,10 @@ betToast(langMsg[language]["Chat while crouching"]);
 slayout1.addView(button);
 if(helpB){slayout1.addView(helpBtn);}
 menuLayoutw.addView(slayout1);
+if(compactView){changeGUI6 = new PopupWindow(menuLayout1, list_width, ctx.getWindowManager().getDefaultDisplay().getHeight()-(icon_dimensions*tab_height));
+}else{
 changeGUI6 = new PopupWindow(menuLayout1, list_width, ctx.getWindowManager().getDefaultDisplay().getHeight());
-if(animations){changeGUI6.setAnimationStyle(android.R.style.Animation_InputMethod);}
+}if(animations){changeGUI6.setAnimationStyle(android.R.style.Animation_InputMethod);}
 changeGUI6.setBackgroundDrawable(new ColorDrawable(themeBackground));
 if(themedXmas){changeGUI6.setBackgroundDrawable(new android.graphics.drawable.BitmapDrawable(android.graphics.BitmapFactory.decodeByteArray(android.util.Base64.decode(christmasBack, 0), 0, android.util.Base64.decode(christmasBack, 0).length)));}else{changeGUI6.setBackgroundDrawable(new ColorDrawable(themeBackground));}
 if(showGradient){changeGUI6.setBackgroundDrawable(new android.graphics.drawable.GradientDrawable(android.graphics.drawable.GradientDrawable.Orientation.LEFT_RIGHT , [themeBackground, themeForeground, themeStroke]));}
@@ -27033,7 +27092,10 @@ changeGUI6.getBackground().setAlpha(themeAlpha);
 
 if(allRight){
 changeGUI6.showAtLocation(ctx.getWindow().getDecorView(), Gravity.RIGHT | Gravity.CENTER, +left_width, 0);
-}else{changeGUI6.showAtLocation(ctx.getWindow().getDecorView(), Gravity.LEFT | Gravity.CENTER, +left_width, 0);}
+}if(compactView){
+	changeGUI6.showAtLocation(ctx.getWindow().getDecorView(), Gravity.TOP | Gravity.CENTER, 0, 0);
+}
+if(!compactView&!allRight){changeGUI6.showAtLocation(ctx.getWindow().getDecorView(), Gravity.LEFT | Gravity.CENTER, +left_width, 0);}
 } catch (error) {
 Toast.makeText(ctx, "Template Error: " + error+' #' + error['lineNumber'], 1).show();
 menuFailed6=true;
@@ -27138,7 +27200,7 @@ addWLayout.addView(addWBtn);
 addWDialog.show();
 addWBtn.setOnClickListener(new android.view.View.OnClickListener() {
 onClick: function(viewarg) {
-ctx.getSystemService(android.content.Context.VIBRATOR_SERVICE).vibrate(20);
+if(vibrations){ctx.getSystemService(android.content.Context.VIBRATOR_SERVICE).vibrate(20);}
 addWDialog.dismiss();
 deleteData();
 }
@@ -27150,7 +27212,7 @@ print("An error occured: " + err+' #' + err['lineNumber']);
 }));
 };
 confirmDataDelete();savemod("Wipe Data");
-ctx.getSystemService(android.content.Context.VIBRATOR_SERVICE).vibrate(20);
+if(vibrations){ctx.getSystemService(android.content.Context.VIBRATOR_SERVICE).vibrate(20);}
 }
 }));
 if(iconsB){slayout1.addView(waypoint1);}
@@ -27185,7 +27247,7 @@ button.setTextSize(switchfontsize);
 slayout1.setOnClickListener(new android.view.View.OnClickListener({
 onClick: function(viewarg) {
 showLangList();savemod("Language");
-ctx.getSystemService(android.content.Context.VIBRATOR_SERVICE).vibrate(20);
+if(vibrations){ctx.getSystemService(android.content.Context.VIBRATOR_SERVICE).vibrate(20);}
 }
 }));
 if(iconsB){slayout1.addView(waypoint1);}
@@ -27221,7 +27283,7 @@ button.setTextSize(switchfontsize);
 slayout1.setOnClickListener(new android.view.View.OnClickListener({
 onClick: function(viewarg) {
 try{runScript();savemod("Custom Script");}catch(e){betToast(e)}
-ctx.getSystemService(android.content.Context.VIBRATOR_SERVICE).vibrate(20);
+if(vibrations){ctx.getSystemService(android.content.Context.VIBRATOR_SERVICE).vibrate(20);}
 }
 }));
 if(iconsB){slayout1.addView(waypoint1);}
@@ -27255,7 +27317,7 @@ button.setTextSize(switchfontsize);
 button.setGravity(Gravity.CENTER_VERTICAL);
 slayout1.setOnClickListener(new android.view.View.OnClickListener({
 onClick: function(viewarg) {
-ctx.getSystemService(android.content.Context.VIBRATOR_SERVICE).vibrate(20);
+if(vibrations){ctx.getSystemService(android.content.Context.VIBRATOR_SERVICE).vibrate(20);}
 var alert = new android.app.AlertDialog.Builder(ctx);
 alert.setTitle("Instinct Update Changelog");
 alert.setMessage("\nVersion: " + publicVer + "\nCurrent Version Installed: " + versionP + "\n" + chnglog + "");
@@ -27329,7 +27391,7 @@ button.setTextSize(switchfontsize);
 button.setGravity(Gravity.CENTER_VERTICAL);
 slayout1.setOnClickListener(new android.view.View.OnClickListener({
 onClick: function(viewarg) {
-ctx.getSystemService(android.content.Context.VIBRATOR_SERVICE).vibrate(20);
+if(vibrations){ctx.getSystemService(android.content.Context.VIBRATOR_SERVICE).vibrate(20);}
 openCredits();savemod("Credits");
 }
 }));
@@ -27364,7 +27426,7 @@ button.setTextSize(switchfontsize);
 button.setGravity(Gravity.CENTER_VERTICAL);
 slayout1.setOnClickListener(new android.view.View.OnClickListener({
 onClick: function(viewarg) {
-ctx.getSystemService(android.content.Context.VIBRATOR_SERVICE).vibrate(20);
+if(vibrations){ctx.getSystemService(android.content.Context.VIBRATOR_SERVICE).vibrate(20);}
 var alert = new android.app.AlertDialog.Builder(ctx);
 alert.setTitle("Instinct FAQ/Help");
 alert.setMessage(FAQ);
@@ -27425,7 +27487,7 @@ addWLayout.addView(addWBtn);
 addWDialog.show();
 addWBtn.setOnClickListener(new android.view.View.OnClickListener() {
 onClick: function(viewarg) {
-ctx.getSystemService(android.content.Context.VIBRATOR_SERVICE).vibrate(20);
+if(vibrations){ctx.getSystemService(android.content.Context.VIBRATOR_SERVICE).vibrate(20);}
 addWDialog.dismiss();
 var downloadSi = new android.content.Intent(ctx);
 downloadSi.setAction(android.content.Intent.ACTION_VIEW);
@@ -27440,7 +27502,7 @@ print("An error occured: " + err+' #' + err['lineNumber']);
 }));
 };
 confirmWebsite();savemod("Website");
-ctx.getSystemService(android.content.Context.VIBRATOR_SERVICE).vibrate(20);
+if(vibrations){ctx.getSystemService(android.content.Context.VIBRATOR_SERVICE).vibrate(20);}
 }
 }));
 if(iconsB){slayout1.addView(waypoint1);}
@@ -27496,7 +27558,7 @@ addWLayout.addView(addWBtn);
 addWDialog.show();
 addWBtn.setOnClickListener(new android.view.View.OnClickListener() {
 onClick: function(viewarg) {
-ctx.getSystemService(android.content.Context.VIBRATOR_SERVICE).vibrate(20);
+if(vibrations){ctx.getSystemService(android.content.Context.VIBRATOR_SERVICE).vibrate(20);}
 addWDialog.dismiss();
 var downloadSi = new android.content.Intent(ctx);
 downloadSi.setAction(android.content.Intent.ACTION_VIEW);
@@ -27511,7 +27573,7 @@ print("An error occured: " + err+' #' + err['lineNumber']);
 }));
 };
 confirmWebsite();savemod("JoinRealm");
-ctx.getSystemService(android.content.Context.VIBRATOR_SERVICE).vibrate(20);
+if(vibrations){ctx.getSystemService(android.content.Context.VIBRATOR_SERVICE).vibrate(20);}
 }
 }));
 if(iconsB){slayout1.addView(waypoint1);}
@@ -27568,7 +27630,7 @@ addWLayout.addView(addWBtn);
 addWDialog.show();
 addWBtn.setOnClickListener(new android.view.View.OnClickListener() {
 onClick: function(viewarg) {
-ctx.getSystemService(android.content.Context.VIBRATOR_SERVICE).vibrate(20);
+if(vibrations){ctx.getSystemService(android.content.Context.VIBRATOR_SERVICE).vibrate(20);}
 addWDialog.dismiss();
 var downloadSi = new android.content.Intent(ctx);
 downloadSi.setAction(android.content.Intent.ACTION_VIEW);
@@ -27583,7 +27645,7 @@ print("An error occured: " + err+' #' + err['lineNumber']);
 }));
 };
 confirmWebsite();
-ctx.getSystemService(android.content.Context.VIBRATOR_SERVICE).vibrate(20);
+if(vibrations){ctx.getSystemService(android.content.Context.VIBRATOR_SERVICE).vibrate(20);}
 }
 }));
 if(iconsB){slayout1.addView(waypoint1);}
@@ -27618,7 +27680,7 @@ button.setGravity(Gravity.CENTER_VERTICAL);
 slayout1.setOnClickListener(new android.view.View.OnClickListener({
 onClick: function(viewarg) {
 savemod("Donate");
-ctx.getSystemService(android.content.Context.VIBRATOR_SERVICE).vibrate(20);
+if(vibrations){ctx.getSystemService(android.content.Context.VIBRATOR_SERVICE).vibrate(20);}
 function confirmWebsite() {
 var ctx = com.mojang.minecraftpe.MainActivity.currentMainActivity.get();
 ctx.runOnUiThread(new java.lang.Runnable({
@@ -27641,7 +27703,7 @@ addWLayout.addView(addWBtn);
 addWDialog.show();
 addWBtn.setOnClickListener(new android.view.View.OnClickListener() {
 onClick: function(viewarg) {
-ctx.getSystemService(android.content.Context.VIBRATOR_SERVICE).vibrate(20);
+if(vibrations){ctx.getSystemService(android.content.Context.VIBRATOR_SERVICE).vibrate(20);}
 addWDialog.dismiss();
 var downloadSi = new android.content.Intent(ctx);
 downloadSi.setAction(android.content.Intent.ACTION_VIEW);
@@ -27737,7 +27799,7 @@ button.setGravity(Gravity.CENTER_VERTICAL);
 slayout1.setOnClickListener(new android.view.View.OnClickListener({
 onClick: function(viewarg) {
 savemod("Donator Mods");
-ctx.getSystemService(android.content.Context.VIBRATOR_SERVICE).vibrate(20);
+if(vibrations){ctx.getSystemService(android.content.Context.VIBRATOR_SERVICE).vibrate(20);}
 alertPopup("Incentives","Here are some things donators can get in USD.\n\n1: Custom Name - \nDisplayed to other Instinct users ingame. Minimum $1.00\n\n2: Particle Effect -\nShows the purple portal effect over your head to other Instinct users. Minimum $1.00\n\n3: Immortality -\nOther Instinct users can't hit your body, acts as a Friend to everyone. Works wherever Reach does. Minimum $7.00","Cool!");
 }
 }));
@@ -27784,7 +27846,7 @@ print("An error occured: " + err+' #' + err['lineNumber']);
 }));
 };
 confirmWebsite();
-ctx.getSystemService(android.content.Context.VIBRATOR_SERVICE).vibrate(20);
+if(vibrations){ctx.getSystemService(android.content.Context.VIBRATOR_SERVICE).vibrate(20);}
 }
 }));
 if(iconsB){slayout1.addView(waypoint1);}
@@ -27831,7 +27893,43 @@ print("An error occured: " + err+' #' + err['lineNumber']);
 }));
 };
 confirmWebsite();
-ctx.getSystemService(android.content.Context.VIBRATOR_SERVICE).vibrate(20);
+if(vibrations){ctx.getSystemService(android.content.Context.VIBRATOR_SERVICE).vibrate(20);}
+}
+}));
+if(iconsB){slayout1.addView(waypoint1);}
+slayout1.addView(button);
+menuLayoutw.addView(slayout1);
+var slayout1 = new android.widget.LinearLayout(activity);
+slayout1.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
+slayout1.getLayoutParams().height = icon_dimensions+modPadT+modPadB;
+var spaceholder = new android.widget.Button(ctx);
+spaceholder.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
+spaceholder.getLayoutParams().width = gap_width;spaceholder.getLayoutParams().height = icon_dimensions;
+spaceholder.setBackgroundDrawable(new android.graphics.drawable.ColorDrawable(android.graphics.Color.TRANSPARENT));
+slayout1.addView(spaceholder);
+if(iconsB){var waypoint1 = new android.widget.ImageView(ctx);
+layoutParams=new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT);
+layoutParams.gravity=Gravity.CENTER;
+waypoint1.setLayoutParams(layoutParams);
+waypoint1.getLayoutParams().width = icon_dimensions;
+waypoint1.getLayoutParams().height = icon_dimensions;
+waypoint1.setBackgroundDrawable(new android.graphics.drawable.BitmapDrawable(android.graphics.BitmapFactory.decodeByteArray(android.util.Base64.decode(fonticon, 0), 0, android.util.Base64.decode(fonticon, 0).length)));
+}var button = new android.widget.TextView(ctx);
+button.setText("  Tab Disabler");
+button.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT));
+button.getLayoutParams().width = switch_width;
+button.setBackgroundDrawable(new android.graphics.drawable.ColorDrawable(android.graphics.Color.TRANSPARENT));
+button.setTextColor(modTextColor);
+button.setTextSize(btntextsize);
+button.setBackground(themeBtnNotClicked);
+button.setTypeface(mcfont);
+button.setTextSize(switchfontsize);
+button.setGravity(Gravity.CENTER_VERTICAL);
+slayout1.setOnClickListener(new android.view.View.OnClickListener({
+onClick: function(viewarg) {
+savemod("Tab Disabler");
+tabdisable();
+if(vibrations){ctx.getSystemService(android.content.Context.VIBRATOR_SERVICE).vibrate(20);}
 }
 }));
 if(iconsB){slayout1.addView(waypoint1);}
@@ -28215,7 +28313,9 @@ if (!useGIF) {
 gifedit();
 } else {
 useGIF = false;
-if(backOpen){guiBackgroundGif.dismiss();backOpen=false;}
+if(backOpen){try{guiBackgroundGif.dismiss();backOpen=false;} catch (error) {
+Toast.makeText(ctx, "Template Error: " + error+' #' + error['lineNumber'], 1).show();
+}}
 }
 }
 }));
@@ -28248,6 +28348,7 @@ button.setTextColor(modTextColor);
 button.setBackground(themeBtnNotClicked);
 button.setOnClickListener(new View.OnClickListener({
 onClick: function(view) {
+	if(!compactView){
 if (!allRight) {
 allRight = true;savemod("Menu on Right");
 } else {
@@ -28255,6 +28356,45 @@ allRight = false;
 }
 saveTheme();
 closeEverything();
+	}else{betToast("Disable Horizontal Tabs First");}
+}
+}));
+slayout1.addView(button);
+menuLayoutw.addView(slayout1);
+var slayout1 = new android.widget.LinearLayout(activity);
+slayout1.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
+slayout1.getLayoutParams().height = icon_dimensions+modPadT+modPadB;
+var spaceholder = new android.widget.Button(ctx);
+spaceholder.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
+spaceholder.getLayoutParams().width = gap_width;spaceholder.getLayoutParams().height = icon_dimensions;
+spaceholder.setBackgroundDrawable(new android.graphics.drawable.ColorDrawable(android.graphics.Color.TRANSPARENT));
+slayout1.addView(spaceholder);
+if(iconsB){var waypoint1 = new android.widget.ImageView(ctx);
+layoutParams=new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT);
+layoutParams.gravity=Gravity.CENTER;
+waypoint1.setLayoutParams(layoutParams);
+waypoint1.getLayoutParams().width = icon_dimensions;
+waypoint1.getLayoutParams().height = icon_dimensions;
+waypoint1.setBackgroundDrawable(new android.graphics.drawable.BitmapDrawable(android.graphics.BitmapFactory.decodeByteArray(android.util.Base64.decode(offhandicon, 0), 0, android.util.Base64.decode(offhandicon, 0).length)));
+}var button = new CheckBox(ctx);
+button.setText("Vibrations");
+button.setChecked(vibrations);
+button.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT));
+button.getLayoutParams().width = switchWidth + icon_dimensions+icon_dimensions;
+button.setTextSize(btntextsize-1);
+button.setTypeface(mcfont);
+button.setBackgroundDrawable(new android.graphics.drawable.ColorDrawable(android.graphics.Color.TRANSPARENT));
+button.setTextColor(modTextColor);
+button.setBackground(themeBtnNotClicked);
+button.setOnClickListener(new View.OnClickListener({
+onClick: function(view) {
+if (!vibrations) {
+vibrations = true;
+} else {
+vibrations = false;
+savemod("Vibrations Off");
+}
+saveTheme();
 }
 }));
 slayout1.addView(button);
@@ -28442,6 +28582,48 @@ saveTheme();
 }));
 slayout1.addView(button);
 menuLayoutw.addView(slayout1);
+
+var slayout1 = new android.widget.LinearLayout(activity);
+slayout1.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
+slayout1.getLayoutParams().height = icon_dimensions+modPadT+modPadB;
+var spaceholder = new android.widget.Button(ctx);
+spaceholder.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
+spaceholder.getLayoutParams().width = gap_width;spaceholder.getLayoutParams().height = icon_dimensions;
+spaceholder.setBackgroundDrawable(new android.graphics.drawable.ColorDrawable(android.graphics.Color.TRANSPARENT));
+slayout1.addView(spaceholder);
+if(iconsB){var waypoint1 = new android.widget.ImageView(ctx);
+layoutParams=new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT);
+layoutParams.gravity=Gravity.CENTER;
+waypoint1.setLayoutParams(layoutParams);
+waypoint1.getLayoutParams().width = icon_dimensions;
+waypoint1.getLayoutParams().height = icon_dimensions;
+waypoint1.setBackgroundDrawable(new android.graphics.drawable.BitmapDrawable(android.graphics.BitmapFactory.decodeByteArray(android.util.Base64.decode(offhandicon, 0), 0, android.util.Base64.decode(offhandicon, 0).length)));
+}var button = new CheckBox(ctx);
+button.setText("Horizontal Tabs");
+button.setChecked(compactView);
+button.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT));
+button.getLayoutParams().width = switchWidth + icon_dimensions+icon_dimensions;
+button.setTextSize(btntextsize-1);
+button.setTypeface(mcfont);
+button.setBackgroundDrawable(new android.graphics.drawable.ColorDrawable(android.graphics.Color.TRANSPARENT));
+button.setTextColor(modTextColor);
+button.setBackground(themeBtnNotClicked);
+button.setOnClickListener(new View.OnClickListener({
+onClick: function(view) {
+	if(!allRight){
+if (!compactView) {
+compactView = true;savemod("Compact View");
+} else {
+compactView = false;
+}
+saveTheme();
+closeEverything();
+}else{betToast("Disable Menu On Right First");}
+}
+}));
+slayout1.addView(button);
+menuLayoutw.addView(slayout1);
+
 var slayout1 = new android.widget.LinearLayout(activity);
 slayout1.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
 slayout1.getLayoutParams().height = icon_dimensions+modPadT+modPadB;
@@ -29172,15 +29354,20 @@ themeMagentaSwitch.setText(tohtml(themeMagentaSwitch.getText(),true));
 }
 
 
+if(compactView){changeGUI8 = new PopupWindow(menuLayout1, list_width, ctx.getWindowManager().getDefaultDisplay().getHeight()-(icon_dimensions*tab_height));
+}else{
 changeGUI8 = new PopupWindow(menuLayout1, list_width, ctx.getWindowManager().getDefaultDisplay().getHeight());
-if(animations){changeGUI8.setAnimationStyle(android.R.style.Animation_InputMethod);}
+}if(animations){changeGUI8.setAnimationStyle(android.R.style.Animation_InputMethod);}
 changeGUI8.setBackgroundDrawable(new ColorDrawable(themeBackground));
 if(themedXmas){changeGUI8.setBackgroundDrawable(new android.graphics.drawable.BitmapDrawable(android.graphics.BitmapFactory.decodeByteArray(android.util.Base64.decode(christmasBack, 0), 0, android.util.Base64.decode(christmasBack, 0).length)));}else{changeGUI8.setBackgroundDrawable(new ColorDrawable(themeBackground));}
 if(showGradient){changeGUI8.setBackgroundDrawable(new android.graphics.drawable.GradientDrawable(android.graphics.drawable.GradientDrawable.Orientation.LEFT_RIGHT , [themeBackground, themeForeground, themeStroke]));}
 changeGUI8.getBackground().setAlpha(themeAlpha);
 if(allRight){
 changeGUI8.showAtLocation(ctx.getWindow().getDecorView(), Gravity.RIGHT | Gravity.CENTER, +left_width, 0);
-}else{changeGUI8.showAtLocation(ctx.getWindow().getDecorView(), Gravity.LEFT | Gravity.CENTER, +left_width, 0);}
+}if(compactView){
+	changeGUI8.showAtLocation(ctx.getWindow().getDecorView(), Gravity.TOP | Gravity.CENTER, 0, 0);
+}
+if(!compactView&!allRight){changeGUI8.showAtLocation(ctx.getWindow().getDecorView(), Gravity.LEFT | Gravity.CENTER, +left_width, 0);}
 } catch (error) {
 Toast.makeText(ctx, "Template Error: " + error+' #' + error['lineNumber'], 1).show();
 menuFailed8=true;
@@ -29284,7 +29471,7 @@ canPreset = true;
 }
 if (canPreset) {
 if (pvpd == false&&!minerd) {
-ctx.getSystemService(android.content.Context.VIBRATOR_SERVICE).vibrate(20);
+if(vibrations){ctx.getSystemService(android.content.Context.VIBRATOR_SERVICE).vibrate(20);}
 if (!starterd) {
 savemod("Starter Preset");
 starters = true;
@@ -29401,7 +29588,7 @@ canPreset = true;
 }
 if (canPreset) {
 if (starterd == false&&minerd==false) {
-ctx.getSystemService(android.content.Context.VIBRATOR_SERVICE).vibrate(20);
+if(vibrations){ctx.getSystemService(android.content.Context.VIBRATOR_SERVICE).vibrate(20);}
 if (!pvpd) {
 savemod("PVP Preset");
 pvps = true;
@@ -29525,7 +29712,7 @@ canPreset = true;
 }
 if (canPreset) {
 if (pvpd == false&&starterd==false) {
-ctx.getSystemService(android.content.Context.VIBRATOR_SERVICE).vibrate(20);
+if(vibrations){ctx.getSystemService(android.content.Context.VIBRATOR_SERVICE).vibrate(20);}
 if (!minerd) {
 minerd = true;
 coordds = true;
@@ -29602,15 +29789,20 @@ minerpres.setText(tohtml(minerpres.getText(),true));
 
 
 
+if(compactView){changeGUI9 = new PopupWindow(menuLayout1, list_width, ctx.getWindowManager().getDefaultDisplay().getHeight()-(icon_dimensions*tab_height));
+}else{
 changeGUI9 = new PopupWindow(menuLayout1, list_width, ctx.getWindowManager().getDefaultDisplay().getHeight());
-if(animations){changeGUI9.setAnimationStyle(android.R.style.Animation_InputMethod);}
+}if(animations){changeGUI9.setAnimationStyle(android.R.style.Animation_InputMethod);}
 changeGUI9.setBackgroundDrawable(new ColorDrawable(themeBackground));
 if(themedXmas){changeGUI9.setBackgroundDrawable(new android.graphics.drawable.BitmapDrawable(android.graphics.BitmapFactory.decodeByteArray(android.util.Base64.decode(christmasBack, 0), 0, android.util.Base64.decode(christmasBack, 0).length)));}else{changeGUI9.setBackgroundDrawable(new ColorDrawable(themeBackground));}
 if(showGradient){changeGUI9.setBackgroundDrawable(new android.graphics.drawable.GradientDrawable(android.graphics.drawable.GradientDrawable.Orientation.LEFT_RIGHT , [themeBackground, themeForeground, themeStroke]));}
 changeGUI9.getBackground().setAlpha(themeAlpha);
 if(allRight){
 changeGUI9.showAtLocation(ctx.getWindow().getDecorView(), Gravity.RIGHT | Gravity.CENTER, +left_width, 0);
-}else{changeGUI9.showAtLocation(ctx.getWindow().getDecorView(), Gravity.LEFT | Gravity.CENTER, +left_width, 0);}
+}if(compactView){
+	changeGUI9.showAtLocation(ctx.getWindow().getDecorView(), Gravity.TOP | Gravity.CENTER, 0, 0);
+}
+if(!compactView&!allRight){changeGUI9.showAtLocation(ctx.getWindow().getDecorView(), Gravity.LEFT | Gravity.CENTER, +left_width, 0);}
 } catch (error) {
 Toast.makeText(ctx, "Template Error: " + error+' #' + error['lineNumber'], 1).show();
 menuFailed9=true;
@@ -29699,15 +29891,20 @@ CreateButtonF(i).getParent().removeView(CreateButtonF(i));
 menuLayoutw.addView(CreateButtonF(i));
 }}
 
-changeGUI10 = new PopupWindow(menuLayout1, list_width,ctx.getWindowManager().getDefaultDisplay().getHeight());
-if(animations){changeGUI10.setAnimationStyle(android.R.style.Animation_InputMethod);}
+if(compactView){changeGUI10 = new PopupWindow(menuLayout1, list_width, ctx.getWindowManager().getDefaultDisplay().getHeight()-(icon_dimensions*tab_height));
+}else{
+changeGUI10 = new PopupWindow(menuLayout1, list_width, ctx.getWindowManager().getDefaultDisplay().getHeight());
+}if(animations){changeGUI10.setAnimationStyle(android.R.style.Animation_InputMethod);}
 changeGUI10.setBackgroundDrawable(new ColorDrawable(themeBackground));
 if(themedXmas){changeGUI10.setBackgroundDrawable(new android.graphics.drawable.BitmapDrawable(android.graphics.BitmapFactory.decodeByteArray(android.util.Base64.decode(christmasBack, 0), 0, android.util.Base64.decode(christmasBack, 0).length)));}else{changeGUI10.setBackgroundDrawable(new ColorDrawable(themeBackground));}
 if(showGradient){changeGUI10.setBackgroundDrawable(new android.graphics.drawable.GradientDrawable(android.graphics.drawable.GradientDrawable.Orientation.LEFT_RIGHT , [themeBackground, themeForeground, themeStroke]));}
 changeGUI10.getBackground().setAlpha(themeAlpha);
 if(allRight){
 changeGUI10.showAtLocation(ctx.getWindow().getDecorView(), Gravity.RIGHT | Gravity.CENTER, +left_width, 0);
-}else{changeGUI10.showAtLocation(ctx.getWindow().getDecorView(), Gravity.LEFT | Gravity.CENTER, +left_width, 0);}
+}if(compactView){
+	changeGUI10.showAtLocation(ctx.getWindow().getDecorView(), Gravity.TOP | Gravity.CENTER, 0, 0);
+}
+if(!compactView&!allRight){changeGUI10.showAtLocation(ctx.getWindow().getDecorView(), Gravity.LEFT | Gravity.CENTER, +left_width, 0);}
 
 } catch (error) {
 Toast.makeText(ctx, "Template Error: " + error+' #' + error['lineNumber'], 1).show();
@@ -29724,7 +29921,9 @@ run: function() {
 try {
 setStyle();
 savemod("Show Discord");
+if(compactView){changeGUI11 = new PopupWindow(webViewDi, list_width,ctx.getWindowManager().getDefaultDisplay().getHeight()-(icon_dimensions*tab_height));}else{
 changeGUI11 = new PopupWindow(webViewDi, list_width,ctx.getWindowManager().getDefaultDisplay().getHeight());
+}
 if(animations){changeGUI11.setAnimationStyle(android.R.style.Animation_InputMethod);}
 changeGUI11.setBackgroundDrawable(new ColorDrawable(themeBackground));
 if(themedXmas){changeGUI11.setBackgroundDrawable(new android.graphics.drawable.BitmapDrawable(android.graphics.BitmapFactory.decodeByteArray(android.util.Base64.decode(christmasBack, 0), 0, android.util.Base64.decode(christmasBack, 0).length)));}else{changeGUI11.setBackgroundDrawable(new ColorDrawable(themeBackground));}
@@ -29732,7 +29931,10 @@ if(showGradient){changeGUI11.setBackgroundDrawable(new android.graphics.drawable
 changeGUI11.getBackground().setAlpha(themeAlpha);
 if(allRight){
 changeGUI11.showAtLocation(ctx.getWindow().getDecorView(), Gravity.RIGHT | Gravity.CENTER, +left_width, 0);
-}else{changeGUI11.showAtLocation(ctx.getWindow().getDecorView(), Gravity.LEFT | Gravity.CENTER, +left_width, 0);}
+}if(compactView){
+	changeGUI11.showAtLocation(ctx.getWindow().getDecorView(), Gravity.TOP | Gravity.CENTER, 0, 0);
+}
+if(!compactView&!allRight){changeGUI11.showAtLocation(ctx.getWindow().getDecorView(), Gravity.LEFT | Gravity.CENTER, +left_width, 0);}
 } catch (error) {
 Toast.makeText(ctx, "Template Error: " + error+' #' + error['lineNumber'], 1).show();
 menuFailed11=true;
@@ -30165,7 +30367,7 @@ tmiMainHor.addView(menuScroll);
 verticallay.addView(tmiMainHor);
 addBtn.setOnClickListener(new android.view.View.OnClickListener() {
 onClick: function(viewarg) {
-ctx.getSystemService(android.content.Context.VIBRATOR_SERVICE).vibrate(20);
+if(vibrations){ctx.getSystemService(android.content.Context.VIBRATOR_SERVICE).vibrate(20);}
 espBlock = parseInt(etId.getText());
 tmiDialog.dismiss();
 }
@@ -30425,6 +30627,27 @@ toppadd.setHint("mod padding");
 toppadd.setInputType(numbers);
 menuLayout1.addView(tptxt);
 menuLayout1.addView(toppadd);
+
+var menuwi = android.widget.TextView(ctx);
+menuwi.setTextSize(12);
+menuwi.setText(" Menu Width:");
+menet=new android.widget.EditText(activity);
+menet.setText((list_width_var).toString());
+menet.setHint("menu width");
+menet.setInputType(numbers);
+menuLayout1.addView(menuwi);
+menuLayout1.addView(menet);
+
+var defwi = new android.widget.Button(ctx);
+defwi.setText("Default Width");
+defwi.setOnClickListener(new android.view.View.OnClickListener() {
+	onClick: function(viewarg) {
+		if(vibrations){ctx.getSystemService(android.content.Context.VIBRATOR_SERVICE).vibrate(20);}
+		menet.setText((200).toString());
+	}
+});
+menuLayout1.addView(defwi);
+
 menuScroll.addView(menuLayout1);
 menuLayout.addView(menuScroll);
 
@@ -30437,14 +30660,116 @@ btntextsize= parseInt(btnsize.getText());
 switchfontsize = parseInt(switchsize.getText());
 modPadT= parseInt(toppadd.getText()/2);
 modPadB = parseInt(toppadd.getText()/2);
+list_width_var = parseInt(menet.getText());
+list_width = list_width_var*density;
+switch_width = ((list_width_var*density)/1.42);
+wayNameWidth = list_width-(icon_dimensions*4);
 if(toppadd.getText()==""){modPadT=0;modPadB=0}
 if(fontsele==0){fontid="mc";mcfont = new android.graphics.Typeface.createFromFile(mcfontpath4);}
 if(fontsele==1){fontid="ss";mcfont = Typeface.create("sans-serif", Typeface.NORMAL)}
 if(fontsele==2){fontid="ssl";mcfont = Typeface.create("sans-serif-light", Typeface.NORMAL)}
 if(fontsele==3){fontid="ssc";mcfont = Typeface.create("sans-serif-condensed", Typeface.NORMAL)}
 if(fontsele==4){fontid="sst";mcfont = Typeface.create("sans-serif-thin", Typeface.NORMAL)}
+saveTheme();
 }catch (err) {
 mcfont = Typeface.create("sans-serif-thin", Typeface.NORMAL);betToast('Font not supported');
+}
+});
+alert = alert.show();
+});
+}
+function tabdisable(){
+context.runOnUiThread(function() {
+var alert = new android.app.AlertDialog.Builder(context),
+spinner = new  android.widget.Spinner(context),
+spinnerAdapter = new android.widget.ArrayAdapter(context, android.R.layout.simple_spinner_item, fontlist);
+var menuLayout = new android.widget.LinearLayout(ctx);
+var menuScroll = new android.widget.ScrollView(ctx);
+var menuLayout1 = new android.widget.LinearLayout(ctx);
+menuLayout.setOrientation(1);
+menuLayout1.setOrientation(1);
+
+var swtxt = android.widget.TextView(ctx);
+swtxt.setTextSize(12);
+swtxt.setText(" Choose tabs to disable/enable");
+menuLayout1.addView(swtxt);
+
+var button = new CheckBox(ctx);
+button.setText("Survival");
+button.setChecked(survivaltab); button.setOnClickListener(new View.OnClickListener({ onClick: function(view) {
+if (!survivaltab) {
+survivaltab = true;
+} else {
+survivaltab = false; } saveTheme(); } })); menuLayout1.addView(button);
+var button = new CheckBox(ctx);
+button.setText("PVP Tab");
+button.setChecked(pvptab); button.setOnClickListener(new View.OnClickListener({ onClick: function(view) {
+if (!pvptab) {
+pvptab = true;
+} else {
+pvptab = false; } saveTheme(); } })); menuLayout1.addView(button);
+var button = new CheckBox(ctx);
+button.setText("Waypoint Tab");
+button.setChecked(waypointtab); button.setOnClickListener(new View.OnClickListener({ onClick: function(view) {
+if (!waypointtab) {
+waypointtab = true;
+} else {
+waypointtab = false; } saveTheme(); } })); menuLayout1.addView(button);
+var button = new CheckBox(ctx);
+button.setText("Friend Tab");
+button.setChecked(friendtab); button.setOnClickListener(new View.OnClickListener({ onClick: function(view) {
+if (!friendtab) {
+friendtab = true;
+} else {
+friendtab = false; } saveTheme(); } })); menuLayout1.addView(button);
+var button = new CheckBox(ctx);
+button.setText("Potion Tab");
+button.setChecked(potiontab); button.setOnClickListener(new View.OnClickListener({ onClick: function(view) {
+if (!potiontab) {
+potiontab = true;
+} else {
+potiontab = false; } saveTheme(); } })); menuLayout1.addView(button);
+var button = new CheckBox(ctx);
+button.setText("Movement Tab");
+button.setChecked(movementtab); button.setOnClickListener(new View.OnClickListener({ onClick: function(view) {
+if (!movementtab) {
+movementtab = true;
+} else {
+movementtab = false; } saveTheme(); } })); menuLayout1.addView(button);
+var button = new CheckBox(ctx);
+button.setText("Discord Tab");
+button.setChecked(discordtab); button.setOnClickListener(new View.OnClickListener({ onClick: function(view) {
+if (!discordtab) {
+discordtab = true;
+} else {
+discordtab = false; } saveTheme(); } })); menuLayout1.addView(button);
+var button = new CheckBox(ctx);
+button.setText("Misc Tab");
+button.setChecked(misctab); button.setOnClickListener(new View.OnClickListener({ onClick: function(view) {
+if (!misctab) {
+misctab = true;
+} else {
+misctab = false; } saveTheme(); } })); menuLayout1.addView(button);
+var button = new CheckBox(ctx);
+button.setText("Preset Tab");
+button.setChecked(presettab); button.setOnClickListener(new View.OnClickListener({ onClick: function(view) {
+if (!presettab) {
+presettab = true;
+} else {
+presettab = false; } saveTheme(); } })); menuLayout1.addView(button);
+
+
+
+menuScroll.addView(menuLayout1);
+menuLayout.addView(menuScroll);
+
+alert.setView(menuLayout);
+alert.setTitle("Tabs");
+alert.setPositiveButton("Ok", function(dialog, whichButton) {
+alert.dismiss();
+try{
+saveTheme();
+}catch (err) {
 }
 });
 alert = alert.show();
@@ -30589,6 +30914,9 @@ button.setPadding(0,icon_dimensions*.4,0,icon_dimensions*.4);
 button.setGravity(Gravity.CENTER_VERTICAL | Gravity.CENTER_HORIZONTAL);
 button.setOnClickListener(new View.OnClickListener({
 onClick: function(view) {
+	if(backOpen){try{guiBackgroundGif.dismiss();backOpen=false;} catch (error) {
+Toast.makeText(ctx, "Template Error: " + error+' #' + error['lineNumber'], 1).show();
+}}
 if (!showAllMenuStatus) {
 closeMenus();
 showAllMenu = true;
@@ -30673,7 +31001,11 @@ button.setTextSize(switchfontsize);
 button.setPadding(0,icon_dimensions*.4,0,icon_dimensions*.4);
 button.setOnClickListener(new View.OnClickListener({
 onClick: function(view) {
+	
 if(publicVer!="OFFLINE"){	
+if(backOpen){try{guiBackgroundGif.dismiss();backOpen=false;} catch (error) {
+Toast.makeText(ctx, "Template Error: " + error+' #' + error['lineNumber'], 1).show();
+}}
 betToast("Go to settings to revert to default UI");
 if (!showAllMenuStatus) {
 closeMenus();
@@ -31063,14 +31395,14 @@ tmiLayout.addView(helpLine);
 confirmSuicideDialog.show();
 addBtn.setOnClickListener(new android.view.View.OnClickListener() {
 onClick: function(viewarg) {
-ctx.getSystemService(android.content.Context.VIBRATOR_SERVICE).vibrate(20);
+if(vibrations){ctx.getSystemService(android.content.Context.VIBRATOR_SERVICE).vibrate(20);}
 Entity.setPositionRelative(getPlayerEnt(), 0, -300, 1);
 confirmSuicideDialog.dismiss();
 }
 });
 cancelBtn.setOnClickListener(new android.view.View.OnClickListener() {
 onClick: function(viewarg) {
-ctx.getSystemService(android.content.Context.VIBRATOR_SERVICE).vibrate(20);
+if(vibrations){ctx.getSystemService(android.content.Context.VIBRATOR_SERVICE).vibrate(20);}
 confirmSuicideDialog.dismiss();
 }
 });
@@ -31108,14 +31440,14 @@ tmiLayout.addView(cancelBtn);
 tmiDialog.show();
 addBtn.setOnClickListener(new android.view.View.OnClickListener() {
 onClick: function(viewarg) {
-ctx.getSystemService(android.content.Context.VIBRATOR_SERVICE).vibrate(20);
+if(vibrations){ctx.getSystemService(android.content.Context.VIBRATOR_SERVICE).vibrate(20);}
 Player.setItemCustomName(Player.getSelectedSlotId(), etName.getText());
 tmiDialog.dismiss();
 }
 });
 cancelBtn.setOnClickListener(new android.view.View.OnClickListener() {
 onClick: function(viewarg) {
-ctx.getSystemService(android.content.Context.VIBRATOR_SERVICE).vibrate(20);
+if(vibrations){ctx.getSystemService(android.content.Context.VIBRATOR_SERVICE).vibrate(20);}
 tmiDialog.dismiss();
 }
 });
@@ -31175,10 +31507,16 @@ etName.setText(gif3);
 });
 
 scriptalert.setPositiveButton("Apply",new android.content.DialogInterface.OnClickListener(){
-onClick: function(dialog,whichButton){ctx.getSystemService(android.content.Context.VIBRATOR_SERVICE).vibrate(20);
+	
+onClick: function(dialog,whichButton){
+	if(etName.getText().toString().toLowerCase().includes('http')&&etName.getText().toString().toLowerCase().includes('://')){
+		
+	if(vibrations){ctx.getSystemService(android.content.Context.VIBRATOR_SERVICE).vibrate(20);}
 giflink=etName.getText();
 useGIF=true;
 savemod("GIF Background");
+loadgif();
+}else{betToast("Link does not include 'http://' or 'https://'")}
 }
 });
 
@@ -31194,23 +31532,41 @@ betToast("An error occured: " + err+' #' + err['lineNumber']);
 }));
 };
 
-function openBackground() {
-var ctx = com.mojang.minecraftpe.MainActivity.currentMainActivity.get();
-ctx.runOnUiThread(new java.lang.Runnable({
+function loadgif(){
+	ctx.runOnUiThread(new java.lang.Runnable({
 run: function() {
 try {
-	backOpen=true;
-var gifback=new android.webkit.WebView(activity);
+gifback=new android.webkit.WebView(activity);
 gifback.getSettings().setJavaScriptEnabled(true);
 gifback.getSettings().setUserAgentString("Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.9.0.4) Gecko/20100101 Firefox/4.0");
 gifback.loadUrl(giflink);
 gifback.getSettings().setUseWideViewPort(true);
 gifback.getSettings().setLoadWithOverviewMode(true);
 gifback.setBackgroundColor(Color.TRANSPARENT);
+} catch (error) {
+Toast.makeText(ctx, "Template Error: " + error+' #' + error['lineNumber'], 1).show();
+}
+}
+})) 
+};
+loadgif();
+function openBackground() {
+var ctx = com.mojang.minecraftpe.MainActivity.currentMainActivity.get();
+ctx.runOnUiThread(new java.lang.Runnable({
+run: function() {
+try {
+	backOpen=true;
 
-guiBackgroundGif = new PopupWindow(gifback, list_width, ctx.getWindowManager().getDefaultDisplay().getHeight());
+if(compactView){guiBackgroundGif = new PopupWindow(gifback, list_width, ctx.getWindowManager().getDefaultDisplay().getHeight()-(icon_dimensions*tab_height));}
+else{guiBackgroundGif = new PopupWindow(gifback, list_width, ctx.getWindowManager().getDefaultDisplay().getHeight());}
 if(animations){guiBackgroundGif.setAnimationStyle(android.R.style.Animation_Toast);}
-guiBackgroundGif.showAtLocation(ctx.getWindow().getDecorView(), Gravity.LEFT | Gravity.CENTER, +left_width, 0);
+if(allRight){
+guiBackgroundGif.showAtLocation(ctx.getWindow().getDecorView(), Gravity.RIGHT | Gravity.CENTER, +left_width, 0);
+}if(compactView){
+	guiBackgroundGif.showAtLocation(ctx.getWindow().getDecorView(), Gravity.TOP | Gravity.CENTER, 0, 0);
+}
+if(!compactView&!allRight){guiBackgroundGif.showAtLocation(ctx.getWindow().getDecorView(), Gravity.LEFT | Gravity.CENTER, +left_width, 0);}
+
 guiBackgroundGif.setTouchable(false);
 } catch (error) {
 Toast.makeText(ctx, "Template Error: " + error+' #' + error['lineNumber'], 1).show();
@@ -31448,6 +31804,53 @@ supportclicks = parseInt(json.supportclicks);
 }else{
 supportclicks = 0;
 }
+if(json.list_width!=null&json.list_width!=undefined){
+list_width_var = parseInt(json.list_width);
+list_width = list_width_var*density;
+switch_width = ((list_width_var*density)/1.42);
+wayNameWidth = list_width-(icon_dimensions*4);
+}else{
+list_width_var = 200;
+list_width = list_width_var*density;
+}
+if(json.compactView!=null&compactView!=undefined){
+compactView = json.compactView;
+}else{
+compactView = false;
+}
+if(json.vibrations!=null&vibrations!=undefined){
+vibrations = json.vibrations;
+}else{
+vibrations = true;
+}
+if(json.giflink!=null&giflink!=undefined){
+giflink = json.giflink;
+useGIF = json.useGIF;
+}else{
+giflink = "no";
+useGIF=false;
+}
+if(json.survivaltab!=null&survivaltab!=undefined){
+survivaltab = json.survivaltab;
+pvptab = json.pvptab;
+waypointtab = json.waypointtab;
+friendtab = json.friendtab;
+potiontab = json.potiontab;
+movementtab = json.movementtab;
+discordtab = json.discordtab;
+misctab = json.misctab;
+presettab = json.presettab;
+}else{
+survivaltab=true;
+pvptab=true;
+waypointtab=true;
+friendtab=true;
+potiontab=true;
+movementtab=true;
+discordtab=true;
+misctab=true;
+presettab=true;
+}
 try{
 if(fontid=="mc"){mcfont = new android.graphics.Typeface.createFromFile(mcfontpath4);}
 if(fontid=="ss"){mcfont = Typeface.create("sans-serif", Typeface.NORMAL)}
@@ -31459,6 +31862,30 @@ mcfont = Typeface.create("sans-serif-thin", Typeface.NORMAL)
 }
 if(oldTMI=="true"){oldTMI=true}
 if(oldTMI=="false"){oldTMI=false}
+if(useGIF=="true"){useGIF=true}
+if(useGIF=="false"){useGIF=false}
+if(survivaltab=="true"){survivaltab=true}
+if(survivaltab=="false"){survivaltab=false}
+if(pvptab=="true"){pvptab=true}
+if(pvptab=="false"){pvptab=false}
+if(waypointtab=="true"){waypointtab=true}
+if(waypointtab=="false"){waypointtab=false}
+if(friendtab=="true"){friendtab=true}
+if(friendtab=="false"){friendtab=false}
+if(potiontab=="true"){potiontab=true}
+if(potiontab=="false"){potiontab=false}
+if(movementtab=="true"){movementtab=true}
+if(movementtab=="false"){movementtab=false}
+if(discordtab=="true"){discordtab=true}
+if(discordtab=="false"){discordtab=false}
+if(misctab=="true"){misctab=true}
+if(misctab=="false"){misctab=false}
+if(presettab=="true"){presettab=true}
+if(presettab=="false"){presettab=false}
+if(vibrations=="true"){vibrations=true}
+if(vibrations=="false"){vibrations=false}
+if(compactView=="true"){compactView=true}
+if(compactView=="false"){compactView=false}
 if(sleekLeft=="true"){sleekLeft=true}
 if(sleekLeft=="false"){sleekLeft=false}
 if(animations=="false"){animations=false}
@@ -31474,7 +31901,8 @@ if(allRight=="true"){allRight=true}
 if(showGradient=="false"){showGradient=false}
 if(showGradient=="true"){showGradient=true}
 } else {
-var json = '{"themeId":"'+themeId+'","supportclicks":"'+supportclicks+'","showGradient":"'+showGradient+'","font":"'+fontid+'","modPadB":"'+modPadB+'","modPadT":"'+modPadT+'","btntextsize":"'+btntextsize+'","switchfontsize":"'+switchfontsize+'","themeBtn":"'+themeBtn+'","oldTMI":"'+oldTMI+'","sleekLeft":"'+sleekLeft+'","crosshairDimension":"'+crosshairDimension+'","FovsbpProgress":"'+FovsbpProgress+'","aimbotRange":"'+aimbotRange+'","autoBlockB":"'+autoBlockB+'","animations":"'+animations+'","helpB":"'+helpB+'","iconsB":"'+iconsB+'","chlogAlways":"'+chlogAlways+'","allRight":"'+allRight+'","themeAlpha":"'+themeAlpha+'"}';
+
+var json = '{"themeId":"'+themeId+'","survivaltab":"'+survivaltab +'","pvptab":"'+pvptab+'","useGIF":"'+useGIF+'","giflink":"'+giflink+'","waypointtab":"'+waypointtab +'","friendtab":"'+friendtab +'","potiontab":"'+potiontab +'","movementtab":"'+movementtab +'","discordtab":"'+discordtab +'","misctab":"'+misctab +'","presettab":"'+presettab+'","supportclicks":"'+supportclicks+'","showGradient":"'+showGradient+'","vibrations":"'+vibrations+'","compactView":"'+compactView+'","list_width":"'+list_width_var+'","font":"'+fontid+'","modPadB":"'+modPadB+'","modPadT":"'+modPadT+'","btntextsize":"'+btntextsize+'","switchfontsize":"'+switchfontsize+'","themeBtn":"'+themeBtn+'","oldTMI":"'+oldTMI+'","sleekLeft":"'+sleekLeft+'","crosshairDimension":"'+crosshairDimension+'","FovsbpProgress":"'+FovsbpProgress+'","aimbotRange":"'+aimbotRange+'","autoBlockB":"'+autoBlockB+'","animations":"'+animations+'","helpB":"'+helpB+'","iconsB":"'+iconsB+'","chlogAlways":"'+chlogAlways+'","allRight":"'+allRight+'","themeAlpha":"'+themeAlpha+'"}';
 themesfile.createNewFile();
 var themeId = 0;
 themeAlpha = 210;
@@ -31507,7 +31935,7 @@ var themesfile = new java.io.File(android.os.Environment.getExternalStorageDirec
 if (themesfile.exists()) {
 themesfile.delete();
 }
-var json = '{"themeId":"'+themeId+'","supportclicks":"'+supportclicks+'","showGradient":"'+showGradient+'","font":"'+fontid+'","modPadB":"'+modPadB+'","modPadT":"'+modPadT+'","btntextsize":"'+btntextsize+'","switchfontsize":"'+switchfontsize+'","themeBtn":"'+themeBtn+'","oldTMI":"'+oldTMI+'","sleekLeft":"'+sleekLeft+'","crosshairDimension":"'+crosshairDimension+'","FovsbpProgress":"'+FovsbpProgress+'","aimbotRange":"'+aimbotRange+'","autoBlockB":"'+autoBlockB+'","animations":"'+animations+'","helpB":"'+helpB+'","iconsB":"'+iconsB+'","chlogAlways":"'+chlogAlways+'","allRight":"'+allRight+'","themeAlpha":"'+themeAlpha+'"}';
+var json = '{"themeId":"'+themeId+'","survivaltab":"'+survivaltab +'","pvptab":"'+pvptab+'","useGIF":"'+useGIF+'","giflink":"'+giflink+'","waypointtab":"'+waypointtab +'","friendtab":"'+friendtab +'","potiontab":"'+potiontab +'","movementtab":"'+movementtab +'","discordtab":"'+discordtab +'","misctab":"'+misctab +'","presettab":"'+presettab+'","supportclicks":"'+supportclicks+'","showGradient":"'+showGradient+'","vibrations":"'+vibrations+'","compactView":"'+compactView+'","list_width":"'+list_width_var+'","font":"'+fontid+'","modPadB":"'+modPadB+'","modPadT":"'+modPadT+'","btntextsize":"'+btntextsize+'","switchfontsize":"'+switchfontsize+'","themeBtn":"'+themeBtn+'","oldTMI":"'+oldTMI+'","sleekLeft":"'+sleekLeft+'","crosshairDimension":"'+crosshairDimension+'","FovsbpProgress":"'+FovsbpProgress+'","aimbotRange":"'+aimbotRange+'","autoBlockB":"'+autoBlockB+'","animations":"'+animations+'","helpB":"'+helpB+'","iconsB":"'+iconsB+'","chlogAlways":"'+chlogAlways+'","allRight":"'+allRight+'","themeAlpha":"'+themeAlpha+'"}';
 themesfile.createNewFile();
 var fos = new java.io.FileOutputStream(themesfile);
 fos.write(new java.lang.String(json).getBytes());
@@ -31613,7 +32041,7 @@ menuLayout.addView(etC);
 menuLayout.addView(tpBtn);
 tpBtn.setOnClickListener(new android.view.View.OnClickListener() {
 onClick: function(viewarg) {
-ctx.getSystemService(android.content.Context.VIBRATOR_SERVICE).vibrate(20);
+if(vibrations){ctx.getSystemService(android.content.Context.VIBRATOR_SERVICE).vibrate(20);}
 if(String(etC.getText()).split(",").length==3){
 waypoints_W[objectLength(waypoints_W)]={name_W:etX.getText(),x:parseInt(String(etC.getText()).split(",")[0]),y:parseInt(String(etC.getText()).split(",")[1]),z:parseInt(String(etC.getText()).split(",")[2]),removed:false};
 Save();
