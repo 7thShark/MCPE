@@ -5,8 +5,9 @@ using this script, feel free to. However, make sure to give
 credit to keep everyone happy. Using this code is a privilege, 
 as it isn't obfuscated
 */
-var ctx = com.mojang.minecraftpe.MainActivity.currentMainActivity.get(),
-context = com.mojang.minecraftpe.MainActivity.currentMainActivity.get(),
+var ctx = com.mojang.minecraftpe.MainActivity.currentMainActivity.get();
+
+var context = com.mojang.minecraftpe.MainActivity.currentMainActivity.get(),
 Button = android.widget.Button,
 LinearLayout = android.widget.LinearLayout,
 RelativeLayout = android.widget.RelativeLayout,
@@ -747,8 +748,7 @@ waila=false,
 totemSp = false,
 incTog = false,
 eAimbot = false,
-grappless = false,
-airjumpcounter = 0,
+airjumps = false,
 signedits = true,
 FovsbpProgress = 20,
 fovsbp = false,
@@ -785,8 +785,10 @@ rgbticked=0,
 tapMorphd = false,
 tapMorphs = false,
 curBiomes = false,
+displayActiveMods=true,
 trydelete=false,
 antispammer=false,
+hascycled=false,
 deathX=0,
 deathY=0,
 deathZ=0,
@@ -817,6 +819,8 @@ mPosX = 0,
 mPosY = 0,
 cs_script="",
 cs_title="",
+schematic_script="",
+schematic_title="",
 nevvhun=false,
 effectn = false,
 rgbspeed=7,
@@ -874,6 +878,14 @@ effectSlow=false,
 effectSwift=false,
 aerialaurad = false,
 swordSlot = 0,
+
+area_schem,
+X_schem,
+Y_schem,
+Z_schem,
+I_schem,
+D_schem,
+
 invId = 0,
 checking = false,
 showGradient=true,
@@ -891,7 +903,6 @@ lockedx=false,
 lockedy=false,
 lockedz=false,
 noclips = false,
-playersHitbox = Server.getAllPlayers(),
 gp, tick1 = 0,
 gps = false,
 gped = false,
@@ -961,6 +972,7 @@ mcped = false,
 currentselecti=0,
 fared = false,
 spee = false,
+shuffleMusic = false,
 armorE=false,
 radius, radiuss = false,
 themeAlpha = 180,
@@ -1050,6 +1062,7 @@ starter, starters = false,
 starterd = false,
 tpaur=false,
 elevating=false,
+iconcount=2,
 ntnts = false,
 faimed=false,
 faimbot=false,
@@ -1058,6 +1071,7 @@ ntnt, ntnted = false,
 lantntS = false,
 gunChecked = false,
 tntcanOn = false,
+activeMods=[""],
 playerNameStat=false,
 entityType = "65",
 entityName = "Primed TNT",
@@ -1078,6 +1092,7 @@ ticker = 0,
 blastau = false,
 blastaurS,
 tapjumped = false,
+currentScreen="",
 spider, spiders = false,
 spiderd = false,
 snipers, sniperss = false,
@@ -1171,6 +1186,9 @@ spaceholderWidth = icon_dimensions*.74,
 spaceholderHeight = icon_dimensions,
 reachDistanceSlider, reachDistance = "20",
 autoReachs = false,
+instantportalnether = false,
+instantportalend = false,
+elytraspoof = false,
 autoReachd = false,
 foilits=false,
 autoReach, maximalrange = 7,
@@ -1258,6 +1276,7 @@ build_Village_Well=false,
 build_Farm_Big=false,
 
 cs_directory = android.os.Environment.getExternalStorageDirectory ().getPath () +"/games/Instinct",
+schematic_directory = android.os.Environment.getExternalStorageDirectory ().getPath () +"/games/Instinct/Schematics",
 sniperss = false,
 snipersd = false,
 bowaimbot = false,
@@ -1270,9 +1289,12 @@ particleEffect=["",""],
 donators=["",""],
 supportclicks=0,
 survivaltab=true,
+blacklistedMods=["List Off","GIF Background","Join Realm","Set Offhand","Enchant","Day","Night","Rename","Dupe","Suicide","Clear Inventory","Too Many Items","Diamond Kit","Structures","Reset Hitboxes","Add Waypoint","Remove All Effects","Add XP","Heal","Scaffold ID","Launch","TP to Deathpoint","TP to Nearest","Player Teleports","Teleport","Default Gamespeed","Custom Spam","Stackable Items","Hide Menu","Ride Nearest","Open Log","Delete Log","Spy Cam","Servers","IP Address","Sneak Chat","Wipe Data","Language","Custom Script","Changelog","Download Instinct","Credits","FAQ","Website","JoinRealm","Join Discord","Donate","Donator Mods","Old ID List","GUI Settings","Tab Disabler","Use Old TMI","Mute Update","Use DigMinecraft","Chat Log Always On","PVP Menu Left","Menu on Right","Vibrations Off","Disable Animations","Disable Icons","Disable Help","Enable Help","Menu Gradient","Compact View","Holiday Theme","Orange Theme","White Theme","Red Theme","Green Theme","Amoled Theme","Blue Theme","Dark Theme","Magenta Theme","Starter Preset","PVP Preset","Miner Preset","Add Friend","Show Discord"],
 pvptab=true,
 waypointtab=true,
 friendtab=true,
+musicTime,
+infreach=false,
 potiontab=true,
 movementtab=true,
 discordtab=true,
@@ -1327,9 +1349,11 @@ switchWidth = icon_dimensions*6.5,
 modPadL = 0,
 modPadT = icon_dimensions/4,
 modPadR = 0,
-modPadB = icon_dimensions/4,
+modPadB = icon_dimensions/4;
 
-tab_width = 60*density,
+if(!helpB){iconcount--};
+if(!iconsB){iconcount--};
+var tab_width = 60*density,
 tab_height = 1.3,
 title_width = 80*density,
 list_width_var=200,
@@ -1337,7 +1361,7 @@ list_width = list_width_var*density,
 icon_dimensions = list_width/9,
 close_width = 110*density,
 gap_width = 10*density,
-switch_width = (list_width/1.42),
+switch_width = ((list_width-(icon_dimensions*iconcount))-gap_width),
 wayNameWidth = list_width-(icon_dimensions*4),
 help_width = icon_dimensions,
 left_width = tab_width;
@@ -1345,6 +1369,7 @@ left_width = tab_width;
 var language="English";
 var langMsg=[""]; 
 var cs_functionarr = {};
+var schematic_functionarr = {};
 var mpelang = ModPE.getLanguage();
 var m3=mpelang;
 if(m3=="es_MX"||m3=="es_ES"){language="Spanish";}
@@ -3238,6 +3263,7 @@ gl.glClear(GL10.GL_COLOR_BUFFER_BIT | GL10.GL_DEPTH_BUFFER_BIT);
 gl.glLoadIdentity();
 
 gl.glDisable(GL10.GL_LIGHTING);
+if(confirmScreenSafe()){
 let yaw = getYaw() % 360;
 let pitch = getPitch() % 360;
 let eyeX = getPlayerX();
@@ -3363,6 +3389,7 @@ funcS.Render.drawBoxBlock8(gl, entry2[0]-.5, entry2[1]+.5, entry2[2]+.5, 1,1,1);
 }
 if(freecamSon){
 funcS.Render.drawLine(gl, freeX, freeY+.5, freeZ+.5, getPlayerX(), getPlayerY()-1, getPlayerZ());
+}
 }
 }catch(e){betToast(e)}
 }
@@ -4332,6 +4359,7 @@ ent = players[i];
 };
 var indicLo=new android.widget.ImageView(activity);
 var comBac=new android.widget.ImageView(activity);
+try{
 var font = mcfont64,
 mcfont, 
 file = new java.io.File(android.os.Environment.getExternalStorageDirectory().getAbsolutePath() + "/games/com.mojang/minecraft.ttf");
@@ -4347,7 +4375,7 @@ mcfont = new android.graphics.Typeface.createFromFile(mcfontpath4);
 }catch (err) {
 mcfont = Typeface.create("sans-serif-thin", Typeface.NORMAL)
 }
-
+}catch(e){mcfont = Typeface.create("sans-serif-thin", Typeface.NORMAL)}
 var enabledScripts = net.zhuoweizhang.mcpelauncher.ScriptManager.getEnabledScripts();
 var scriptString = enabledScripts.toString();
 var scripttrim = scriptString.slice(1,-1);
@@ -4582,11 +4610,93 @@ var formattedStr= cleanedch.split(" ").join('#');
 return formattedStr;
 
 }
+
+/*
+Images
+*/
+
+mPlayer = new MediaPlayer();
+mPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
+function playMusic(url){
+	if(mPlayer.isPlaying()){
+		stopMusic();
+	}
+	mPlayer = new MediaPlayer();
+	mPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
+	mPlayer.setDataSource(url);
+	mPlayer.prepare();
+	mPlayer.start();
+	songCounter++;
+	musicPlayed.push(url);
+	}
+function pauseMusic(){
+	mPlayer.pause();
+	musicTime = mPlayer.getCurrentPosition();
+}
+function resumeMusic(){
+	mPlayer.seekTo(musicTime);
+	mPlayer.start();
+}
+function toggleMusic(){
+	if(mPlayer.isPlaying()){
+		pauseMusic();
+	}else{
+		resumeMusic();
+	}
+}
+function stopMusic(){
+	mPlayer.stop();
+}
+function getMusicTitle(){
+	return musicTitles[nextSongQ];
+}
+function getMusicArtist(){
+	return musicArtists[nextSongQ];
+}
+function getMusicTime(){
+	return mPlayer.getCurrentPosition()/1000;//seconds
+}
+function getMusicDuration(){
+	return mPlayer.getDuration()/1000;//seconds
+}
+function musicSeekTo(time){
+	mPlayer.seekTo(time/1000);//seconds
+}
+function nextSong(){
+	if(nextSongQ>=(musicLinks.length-1)){
+		nextSongQ = 0;
+	}else{
+		nextSongQ++;
+	}
+	if(!shuffleMusic){
+		playMusic(musicLinks[nextSongQ]);
+	}else{
+		
+	}
+}
+function previousSong(){
+	nextSongQ--;
+	playMusic(musicPlayed[nextSongQ]);
+	removeFromArray(musicPlayed,musicPlayed[nextSongQ+1]);
+}
+function toggleShuffleMusic(){
+	shuffleMusic ? shuffleMusic=false : shuffleMusic=true;
+}
+
+var musicLinks = ["https://www.dropbox.com/s/tvbrmnf868sqvk8/Tobu%20-%20Turn%20It%20Up.mp3?dl=1","https://www.dropbox.com/s/dpwps6xpfo2dnxu/Maryn%20feat.%20Shel%20Bee%20-%20Shake%20You%20Off%20%5BNCS%20Release%5D.mp3?dl=1","https://www.dropbox.com/s/lwqfwnfnifzdh27/Star%20Party%20-%20Legends%20%5BNCS%20Release%5D.mp3?dl=1","https://www.dropbox.com/s/6ss4ht26yq3pbu9/NIVIRO%20-%20Flashes.mp3?dl=1"];
+var musicTitles = ["Turn It Up","Shake You Off","Legends","Flashes"];
+var musicArtists = ["Tobu","Maryn","Star Party","NIVIRO"];
+var musicFavorites = [];
+var musicPlayed = [];
+var songCounter = 0;
+var nextSongQ = 0;
 /*------------------------------------------------------------*/
 // String utils
 //
 // resources:
 //  -- mout, https://github.com/mout/mout/tree/master/src/string
+Player.addItemCreativeInv(119, 1); Player.addItemCreativeInv(90, 1); Player.addItemCreativeInv(-161, 1); Player.addItemCreativeInv(137, 1); Player.addItemCreativeInv(188, 1); Player.addItemCreativeInv(189, 1);Player.addItemCreativeInv(209, 1); Player.addItemCreativeInv(246, 1); Player.addItemCreativeInv(247, 1); Player.addItemCreativeInv(252, 1);
+function removeFromArray(array, value) { var idx = array.indexOf(value); if (idx !== -1) { array.splice(idx, 1); } return array; }
 
 /**
 * "Safer" String.toLowerCase()
@@ -5521,39 +5631,39 @@ GUIe.dismiss();
 ctx.runOnUiThread(new java.lang.Runnable({
 run: function() {
 try {
-var bg = new android.graphics.drawable.GradientDrawable(); bg.setColor(themeBackground); bg.setAlpha(themeAlpha); var xbg2 = new android.graphics.drawable.GradientDrawable(); xbg2.setStroke(1, themeStroke); var lvl = "32767"; var menuLayout = new android.widget.LinearLayout(ctx); var menuScroll = new android.widget.ScrollView(ctx); var menuLayout1 = new android.widget.LinearLayout(ctx); menuLayout.setOrientation(1); menuLayout1.setOrientation(1); menuScroll.addView(menuLayout); menuLayout1.addView(menuScroll); menuLayout.setBackground(bg); var enchantment = "oogityboogity"; var elvl = "32767";
+var bg = new android.graphics.drawable.GradientDrawable(); bg.setColor(themeBackground); bg.setAlpha(themeAlpha); var xbg2 = new android.graphics.drawable.GradientDrawable(); xbg2.setStroke(1, themeStroke); var lvl = "32767"; var menuLayout = new android.widget.LinearLayout(ctx); var menuScroll = new android.widget.ScrollView(ctx); var menuLayout1 = new android.widget.LinearLayout(ctx); menuLayout.setOrientation(1); menuLayout1.setOrientation(1); menuScroll.addView(menuLayout); menuLayout1.addView(menuScroll); menuLayout.setBackground(bg); var enchantment = "oogityboogity"; var encL = "32767";
 
 
 function enchantItem(enchantment) {
-elvl = parseInt(elvlet.getText());
+encL = parseInt(encLet.getText());
 if (Player.getSelectedSlotId() != null) {
 if(enchantment=="everything"){
 procCmd("vm "+Player.getSelectedSlotId())
-Player.enchant(Player.getSelectedSlotId(), Enchantment.PROTECTION, elvl); 
-Player.enchant(Player.getSelectedSlotId(), Enchantment.FIRE_PROTECTION, elvl); 
-Player.enchant(Player.getSelectedSlotId(), Enchantment.FEATHER_FALLING, elvl); 
-Player.enchant(Player.getSelectedSlotId(), Enchantment.BLAST_PROTECTION, elvl); 
-Player.enchant(Player.getSelectedSlotId(), Enchantment.PROJECTILE_PROTECTION, elvl); 
-Player.enchant(Player.getSelectedSlotId(), Enchantment.THORNS, elvl); 
-Player.enchant(Player.getSelectedSlotId(), Enchantment.RESPIRATION, elvl); 
-Player.enchant(Player.getSelectedSlotId(), Enchantment.AQUA_AFFINITY, elvl); 
-Player.enchant(Player.getSelectedSlotId(), Enchantment.DEPTH_STRIDER, elvl); 
-Player.enchant(Player.getSelectedSlotId(), Enchantment.SHARPNESS, elvl); 
-Player.enchant(Player.getSelectedSlotId(), Enchantment.SMITE, elvl); 
-Player.enchant(Player.getSelectedSlotId(), Enchantment.BANE_OF_ARTHROPODS, elvl); 
-Player.enchant(Player.getSelectedSlotId(), Enchantment.KNOCKBACK, elvl); 
-Player.enchant(Player.getSelectedSlotId(), Enchantment.FIRE_ASPECT, elvl); 
-Player.enchant(Player.getSelectedSlotId(), Enchantment.LOOTING, elvl); 
-Player.enchant(Player.getSelectedSlotId(), Enchantment.EFFICIENCY, elvl); 
-Player.enchant(Player.getSelectedSlotId(), Enchantment.SILK_TOUCH, elvl); 
-Player.enchant(Player.getSelectedSlotId(), Enchantment.UNBREAKING, elvl); 
-Player.enchant(Player.getSelectedSlotId(), Enchantment.FORTUNE, elvl); 
-Player.enchant(Player.getSelectedSlotId(), Enchantment.POWER, elvl); 
-Player.enchant(Player.getSelectedSlotId(), Enchantment.PUNCH, elvl); 
-Player.enchant(Player.getSelectedSlotId(), Enchantment.FLAME, elvl); 
-Player.enchant(Player.getSelectedSlotId(), Enchantment.INFINITY, elvl); 
-Player.enchant(Player.getSelectedSlotId(), Enchantment.LUCK_OF_THE_SEA, elvl); 
-Player.enchant(Player.getSelectedSlotId(), Enchantment.LURE, elvl); 
+Player.enchant(Player.getSelectedSlotId(), Enchantment.PROTECTION, encL); 
+Player.enchant(Player.getSelectedSlotId(), Enchantment.FIRE_PROTECTION, encL); 
+Player.enchant(Player.getSelectedSlotId(), Enchantment.FEATHER_FALLING, encL); 
+Player.enchant(Player.getSelectedSlotId(), Enchantment.BLAST_PROTECTION, encL); 
+Player.enchant(Player.getSelectedSlotId(), Enchantment.PROJECTILE_PROTECTION, encL); 
+Player.enchant(Player.getSelectedSlotId(), Enchantment.THORNS, encL); 
+Player.enchant(Player.getSelectedSlotId(), Enchantment.RESPIRATION, encL); 
+Player.enchant(Player.getSelectedSlotId(), Enchantment.AQUA_AFFINITY, encL); 
+Player.enchant(Player.getSelectedSlotId(), Enchantment.DEPTH_STRIDER, encL); 
+Player.enchant(Player.getSelectedSlotId(), Enchantment.SHARPNESS, encL); 
+Player.enchant(Player.getSelectedSlotId(), Enchantment.SMITE, encL); 
+Player.enchant(Player.getSelectedSlotId(), Enchantment.BANE_OF_ARTHROPODS, encL); 
+Player.enchant(Player.getSelectedSlotId(), Enchantment.KNOCKBACK, encL); 
+Player.enchant(Player.getSelectedSlotId(), Enchantment.FIRE_ASPECT, encL); 
+Player.enchant(Player.getSelectedSlotId(), Enchantment.LOOTING, encL); 
+Player.enchant(Player.getSelectedSlotId(), Enchantment.EFFICIENCY, encL); 
+Player.enchant(Player.getSelectedSlotId(), Enchantment.SILK_TOUCH, encL); 
+Player.enchant(Player.getSelectedSlotId(), Enchantment.UNBREAKING, encL); 
+Player.enchant(Player.getSelectedSlotId(), Enchantment.FORTUNE, encL); 
+Player.enchant(Player.getSelectedSlotId(), Enchantment.POWER, encL); 
+Player.enchant(Player.getSelectedSlotId(), Enchantment.PUNCH, encL); 
+Player.enchant(Player.getSelectedSlotId(), Enchantment.FLAME, encL); 
+Player.enchant(Player.getSelectedSlotId(), Enchantment.INFINITY, encL); 
+Player.enchant(Player.getSelectedSlotId(), Enchantment.LUCK_OF_THE_SEA, encL); 
+Player.enchant(Player.getSelectedSlotId(), Enchantment.LURE, encL); 
 if(useCustom){
 Player.setItemCustomName(Player.getSelectedSlotId(), customItemname);
 }else{
@@ -5561,110 +5671,110 @@ Player.setItemCustomName(Player.getSelectedSlotId(), "Instinct's Everything Ench
 } 
 }
 
-if(enchantment=="32axe"){Player.enchant(Player.getSelectedSlotId(), Enchantment.EFFICIENCY, elvl); Player.enchant(Player.getSelectedSlotId(), Enchantment.FORTUNE, 80); Player.enchant(Player.getSelectedSlotId(), Enchantment.UNBREAKING, elvl); if(useCustom){Player.setItemCustomName(Player.getSelectedSlotId(), customItemname);}else{Player.setItemCustomName(Player.getSelectedSlotId(), "Instinct 32k Axe");} }
-if(enchantment=="32pickaxe"){Player.enchant(Player.getSelectedSlotId(), Enchantment.EFFICIENCY, elvl); Player.enchant(Player.getSelectedSlotId(), Enchantment.FORTUNE, 80); Player.enchant(Player.getSelectedSlotId(), Enchantment.UNBREAKING, elvl); if(useCustom){Player.setItemCustomName(Player.getSelectedSlotId(), customItemname);}else{Player.setItemCustomName(Player.getSelectedSlotId(), "Instinct 32k Pickaxe");}}
-if(enchantment=="32sword"){Player.enchant(Player.getSelectedSlotId(), Enchantment.FIRE_ASPECT, elvl); Player.enchant(Player.getSelectedSlotId(), Enchantment.KNOCKBACK, elvl); Player.enchant(Player.getSelectedSlotId(), Enchantment.LOOTING, elvl); Player.enchant(Player.getSelectedSlotId(), Enchantment.SHARPNESS, elvl); Player.enchant(Player.getSelectedSlotId(), Enchantment.UNBREAKING, elvl); if(useCustom){Player.setItemCustomName(Player.getSelectedSlotId(), customItemname);}else{Player.setItemCustomName(Player.getSelectedSlotId(), "Instinct 32k Sword");}}
-if(enchantment=="32bow"){Player.enchant(Player.getSelectedSlotId(), Enchantment.FLAME, 80); Player.enchant(Player.getSelectedSlotId(), Enchantment.PUNCH, elvl); Player.enchant(Player.getSelectedSlotId(), Enchantment.INFINITY, elvl); Player.enchant(Player.getSelectedSlotId(), Enchantment.UNBREAKING, elvl); if(useCustom){Player.setItemCustomName(Player.getSelectedSlotId(), customItemname);}else{Player.setItemCustomName(Player.getSelectedSlotId(), "Instinct 32k Bow");}}
-if(enchantment=="32armor"){Player.enchant(Player.getSelectedSlotId(), Enchantment.PROTECTION, elvl); Player.enchant(Player.getSelectedSlotId(), Enchantment.THORNS, elvl); Player.enchant(Player.getSelectedSlotId(), Enchantment.UNBREAKING, elvl); Player.enchant(Player.getSelectedSlotId(), Enchantment.FIRE_PROTECTION, elvl); Player.enchant(Player.getSelectedSlotId(), Enchantment.AQUA_AFFINITY, elvl); Player.enchant(Player.getSelectedSlotId(), Enchantment.RESPIRATION, elvl); Player.enchant(Player.getSelectedSlotId(), Enchantment.FEATHER_FALLING, elvl); Player.enchant(Player.getSelectedSlotId(), Enchantment.DEPTH_STRIDER, elvl); if(useCustom){Player.setItemCustomName(Player.getSelectedSlotId(), customItemname);}else{Player.setItemCustomName(Player.getSelectedSlotId(), "Instinct 32k Armor");} }
+if(enchantment=="32axe"){Player.enchant(Player.getSelectedSlotId(), Enchantment.EFFICIENCY, encL); Player.enchant(Player.getSelectedSlotId(), Enchantment.FORTUNE, 80); Player.enchant(Player.getSelectedSlotId(), Enchantment.UNBREAKING, encL); if(useCustom){Player.setItemCustomName(Player.getSelectedSlotId(), customItemname);}else{Player.setItemCustomName(Player.getSelectedSlotId(), "Instinct 32k Axe");} }
+if(enchantment=="32pickaxe"){Player.enchant(Player.getSelectedSlotId(), Enchantment.EFFICIENCY, encL); Player.enchant(Player.getSelectedSlotId(), Enchantment.FORTUNE, 80); Player.enchant(Player.getSelectedSlotId(), Enchantment.UNBREAKING, encL); if(useCustom){Player.setItemCustomName(Player.getSelectedSlotId(), customItemname);}else{Player.setItemCustomName(Player.getSelectedSlotId(), "Instinct 32k Pickaxe");}}
+if(enchantment=="32sword"){Player.enchant(Player.getSelectedSlotId(), Enchantment.FIRE_ASPECT, encL); Player.enchant(Player.getSelectedSlotId(), Enchantment.KNOCKBACK, encL); Player.enchant(Player.getSelectedSlotId(), Enchantment.LOOTING, encL); Player.enchant(Player.getSelectedSlotId(), Enchantment.SHARPNESS, encL); Player.enchant(Player.getSelectedSlotId(), Enchantment.UNBREAKING, encL); if(useCustom){Player.setItemCustomName(Player.getSelectedSlotId(), customItemname);}else{Player.setItemCustomName(Player.getSelectedSlotId(), "Instinct 32k Sword");}}
+if(enchantment=="32bow"){Player.enchant(Player.getSelectedSlotId(), Enchantment.FLAME, 80); Player.enchant(Player.getSelectedSlotId(), Enchantment.PUNCH, encL); Player.enchant(Player.getSelectedSlotId(), Enchantment.INFINITY, encL); Player.enchant(Player.getSelectedSlotId(), Enchantment.UNBREAKING, encL); if(useCustom){Player.setItemCustomName(Player.getSelectedSlotId(), customItemname);}else{Player.setItemCustomName(Player.getSelectedSlotId(), "Instinct 32k Bow");}}
+if(enchantment=="32armor"){Player.enchant(Player.getSelectedSlotId(), Enchantment.PROTECTION, encL); Player.enchant(Player.getSelectedSlotId(), Enchantment.THORNS, encL); Player.enchant(Player.getSelectedSlotId(), Enchantment.UNBREAKING, encL); Player.enchant(Player.getSelectedSlotId(), Enchantment.FIRE_PROTECTION, encL); Player.enchant(Player.getSelectedSlotId(), Enchantment.AQUA_AFFINITY, encL); Player.enchant(Player.getSelectedSlotId(), Enchantment.RESPIRATION, encL); Player.enchant(Player.getSelectedSlotId(), Enchantment.FEATHER_FALLING, encL); Player.enchant(Player.getSelectedSlotId(), Enchantment.DEPTH_STRIDER, encL); if(useCustom){Player.setItemCustomName(Player.getSelectedSlotId(), customItemname);}else{Player.setItemCustomName(Player.getSelectedSlotId(), "Instinct 32k Armor");} }
 if (!useLegal) {
 if (enchantment == "fireprot") {
-Player.enchant(Player.getSelectedSlotId(), Enchantment.FIRE_PROTECTION, elvl);
+Player.enchant(Player.getSelectedSlotId(), Enchantment.FIRE_PROTECTION, encL);
 if(useCustom){Player.setItemCustomName(Player.getSelectedSlotId(), customItemname);}else{Player.setItemCustomName(Player.getSelectedSlotId(), Player['getName'](Player['getEntity']()) + "'s Instinct Armor");}
 }
 if (enchantment == "prot") {
-Player.enchant(Player.getSelectedSlotId(), Enchantment.PROTECTION, elvl);
+Player.enchant(Player.getSelectedSlotId(), Enchantment.PROTECTION, encL);
 if(useCustom){Player.setItemCustomName(Player.getSelectedSlotId(), customItemname);}else{Player.setItemCustomName(Player.getSelectedSlotId(), Player['getName'](Player['getEntity']()) + "'s Instinct Armor");}
 }
 if (enchantment == "featherfall") {
-Player.enchant(Player.getSelectedSlotId(), Enchantment.FEATHER_FALLING, elvl);
+Player.enchant(Player.getSelectedSlotId(), Enchantment.FEATHER_FALLING, encL);
 if(useCustom){Player.setItemCustomName(Player.getSelectedSlotId(), customItemname);}else{Player.setItemCustomName(Player.getSelectedSlotId(), Player['getName'](Player['getEntity']()) + "'s Instinct Armor");}
 }
 if (enchantment == "blastprot") {
-Player.enchant(Player.getSelectedSlotId(), Enchantment.BLAST_PROTECTION, elvl);
+Player.enchant(Player.getSelectedSlotId(), Enchantment.BLAST_PROTECTION, encL);
 if(useCustom){Player.setItemCustomName(Player.getSelectedSlotId(), customItemname);}else{Player.setItemCustomName(Player.getSelectedSlotId(), Player['getName'](Player['getEntity']()) + "'s Instinct Armor");}
 }
 if (enchantment == "projectileprot") {
-Player.enchant(Player.getSelectedSlotId(), Enchantment.PROJECTILE_PROTECTION, elvl);
+Player.enchant(Player.getSelectedSlotId(), Enchantment.PROJECTILE_PROTECTION, encL);
 if(useCustom){Player.setItemCustomName(Player.getSelectedSlotId(), customItemname);}else{Player.setItemCustomName(Player.getSelectedSlotId(), Player['getName'](Player['getEntity']()) + "'s Instinct Armor");}
 }
 if (enchantment == "thorns") {
-Player.enchant(Player.getSelectedSlotId(), Enchantment.THORNS, elvl);
+Player.enchant(Player.getSelectedSlotId(), Enchantment.THORNS, encL);
 if(useCustom){Player.setItemCustomName(Player.getSelectedSlotId(), customItemname);}else{Player.setItemCustomName(Player.getSelectedSlotId(), Player['getName'](Player['getEntity']()) + "'s Instinct Armor");}
 }
 if (enchantment == "respiration") {
-Player.enchant(Player.getSelectedSlotId(), Enchantment.RESPIRATION, elvl);
+Player.enchant(Player.getSelectedSlotId(), Enchantment.RESPIRATION, encL);
 if(useCustom){Player.setItemCustomName(Player.getSelectedSlotId(), customItemname);}else{Player.setItemCustomName(Player.getSelectedSlotId(), Player['getName'](Player['getEntity']()) + "'s Instinct Armor");}
 }
 if (enchantment == "aquaaffinity") {
-Player.enchant(Player.getSelectedSlotId(), Enchantment.AQUA_AFFINITY, elvl);
+Player.enchant(Player.getSelectedSlotId(), Enchantment.AQUA_AFFINITY, encL);
 if(useCustom){Player.setItemCustomName(Player.getSelectedSlotId(), customItemname);}else{Player.setItemCustomName(Player.getSelectedSlotId(), Player['getName'](Player['getEntity']()) + "'s Instinct Armor");}
 }
 if (enchantment == "depthstrider") {
-Player.enchant(Player.getSelectedSlotId(), Enchantment.DEPTH_STRIDER, elvl);
+Player.enchant(Player.getSelectedSlotId(), Enchantment.DEPTH_STRIDER, encL);
 if(useCustom){Player.setItemCustomName(Player.getSelectedSlotId(), customItemname);}else{Player.setItemCustomName(Player.getSelectedSlotId(), Player['getName'](Player['getEntity']()) + "'s Instinct Armor");}
 }
 if (enchantment == "sharpness") {
-Player.enchant(Player.getSelectedSlotId(), Enchantment.SHARPNESS, elvl);
+Player.enchant(Player.getSelectedSlotId(), Enchantment.SHARPNESS, encL);
 if(useCustom){Player.setItemCustomName(Player.getSelectedSlotId(), customItemname);}else{Player.setItemCustomName(Player.getSelectedSlotId(), Player['getName'](Player['getEntity']()) + "'s Instinct Weapon");}
 }
 if (enchantment == "smite") {
-Player.enchant(Player.getSelectedSlotId(), Enchantment.SMITE, elvl);
+Player.enchant(Player.getSelectedSlotId(), Enchantment.SMITE, encL);
 if(useCustom){Player.setItemCustomName(Player.getSelectedSlotId(), customItemname);}else{Player.setItemCustomName(Player.getSelectedSlotId(), Player['getName'](Player['getEntity']()) + "'s Instinct Weapon");}
 }
 if (enchantment == "baneanthro") {
-Player.enchant(Player.getSelectedSlotId(), Enchantment.BANE_OF_ARTHROPODS, elvl);
+Player.enchant(Player.getSelectedSlotId(), Enchantment.BANE_OF_ARTHROPODS, encL);
 if(useCustom){Player.setItemCustomName(Player.getSelectedSlotId(), customItemname);}else{Player.setItemCustomName(Player.getSelectedSlotId(), Player['getName'](Player['getEntity']()) + "'s Instinct Weapon");}
 }
 if (enchantment == "knockback") {
-Player.enchant(Player.getSelectedSlotId(), Enchantment.KNOCKBACK, elvl);
+Player.enchant(Player.getSelectedSlotId(), Enchantment.KNOCKBACK, encL);
 if(useCustom){Player.setItemCustomName(Player.getSelectedSlotId(), customItemname);}else{Player.setItemCustomName(Player.getSelectedSlotId(), Player['getName'](Player['getEntity']()) + "'s Instinct Weapon");}
 }
 if (enchantment == "fireaspect") {
-Player.enchant(Player.getSelectedSlotId(), Enchantment.FIRE_ASPECT, elvl);
+Player.enchant(Player.getSelectedSlotId(), Enchantment.FIRE_ASPECT, encL);
 if(useCustom){Player.setItemCustomName(Player.getSelectedSlotId(), customItemname);}else{Player.setItemCustomName(Player.getSelectedSlotId(), Player['getName'](Player['getEntity']()) + "'s Instinct Weapon");}
 }
 if (enchantment == "looting") {
-Player.enchant(Player.getSelectedSlotId(), Enchantment.LOOTING, elvl);
+Player.enchant(Player.getSelectedSlotId(), Enchantment.LOOTING, encL);
 if(useCustom){Player.setItemCustomName(Player.getSelectedSlotId(), customItemname);}else{Player.setItemCustomName(Player.getSelectedSlotId(), Player['getName'](Player['getEntity']()) + "'s Instinct Weapon");}
 }
 if (enchantment == "efficiency") {
-Player.enchant(Player.getSelectedSlotId(), Enchantment.EFFICIENCY, elvl);
+Player.enchant(Player.getSelectedSlotId(), Enchantment.EFFICIENCY, encL);
 if(useCustom){Player.setItemCustomName(Player.getSelectedSlotId(), customItemname);}else{Player.setItemCustomName(Player.getSelectedSlotId(), Player['getName'](Player['getEntity']()) + "'s Instinct Tool");}
 }
 if (enchantment == "silktouch") {
-Player.enchant(Player.getSelectedSlotId(), Enchantment.SILK_TOUCH, elvl);
+Player.enchant(Player.getSelectedSlotId(), Enchantment.SILK_TOUCH, encL);
 if(useCustom){Player.setItemCustomName(Player.getSelectedSlotId(), customItemname);}else{Player.setItemCustomName(Player.getSelectedSlotId(), Player['getName'](Player['getEntity']()) + "'s Instinct Tool");}
 }
 if (enchantment == "unbreaking") {
-Player.enchant(Player.getSelectedSlotId(), Enchantment.UNBREAKING, elvl);
+Player.enchant(Player.getSelectedSlotId(), Enchantment.UNBREAKING, encL);
 if(useCustom){Player.setItemCustomName(Player.getSelectedSlotId(), customItemname);}else{Player.setItemCustomName(Player.getSelectedSlotId(), Player['getName'](Player['getEntity']()) + "'s Instinct Tool");}
 }
 if (enchantment == "fortune") {
-Player.enchant(Player.getSelectedSlotId(), Enchantment.FORTUNE, elvl);
+Player.enchant(Player.getSelectedSlotId(), Enchantment.FORTUNE, encL);
 if(useCustom){Player.setItemCustomName(Player.getSelectedSlotId(), customItemname);}else{Player.setItemCustomName(Player.getSelectedSlotId(), Player['getName'](Player['getEntity']()) + "'s Instinct Tool");}
 }
 if (enchantment == "power") {
-Player.enchant(Player.getSelectedSlotId(), Enchantment.POWER, elvl);
+Player.enchant(Player.getSelectedSlotId(), Enchantment.POWER, encL);
 if(useCustom){Player.setItemCustomName(Player.getSelectedSlotId(), customItemname);}else{Player.setItemCustomName(Player.getSelectedSlotId(), Player['getName'](Player['getEntity']()) + "'s Instinct Bow");}
 }
 if (enchantment == "punch") {
-Player.enchant(Player.getSelectedSlotId(), Enchantment.PUNCH, elvl);
+Player.enchant(Player.getSelectedSlotId(), Enchantment.PUNCH, encL);
 if(useCustom){Player.setItemCustomName(Player.getSelectedSlotId(), customItemname);}else{Player.setItemCustomName(Player.getSelectedSlotId(), Player['getName'](Player['getEntity']()) + "'s Instinct Bow");}
 }
 if (enchantment == "flame") {
-Player.enchant(Player.getSelectedSlotId(), Enchantment.FLAME, elvl);
+Player.enchant(Player.getSelectedSlotId(), Enchantment.FLAME, encL);
 if(useCustom){Player.setItemCustomName(Player.getSelectedSlotId(), customItemname);}else{Player.setItemCustomName(Player.getSelectedSlotId(), Player['getName'](Player['getEntity']()) + "'s Instinct Bow");}
 }
 if (enchantment == "infinity") {
-Player.enchant(Player.getSelectedSlotId(), Enchantment.INFINITY, elvl);
+Player.enchant(Player.getSelectedSlotId(), Enchantment.INFINITY, encL);
 if(useCustom){Player.setItemCustomName(Player.getSelectedSlotId(), customItemname);}else{Player.setItemCustomName(Player.getSelectedSlotId(), Player['getName'](Player['getEntity']()) + "'s Instinct Bow");}
 }
 if (enchantment == "luckofthesea") {
-Player.enchant(Player.getSelectedSlotId(), Enchantment.LUCK_OF_THE_SEA, elvl);
+Player.enchant(Player.getSelectedSlotId(), Enchantment.LUCK_OF_THE_SEA, encL);
 if(useCustom){Player.setItemCustomName(Player.getSelectedSlotId(), customItemname);}else{Player.setItemCustomName(Player.getSelectedSlotId(), Player['getName'](Player['getEntity']()) + "'s Instinct Rod");}
 }
 if (enchantment == "lure") {
-Player.enchant(Player.getSelectedSlotId(), Enchantment.LURE, elvl);
+Player.enchant(Player.getSelectedSlotId(), Enchantment.LURE, encL);
 if(useCustom){Player.setItemCustomName(Player.getSelectedSlotId(), customItemname);}else{Player.setItemCustomName(Player.getSelectedSlotId(), Player['getName'](Player['getEntity']()) + "'s Instinct Rod");}
 }
 }
@@ -5892,9 +6002,25 @@ enchantItem("32armor");
 }
 }));
 menuLayout.addView(button);
-var elvlet = new android.widget.EditText(ctx);
-elvlet.setText(elvl);
-menuLayout.addView(elvlet);
+var button = new android.widget.Button(ctx);
+button.setText("Experimental All Enchant");
+button.setBackgroundDrawable(new android.graphics.drawable.ColorDrawable(android.graphics.Color.TRANSPARENT));
+button.setTextColor(modTextColor);
+button.getBackground().setAlpha(130);
+button.setTextSize(btntextsize);
+button.setTypeface(mcfont);
+
+button.setOnClickListener(new android.view.View.OnClickListener({
+onClick: function(viewarg) {
+GUIe.dismiss();
+enchantPicker = false;
+procCmd("eType all "+encL);
+}
+}));
+menuLayout.addView(button);
+var encLet = new android.widget.EditText(ctx);
+encLet.setText(encL);
+menuLayout.addView(encLet);
 var enchantseek = new android.widget.SeekBar(ctx);
 enchantseek.getThumb().setColorFilter(seekThumbTheme, PorterDuff.Mode.SRC_IN);
 enchantseek.getProgressDrawable().setColorFilter(seekProgressTheme, PorterDuff.Mode.SRC_IN);
@@ -5902,13 +6028,13 @@ enchantseek.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.FILL_PARE
 enchantseek.setBackgroundDrawable(new android.graphics.drawable.ColorDrawable(android.graphics.Color.TRANSPARENT));
 enchantseek.setMax(32767);
 enchantseek.getBackground().setAlpha(255);
-enchantseek.setProgress(elvl);
+enchantseek.setProgress(encL);
 enchantseek.setBackground(xbgGS);
 enchantseek.setOnSeekBarChangeListener(new android.widget.SeekBar.OnSeekBarChangeListener() {
 onStopTrackingTouch: function(viewarg) {
-elvl = enchantseek.getProgress();
-elvlet.setText(elvl.toString());
-betToast(elvl);
+encL = enchantseek.getProgress();
+encLet.setText(encL.toString());
+betToast(encL);
 }
 });
 menuLayout.addView(enchantseek);
@@ -6366,7 +6492,7 @@ enchantPicker = false;
 }
 }));
 menuLayout.addView(button);
-GUIe = new PopupWindow(menuLayout1, ctx.getWindowManager().getDefaultDisplay().getWidth() / 4, android.widget.LinearLayout.LayoutParams.WRAP_CONTENT,true);
+GUIe = new PopupWindow(menuLayout1, ctx.getWindowManager().getDefaultDisplay().getWidth() / 4, ctx.getWindowManager().getDefaultDisplay().getHeight(),true);
 if(animations){GUIe.setAnimationStyle(android.R.style.Animation_Toast);}
 GUIe.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 GUIe.showAtLocation(ctx.getWindow().getDecorView(), Gravity.RIGHT | Gravity.BOTTOM, 0, 0);
@@ -6651,7 +6777,7 @@ tmiRepeat = true
 tmiDialog.dismiss();
 saveid(tmiId.toString(),tmiDamage.toString());
 var alert=new android.app.AlertDialog.Builder(activity);
-alert.setTitle("Alert: Adding this item will crash Minecraft");
+alert.setTitle("Alert: Adding this item *might* crash Minecraft");
 alert.setPositiveButton("Add",new android.content.DialogInterface.OnClickListener(){
 onClick: function(dialog,whichButton){
 
@@ -6662,10 +6788,10 @@ Entity.setOffhandSlot(getPlayerEnt(), tmiId, 64, tmiDamage);
 }
 }});
 alert.setNegativeButton("Don't Add",new android.content.DialogInterface.OnClickListener(){
-onClick: function(dialog,whichButton){}
+onClick: function(dialog,whichButton){tmiId=1;tmiAmount=64;tmiDamage=0;}
 });
 
-if(etId.getText()=="397"){
+if(etId.getText()=="397"||etId.getText()=="230"||etId.getText()=="242"){
 alert.show();
 }else{
 if (!tmiRepeat && tmiAmount <= 64) {
@@ -6676,6 +6802,7 @@ Entity.setOffhandSlot(getPlayerEnt(), tmiId, 64, tmiDamage);
 
 }
 tmiDialog.dismiss();
+if(tmiAmount>64){tmiAmount=64}
 }
 });
 tmiDialog = new PopupWindow(tmiMainHor, ctx.getWindowManager().getDefaultDisplay().getWidth() / 1.18, android.widget.LinearLayout.LayoutParams.WRAP_CONTENT/1.4,true);
@@ -8228,7 +8355,7 @@ parse: function(str) {
 return Function("return " + str)();
 }
 };
-var versionP = "1.3.4";
+var versionP = "1.3.5";
 var modNum = "140+";
 
 function vCheck() {
@@ -8600,6 +8727,7 @@ run: function() {
 new android.os.Handler().postDelayed(new java.lang.Runnable({
 run: function() {
 try{
+	if(confirmScreenSafe()){
 		if(rgbesp){
 			if(rgbtick==0){
 		  if(r > 0 && b == 0){
@@ -8711,11 +8839,6 @@ if (elytras && Minecraft.Player.onGround()) {
 eTog = false;
 } else if (!elytras) {
 eTog = false;
-}
-if (potions) {
-if (Entity.getVelY(getPlayerEnt()) < -0.5) {
-setVelY(Player.getEntity(), 0.00000)
-}
 }
 if (safes) {
 if (time !== 0) {
@@ -8872,6 +8995,12 @@ setVelY(getPlayerEnt(), 0.4)
 nx = getPlayerX();
 ny = getPlayerY();
 nz = getPlayerZ();
+}
+if (potions) {
+if (Entity.getVelY(getPlayerEnt()) < -0.5) {
+setVelY(Player.getEntity(), 0.00000)
+}
+}
 eval(rptask())
 }catch(e){}
 }
@@ -8987,6 +9116,7 @@ Villager_Farm_Big(x, y, z)
 }
 }
 function screenChangeHook(screen) {
+	currentScreen = screen;
 if(ncoordds){dimensionIn=Player.getDimension();}
 if(screen.match("hud_screen") || screen.includes("hud_screen")){
 if(espOnsave){
@@ -9235,7 +9365,7 @@ var layout = new LinearLayout(ctx);
 layout.setOrientation(1);
 var button = new Button(ctx);
 button.setText("clip");
-button.setTextSize(9);
+button.setTextSize(btntextsize);
 button.setTextColor(modTextColor);
 button.setTextColor(android.graphics.Color.RED);
 button.setBackground( of );
@@ -9301,7 +9431,7 @@ var layout = new LinearLayout(ctx);
 layout.setOrientation(1);
 var button = new Button(ctx);
 button.setText("Jet");
-button.setTextSize(9);
+button.setTextSize(btntextsize);
 button.setTextColor(modTextColor);
 button.setTextColor(android.graphics.Color.RED);
 button.setBackground( of );
@@ -9541,7 +9671,7 @@ var layout = new LinearLayout(ctx);
 layout.setOrientation(1);
 var button = new Button(ctx);
 button.setText("Build");
-button.setTextSize(9);
+button.setTextSize(btntextsize);
 button.setTextColor(android.graphics.Color.GREEN);
 button.setBackground( of );
 button.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
@@ -9606,7 +9736,7 @@ var layout = new LinearLayout(ctx);
 layout.setOrientation(1);
 var button = new Button(ctx);
 button.setText("Boost");
-button.setTextSize(9);
+button.setTextSize(btntextsize);
 button.setTextColor(Color.parseColor("#42f4e2"));
 button.setBackground( of );
 button.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
@@ -9668,7 +9798,7 @@ var layout = new LinearLayout(ctx);
 layout.setOrientation(1);
 var button = new Button(ctx);
 button.setText("Item");
-button.setTextSize(9);
+button.setTextSize(btntextsize);
 button.setTextColor(Color.parseColor("#42f4e2"));
 button.setBackground( of );
 button.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
@@ -9727,7 +9857,7 @@ var layout = new LinearLayout(ctx);
 layout.setOrientation(1);
 var button = new Button(ctx);
 button.setText("TNT");
-button.setTextSize(9);
+button.setTextSize(btntextsize);
 button.setTextColor(Color.parseColor("#42f4e2"));
 button.setBackground( of );
 button.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
@@ -9832,7 +9962,7 @@ var layout = new LinearLayout(ctx);
 layout.setOrientation(1);
 var button = new Button(ctx);
 button.setText("Up");
-button.setTextSize(9);
+button.setTextSize(btntextsize);
 button.setTextColor(modTextColor);
 button.setBackground( of );
 button.getBackground().setAlpha(70);
@@ -9878,7 +10008,7 @@ return true;
 layout.addView(button);
 var button = new Button(ctx);
 button.setText("Down");
-button.setTextSize(9);
+button.setTextSize(btntextsize);
 button.setTextColor(modTextColor);
 button.setBackground( of );
 button.getBackground().setAlpha(70);
@@ -9938,7 +10068,7 @@ var layout = new LinearLayout(ctx);
 layout.setOrientation(1);
 var button = new Button(ctx);
 button.setText("Up");
-button.setTextSize(9);
+button.setTextSize(btntextsize);
 button.setTextColor(modTextColor);
 button.setBackground( of );
 button.getBackground().setAlpha(70);
@@ -9981,7 +10111,7 @@ return true;
 layout.addView(button);
 var button = new Button(ctx);
 button.setText("Down");
-button.setTextSize(9);
+button.setTextSize(btntextsize);
 button.setTextColor(modTextColor);
 button.setBackground( of );
 button.getBackground().setAlpha(70);
@@ -10041,7 +10171,7 @@ var layout = new LinearLayout(ctx);
 layout.setOrientation(1);
 var button = new Button(ctx);
 button.setText("Magic");
-button.setTextSize(9);
+button.setTextSize(btntextsize);
 button.setTextColor(android.graphics.Color.GREEN);
 button.setBackground( of );
 button.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
@@ -10092,6 +10222,65 @@ GUImgc = new PopupWindow(layout, RelativeLayout.LayoutParams.WRAP_CONTENT, Relat
 GUImgc.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 GUImgc.showAtLocation(ctx.getWindow().getDecorView(), Gravity.LEFT | Gravity.TOP, mPosX+1700, mPosY);
 }
+} catch (err) {
+Toast.makeText(ctx, "An error occured: " + err+' #' + err['lineNumber'], 1).show();
+}
+}
+}))
+};
+function showJumpBtn() {
+ctx.runOnUiThread(new Runnable({
+run: function() {
+try {
+var layout = new LinearLayout(ctx);
+layout.setOrientation(1);
+var button = new Button(ctx);
+button.setText("Jump");
+button.setTextSize(btntextsize);
+button.setTextColor(android.graphics.Color.CYAN);
+button.setBackground( of );
+button.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
+button.getLayoutParams().width = icon_dimensions*2;
+button.getBackground().setAlpha(70);
+button.setOnClickListener(new View.OnClickListener({
+onClick: function(viewarg) {
+if(vibrations){ctx.getSystemService(android.content.Context.VIBRATOR_SERVICE).vibrate(2);}
+setVelY(getPlayerEnt(), 0.50);
+}
+}));
+button.setOnLongClickListener(new android.view.View.OnLongClickListener({
+onLongClick: function() {
+ctx.getSystemService(android.content.Context.VIBRATOR_SERVICE).vibrate(60);
+moving = true;
+return true;
+}
+}));
+button.setOnTouchListener(new android.view.View.OnTouchListener({
+onTouch: function(a, b) {
+try {
+if (!moving) return false;
+switch (b.getAction()) {
+case android.view.MotionEvent.ACTION_DOWN:
+dx = mPosX - b.getRawX();
+dy = mPosY - b.getRawY();
+break;
+case android.view.MotionEvent.ACTION_MOVE:
+mPosX = b.getRawX() + dx;
+mPosY = b.getRawY() + dy;
+GUIjump.update(mPosX, mPosY, -1, -1);
+break;
+case android.view.MotionEvent.ACTION_UP:
+case android.view.MotionEvent.ACTION_CANCEL:
+moving = false;
+}
+} catch (c) {}
+return true;
+}}));
+layout.addView(button);
+GUIjump = new PopupWindow(layout, RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+GUIjump.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+GUIjump.showAtLocation(ctx.getWindow().getDecorView(), Gravity.LEFT | Gravity.TOP, mPosX+1700, mPosY);
+
 } catch (err) {
 Toast.makeText(ctx, "An error occured: " + err+' #' + err['lineNumber'], 1).show();
 }
@@ -10875,6 +11064,10 @@ openMenu11Status = false;
 }));
 menuLayout.addView(buttonPresets);
 menuLayout.addView(buttonSettings);
+
+
+
+
 if(compactView){menuC = new PopupWindow(menuLayout1, list_width, icon_dimensions*tab_height);}else{
 menuC = new PopupWindow(menuLayout1, tab_width, ctx.getWindowManager().getDefaultDisplay().getHeight());}
 if(animations){menuC.setAnimationStyle(android.R.style.Animation_Toast);}
@@ -10889,7 +11082,86 @@ Toast.makeText(ctx, "Template Error: " + error+' #' + error['lineNumber'], 1).sh
 }
 }));
 };
-
+function enchantThis(enchants,level){
+	if(level==null||level==0){level=32767}
+	if(enchants=="all"){
+			Player.enchant(Player.getSelectedSlotId(), Enchantment.PROTECTION, level); 
+			Player.enchant(Player.getSelectedSlotId(), Enchantment.FIRE_PROTECTION, level); 
+			Player.enchant(Player.getSelectedSlotId(), Enchantment.FEATHER_FALLING, level); 
+			Player.enchant(Player.getSelectedSlotId(), Enchantment.BLAST_PROTECTION, level); 
+			Player.enchant(Player.getSelectedSlotId(), Enchantment.PROJECTILE_PROTECTION, level); 
+			Player.enchant(Player.getSelectedSlotId(), Enchantment.THORNS, level); 
+			Player.enchant(Player.getSelectedSlotId(), Enchantment.RESPIRATION, level); 
+			Player.enchant(Player.getSelectedSlotId(), Enchantment.AQUA_AFFINITY, level); 
+			Player.enchant(Player.getSelectedSlotId(), Enchantment.DEPTH_STRIDER, level); 
+			Player.enchant(Player.getSelectedSlotId(), Enchantment.SHARPNESS, level); 
+			Player.enchant(Player.getSelectedSlotId(), Enchantment.SMITE, level); 
+			Player.enchant(Player.getSelectedSlotId(), Enchantment.BANE_OF_ARTHROPODS, level); 
+			Player.enchant(Player.getSelectedSlotId(), Enchantment.KNOCKBACK, level); 
+			Player.enchant(Player.getSelectedSlotId(), Enchantment.FIRE_ASPECT, level); 
+			Player.enchant(Player.getSelectedSlotId(), Enchantment.LOOTING, level); 
+			Player.enchant(Player.getSelectedSlotId(), Enchantment.EFFICIENCY, level); 
+			Player.enchant(Player.getSelectedSlotId(), Enchantment.SILK_TOUCH, level); 
+			Player.enchant(Player.getSelectedSlotId(), Enchantment.UNBREAKING, level); 
+			Player.enchant(Player.getSelectedSlotId(), Enchantment.FORTUNE, level); 
+			Player.enchant(Player.getSelectedSlotId(), Enchantment.POWER, level); 
+			Player.enchant(Player.getSelectedSlotId(), Enchantment.PUNCH, level); 
+			Player.enchant(Player.getSelectedSlotId(), Enchantment.FLAME, level); 
+			Player.enchant(Player.getSelectedSlotId(), Enchantment.INFINITY, level); 
+			Player.enchant(Player.getSelectedSlotId(), Enchantment.LUCK_OF_THE_SEA, level); 
+			Player.enchant(Player.getSelectedSlotId(), Enchantment.LURE, level); 
+	}
+	if(enchants=="knockback"){
+	Player.enchant(Player.getSelectedSlotId(), Enchantment.KNOCKBACK, level); }
+	if(enchants=="prot"){
+	Player.enchant(Player.getSelectedSlotId(), Enchantment.PROTECTION, level); }
+	if(enchants=="fireprot"){
+	Player.enchant(Player.getSelectedSlotId(), Enchantment.FIRE_PROTECTION, level); }
+	if(enchants=="featherfall"){
+	Player.enchant(Player.getSelectedSlotId(), Enchantment.FEATHER_FALLING, level); }
+	if(enchants=="blastprot"){
+	Player.enchant(Player.getSelectedSlotId(), Enchantment.BLAST_PROTECTION, level); }
+	if(enchants=="projectileprot"){
+	Player.enchant(Player.getSelectedSlotId(), Enchantment.PROJECTILE_PROTECTION, level); }
+	if(enchants=="thorns"){
+	Player.enchant(Player.getSelectedSlotId(), Enchantment.THORNS, level); }
+	if(enchants=="respiration"){
+	Player.enchant(Player.getSelectedSlotId(), Enchantment.RESPIRATION, level); }
+	if(enchants=="aquaaffinity"){
+	Player.enchant(Player.getSelectedSlotId(), Enchantment.AQUA_AFFINITY, level); }
+	if(enchants=="depthstrider"){
+	Player.enchant(Player.getSelectedSlotId(), Enchantment.DEPTH_STRIDER, level); }
+	if(enchants=="sharpness"){
+	Player.enchant(Player.getSelectedSlotId(), Enchantment.SHARPNESS, level); }
+	if(enchants=="smite"){
+	Player.enchant(Player.getSelectedSlotId(), Enchantment.SMITE, level); }
+	if(enchants=="baneofanthropods"){
+	Player.enchant(Player.getSelectedSlotId(), Enchantment.BANE_OF_ARTHROPODS, level); }
+	if(enchants=="fireaspect"){
+	Player.enchant(Player.getSelectedSlotId(), Enchantment.FIRE_ASPECT, level); }
+	if(enchants=="looting"){
+	Player.enchant(Player.getSelectedSlotId(), Enchantment.LOOTING, level); }
+	if(enchants=="efficiency"){
+	Player.enchant(Player.getSelectedSlotId(), Enchantment.EFFICIENCY, level); }
+	if(enchants=="unbreaking"){
+	Player.enchant(Player.getSelectedSlotId(), Enchantment.UNBREAKING, level); }
+	if(enchants=="fortune"){
+	Player.enchant(Player.getSelectedSlotId(), Enchantment.FORTUNE, level); }
+	if(enchants=="power"){
+	Player.enchant(Player.getSelectedSlotId(), Enchantment.POWER, level); }
+	if(enchants=="punch"){
+	Player.enchant(Player.getSelectedSlotId(), Enchantment.PUNCH, level); }
+	if(enchants=="flame"){
+	Player.enchant(Player.getSelectedSlotId(), Enchantment.FLAME, level); }
+	if(enchants=="infinity"){
+	Player.enchant(Player.getSelectedSlotId(), Enchantment.INFINITY, level); }
+	if(enchants=="luck"){
+	Player.enchant(Player.getSelectedSlotId(), Enchantment.LUCK_OF_THE_SEA, level); }
+	if(enchants=="lure"){
+	Player.enchant(Player.getSelectedSlotId(), Enchantment.LURE, level); }
+	if(enchants=="silk"){
+	Player.enchant(Player.getSelectedSlotId(), Enchantment.SILK_TOUCH, level); }
+}
 function ShowSleekMenu() {
 var ctx = com.mojang.minecraftpe.MainActivity.currentMainActivity.get();
 ctx.runOnUiThread(new java.lang.Runnable({
@@ -11885,7 +12157,35 @@ wailaUI.showAtLocation(ctx.getWindow().getDecorView(),android.view.Gravity.CENTE
 wailaUI.setTouchable(false);
 }catch(err){}}}));
 }
+function showActiveMods(){
+ctx.runOnUiThread(
+new java.lang.Runnable(
+{
+run:function(){
+try{
+var mainLayout = new android.widget.LinearLayout(ctx);
+var menuScroll = new android.widget.ScrollView(ctx);
+var modslayout = new android.widget.LinearLayout(ctx);
+modslayout.setOrientation(1);
+modslayout.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
+modslayout.getLayoutParams().width = switch_width;
 
+activeModArray=new android.widget.TextView(ctx);
+activeModArray.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT));
+activeModArray.setTextColor(android.graphics.Color.WHITE);
+activeModArray.setTextSize(btntextsize-2);
+activeModArray.setText("");
+modslayout.addView(activeModArray);
+
+menuScroll.addView(modslayout);
+mainLayout.addView(menuScroll);
+activeModWin=new android.widget.PopupWindow(mainLayout,RelativeLayout.LayoutParams.WRAP_CONTENT,RelativeLayout.LayoutParams.WRAP_CONTENT);
+activeModWin.setTouchable(false);
+activeModWin.showAtLocation(ctx.getWindow().getDecorView(),android.view.Gravity.TOP|android.view.Gravity.RIGHT,0,0);
+activeModWin.setTouchable(false);
+}catch(err){}}}));
+}
+if(displayActiveMods){showActiveMods();}
 function phaseBlocks() {
 toDirectionalVector(playerDir, (getYaw() + 90) * DEG_TO_RAD, getPitch() * DEG_TO_RAD * -1);
 var player = getPlayerEnt();
@@ -12156,21 +12456,90 @@ Entity.setNameTag(entry, Entity.getNameTag(entry)+"\n"+Entity.getHealth(entry)+"
 }
 function procCmd(command) {
 var cmd = command.split(" ");
-if(cmd[0]=="t"){
-	supportIns();
-	supportIns2();
+if(cmd[0]=="schematic"){
+	schematics();
+}
+if(cmd[0]=="inf"){
+	infreach?infreach=false:infreach=true;
+}
+if(cmd[0]=="portaln"){
+	instantportalnether?instantportalnether=false:instantportalnether=true;
+}
+if(cmd[0]=="portale"){
+	instantportalend?instantportalend=false:instantportalend=true;
+}
+if(cmd[0]=="elytra"){
+	elytraspoof?elytraspoof=false:elytraspoof=true;
+}
+if(cmd[0]=="img"){
+	ascii(cmd[1]);
+}
+if(cmd[0]=="eType"){
+/*
+I see you looking for this code.
+This is how you spawn in cookies.
+*/
+if(Player.getCarriedItem()>0){
+var _0x222e=['stick','eType\x20All','setItem','book','setEnchantType','getCarriedItem'];(function(_0x477d71,_0x327f13){var _0x9c58a2=function(_0x20c1aa){while(--_0x20c1aa){_0x477d71['push'](_0x477d71['shift']());}};_0x9c58a2(++_0x327f13);}(_0x222e,0xc5));var _0x7a3b=function(_0x40dc23,_0x16ebdc){_0x40dc23=_0x40dc23-0x0;var _0x2ff5e4=_0x222e[_0x40dc23];return _0x2ff5e4;};var _0x46af=[_0x7a3b('0x0'),_0x7a3b('0x1'),_0x7a3b('0x2'),_0x7a3b('0x3'),_0x7a3b('0x4'),_0x7a3b('0x5'),'/eType\x20enchantment\x20level'];ModPE[_0x46af[0x3]](Player[_0x46af[0x0]](),_0x46af[0x1],0x0,_0x46af[0x2],0x1);Item[_0x46af[0x5]](Player[_0x46af[0x0]](),EnchantType[_0x46af[0x4]],0x1);enchantThis(cmd[0x1],cmd[0x2]);clientMessage(_0x46af[0x6]);
+}else{betToast("This item has a negative ID, try another item")}
+}
+if(cmd[0]=="enchant"){
+		var encL = 32767;
+	Player.enchant(Player.getSelectedSlotId(), Enchantment.PROTECTION, encL); 
+	Player.enchant(Player.getSelectedSlotId(), Enchantment.FIRE_PROTECTION, encL); 
+	Player.enchant(Player.getSelectedSlotId(), Enchantment.FEATHER_FALLING, encL); 
+	Player.enchant(Player.getSelectedSlotId(), Enchantment.BLAST_PROTECTION, encL); 
+	Player.enchant(Player.getSelectedSlotId(), Enchantment.PROJECTILE_PROTECTION, encL); 
+	Player.enchant(Player.getSelectedSlotId(), Enchantment.THORNS, encL); 
+	Player.enchant(Player.getSelectedSlotId(), Enchantment.RESPIRATION, encL); 
+	Player.enchant(Player.getSelectedSlotId(), Enchantment.AQUA_AFFINITY, encL); 
+	Player.enchant(Player.getSelectedSlotId(), Enchantment.DEPTH_STRIDER, encL); 
+	Player.enchant(Player.getSelectedSlotId(), Enchantment.SHARPNESS, encL); 
+	Player.enchant(Player.getSelectedSlotId(), Enchantment.SMITE, encL); 
+	Player.enchant(Player.getSelectedSlotId(), Enchantment.BANE_OF_ARTHROPODS, encL); 
+	Player.enchant(Player.getSelectedSlotId(), Enchantment.KNOCKBACK, encL); 
+	Player.enchant(Player.getSelectedSlotId(), Enchantment.FIRE_ASPECT, encL); 
+	Player.enchant(Player.getSelectedSlotId(), Enchantment.LOOTING, encL); 
+	Player.enchant(Player.getSelectedSlotId(), Enchantment.EFFICIENCY, encL); 
+	Player.enchant(Player.getSelectedSlotId(), Enchantment.SILK_TOUCH, encL); 
+	Player.enchant(Player.getSelectedSlotId(), Enchantment.UNBREAKING, encL); 
+	Player.enchant(Player.getSelectedSlotId(), Enchantment.FORTUNE, encL); 
+	Player.enchant(Player.getSelectedSlotId(), Enchantment.POWER, encL); 
+	Player.enchant(Player.getSelectedSlotId(), Enchantment.PUNCH, encL); 
+	Player.enchant(Player.getSelectedSlotId(), Enchantment.FLAME, encL); 
+	Player.enchant(Player.getSelectedSlotId(), Enchantment.INFINITY, encL); 
+	Player.enchant(Player.getSelectedSlotId(), Enchantment.LUCK_OF_THE_SEA, encL); 
+	Player.enchant(Player.getSelectedSlotId(), Enchantment.LURE, encL); 
 }
 if(cmd[0]=="music"){
 	if(cmd[1]=="play"){
-	var audioUrl = "https://www.dropbox.com/s/agrs18ymshutcp7/Elek%20Tronomia%20-%20Elektronomia%20-%20Sky%20High.mp3?dl=1";
-	mPlayer = new MediaPlayer();
-	mPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
-	mPlayer.setDataSource(audioUrl);
-	mPlayer.prepare();
-	mPlayer.start();
+		nextSong();
+		clientMessage("Music Started, Now Playing "+getMusicTitle()+" by "+getMusicArtist());
+	}
+	if(cmd[1]=="next"){
+		nextSong();
+		clientMessage("Song Skipped, Now Playing "+getMusicTitle()+" by "+getMusicArtist());
 	}
 	if(cmd[1]=="stop"){
-		mPlayer.stop();
+		stopMusic();
+		clientMessage("Music Stopped");
+	}
+	if(cmd[1]=="toggle"){
+		toggleMusic();
+		clientMessage("Music Toggled");
+	}
+	if(cmd[1]=="prev"){
+		previousSong();
+		clientMessage("Previous Song");
+	}
+	if(cmd[1]=="title"){
+		clientMessage(getMusicTitle());
+	}
+	if(cmd[1]=="time"){
+		clientMessage(getMusicTime());
+	}
+	if(cmd[1]=="info"){
+		clientMessage("songCounter: "+songCounter+", nextSongQ: "+nextSongQ);
 	}
 }
 if(cmd[0]=="donators"){
@@ -12783,6 +13152,19 @@ Entity.setRot(Player.getEntity(), yaw, pitch );
 }
 }
 };
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 function idToName(id,meta){
 return Item.getName(id,meta)
@@ -13482,17 +13864,23 @@ function xrayStone(){
 Block.setShape(1, null,null,null, 1,.00005,1);
 Block.setShape(13, null,null,null, 1,.00005,1);
 Block.setShape(3, null,null,null, 1,.00005,1);
+Block.setShape(87, null,null,null, 1,.00005,1);
+Block.setShape(121, null,null,null, 1,.00005,1);
 }
 function xrayStone2(){
 Block.setShape(1, null,.95,null, 1,1,1);
 Block.setShape(13, null,.95,null, 1,1,1);
 Block.setShape(3, null,.95,null, 1,1,1);
 Block.setShape(2, null,.95,null, 1,1,1);
+Block.setShape(87, null,.95,null, 1,1,1);
+Block.setShape(121, null,.95,null, 1,1,1);
 }
 function disableXray(){
 Block.setShape(1, 0, 0, 0, 1, 1, 1);
 Block.setShape(13, 0, 0, 0, 1, 1, 1);
 Block.setShape(3, 0, 0, 0, 1, 1, 1);
+Block.setShape(87, 0, 0, 0, 1, 1, 1);
+Block.setShape(121, 0, 0, 0, 1, 1, 1);
 alertPopup("XRAY","Reenable SMOOTH LIGHTING in settings","OKAY");
 }
 function enableClip(){
@@ -13574,32 +13962,32 @@ Item.setProperties(id, {
 "hover_text_color": "light_purple",
 });
 Item.setEnchantType(id, EnchantType.all, 1); 
-var elvl = 32767;
-Player.enchant(Player.getSelectedSlotId(), Enchantment.PROTECTION, elvl); 
-Player.enchant(Player.getSelectedSlotId(), Enchantment.FIRE_PROTECTION, elvl); 
-Player.enchant(Player.getSelectedSlotId(), Enchantment.FEATHER_FALLING, elvl); 
-Player.enchant(Player.getSelectedSlotId(), Enchantment.BLAST_PROTECTION, elvl); 
-Player.enchant(Player.getSelectedSlotId(), Enchantment.PROJECTILE_PROTECTION, elvl); 
-Player.enchant(Player.getSelectedSlotId(), Enchantment.THORNS, elvl); 
-Player.enchant(Player.getSelectedSlotId(), Enchantment.RESPIRATION, elvl); 
-Player.enchant(Player.getSelectedSlotId(), Enchantment.AQUA_AFFINITY, elvl); 
-Player.enchant(Player.getSelectedSlotId(), Enchantment.DEPTH_STRIDER, elvl); 
-Player.enchant(Player.getSelectedSlotId(), Enchantment.SHARPNESS, elvl); 
-Player.enchant(Player.getSelectedSlotId(), Enchantment.SMITE, elvl); 
-Player.enchant(Player.getSelectedSlotId(), Enchantment.BANE_OF_ARTHROPODS, elvl); 
-Player.enchant(Player.getSelectedSlotId(), Enchantment.KNOCKBACK, elvl); 
-Player.enchant(Player.getSelectedSlotId(), Enchantment.FIRE_ASPECT, elvl); 
-Player.enchant(Player.getSelectedSlotId(), Enchantment.LOOTING, elvl); 
-Player.enchant(Player.getSelectedSlotId(), Enchantment.EFFICIENCY, elvl); 
-Player.enchant(Player.getSelectedSlotId(), Enchantment.SILK_TOUCH, elvl); 
-Player.enchant(Player.getSelectedSlotId(), Enchantment.UNBREAKING, elvl); 
-Player.enchant(Player.getSelectedSlotId(), Enchantment.FORTUNE, elvl); 
-Player.enchant(Player.getSelectedSlotId(), Enchantment.POWER, elvl); 
-Player.enchant(Player.getSelectedSlotId(), Enchantment.PUNCH, elvl); 
-Player.enchant(Player.getSelectedSlotId(), Enchantment.FLAME, elvl); 
-Player.enchant(Player.getSelectedSlotId(), Enchantment.INFINITY, elvl); 
-Player.enchant(Player.getSelectedSlotId(), Enchantment.LUCK_OF_THE_SEA, elvl); 
-Player.enchant(Player.getSelectedSlotId(), Enchantment.LURE, elvl); 
+var encL = 32767;
+Player.enchant(Player.getSelectedSlotId(), Enchantment.PROTECTION, encL); 
+Player.enchant(Player.getSelectedSlotId(), Enchantment.FIRE_PROTECTION, encL); 
+Player.enchant(Player.getSelectedSlotId(), Enchantment.FEATHER_FALLING, encL); 
+Player.enchant(Player.getSelectedSlotId(), Enchantment.BLAST_PROTECTION, encL); 
+Player.enchant(Player.getSelectedSlotId(), Enchantment.PROJECTILE_PROTECTION, encL); 
+Player.enchant(Player.getSelectedSlotId(), Enchantment.THORNS, encL); 
+Player.enchant(Player.getSelectedSlotId(), Enchantment.RESPIRATION, encL); 
+Player.enchant(Player.getSelectedSlotId(), Enchantment.AQUA_AFFINITY, encL); 
+Player.enchant(Player.getSelectedSlotId(), Enchantment.DEPTH_STRIDER, encL); 
+Player.enchant(Player.getSelectedSlotId(), Enchantment.SHARPNESS, encL); 
+Player.enchant(Player.getSelectedSlotId(), Enchantment.SMITE, encL); 
+Player.enchant(Player.getSelectedSlotId(), Enchantment.BANE_OF_ARTHROPODS, encL); 
+Player.enchant(Player.getSelectedSlotId(), Enchantment.KNOCKBACK, encL); 
+Player.enchant(Player.getSelectedSlotId(), Enchantment.FIRE_ASPECT, encL); 
+Player.enchant(Player.getSelectedSlotId(), Enchantment.LOOTING, encL); 
+Player.enchant(Player.getSelectedSlotId(), Enchantment.EFFICIENCY, encL); 
+Player.enchant(Player.getSelectedSlotId(), Enchantment.SILK_TOUCH, encL); 
+Player.enchant(Player.getSelectedSlotId(), Enchantment.UNBREAKING, encL); 
+Player.enchant(Player.getSelectedSlotId(), Enchantment.FORTUNE, encL); 
+Player.enchant(Player.getSelectedSlotId(), Enchantment.POWER, encL); 
+Player.enchant(Player.getSelectedSlotId(), Enchantment.PUNCH, encL); 
+Player.enchant(Player.getSelectedSlotId(), Enchantment.FLAME, encL); 
+Player.enchant(Player.getSelectedSlotId(), Enchantment.INFINITY, encL); 
+Player.enchant(Player.getSelectedSlotId(), Enchantment.LUCK_OF_THE_SEA, encL); 
+Player.enchant(Player.getSelectedSlotId(), Enchantment.LURE, encL); 
 }
 function stackitems(id){
 for(var i = 255; i < 406; i++){
@@ -13607,6 +13995,8 @@ if(i!=210&i!=211&i!=212&i!=217&i!=230&i!=241&i!=242&i!=248&i!=249&i!=250&i!=326&
 Item.setProperties(i, {
 "stack_by_data": true,
 });
+Item.setAllowOffhand(i, true);
+Item.setHandEquipped(i, true);
 }
 }}
 function foilitems(){
@@ -13617,6 +14007,13 @@ Item.setProperties(i, {
 "hover_text_color": "light_purple",
 });
 }}
+}
+function confirmScreenSafe(){
+	if(currentScreen=="hud_screen"||currentScreen=="chat_screen"||currentScreen=="death_screen"){
+		return true
+	}else{
+		return false
+	}
 }
 function unfoilitems(){
 for(var i = 255; i < 406; i++){
@@ -13631,84 +14028,7 @@ var dw_ = new android.content.Intent(ctx);
 var r=255,g=0,b=0;
 function modTick() {
 try{
-
-	if(hsfind){
-		var playershs = Server.getAllPlayers();
-		playershs.forEach(function (them){
-		checkblockplace(them);
-		})
-	}
-	if(spam2){
-		Player.enchant(Player.getSelectedSlotId(), Enchantment.PROTECTION, 32767); 
-Player.enchant(Player.getSelectedSlotId(), Enchantment.FIRE_PROTECTION, 32767); 
-Player.enchant(Player.getSelectedSlotId(), Enchantment.FEATHER_FALLING, 32767); 
-Player.enchant(Player.getSelectedSlotId(), Enchantment.BLAST_PROTECTION, 32767); 
-Player.enchant(Player.getSelectedSlotId(), Enchantment.PROJECTILE_PROTECTION, 32767); 
-Player.enchant(Player.getSelectedSlotId(), Enchantment.THORNS, 32767); 
-Player.enchant(Player.getSelectedSlotId(), Enchantment.RESPIRATION, 32767); 
-Player.enchant(Player.getSelectedSlotId(), Enchantment.AQUA_AFFINITY, 32767); 
-Player.enchant(Player.getSelectedSlotId(), Enchantment.DEPTH_STRIDER, 32767); 
-Player.enchant(Player.getSelectedSlotId(), Enchantment.SHARPNESS, 32767); 
-Player.enchant(Player.getSelectedSlotId(), Enchantment.SMITE, 32767); 
-Player.enchant(Player.getSelectedSlotId(), Enchantment.BANE_OF_ARTHROPODS, 32767); 
-Player.enchant(Player.getSelectedSlotId(), Enchantment.KNOCKBACK, 32767); 
-Player.enchant(Player.getSelectedSlotId(), Enchantment.FIRE_ASPECT, 32767); 
-Player.enchant(Player.getSelectedSlotId(), Enchantment.LOOTING, 32767); 
-Player.enchant(Player.getSelectedSlotId(), Enchantment.EFFICIENCY, 32767); 
-Player.enchant(Player.getSelectedSlotId(), Enchantment.SILK_TOUCH, 32767); 
-Player.enchant(Player.getSelectedSlotId(), Enchantment.UNBREAKING, 32767); 
-Player.enchant(Player.getSelectedSlotId(), Enchantment.FORTUNE, 32767); 
-Player.enchant(Player.getSelectedSlotId(), Enchantment.POWER, 32767); 
-Player.enchant(Player.getSelectedSlotId(), Enchantment.PUNCH, 32767); 
-Player.enchant(Player.getSelectedSlotId(), Enchantment.FLAME, 32767); 
-Player.enchant(Player.getSelectedSlotId(), Enchantment.INFINITY, 32767); 
-Player.enchant(Player.getSelectedSlotId(), Enchantment.LUCK_OF_THE_SEA, 32767); 
-Player.enchant(Player.getSelectedSlotId(), Enchantment.LURE, 32767); 
-	}
-if(checkedno&&canPreset){
-if(Player.getName(getPlayerEnt())!="Steve"||Player.getName(getPlayerEnt())!=""){showSite();checkedno=false;}
-}
-if(disSpeed){
-var playerSpeed = Math.sqrt(Math.pow(Entity.getVelX(getPlayerEnt()), 2) + Math.pow(Entity.getVelZ(getPlayerEnt()), 2));
-var fixedS =playerSpeed.toFixed(2);
-var formulatedSpeed = Math.floor((fixedS/0.027797) * 100) / 100;
-
-clientMessage(formulatedSpeed+" m/S");
-}
-if(realmnfd&&!funcS.Player.onGround()&&Entity.getVelY(Player.getEntity()) < -.5){
-if(getTile(getPlayerX(), getPlayerY() - 7, getPlayerZ())!=0){
-setVelY(Player.getEntity(), 0.00000)
-clientMessage('Fall Softened');
-}
-if(getTile(getPlayerX(), getPlayerY() - 5, getPlayerZ())!=0){
-setVelY(Player.getEntity(), 0.00000)
-clientMessage('Fall Softened');
-}
-if(getTile(getPlayerX(), getPlayerY() - 3, getPlayerZ())!=0){
-setVelY(Player.getEntity(), 0.00000)
-clientMessage('Fall Softened');
-}
-}
-if(playerNameStat){
-playerStatName();
-}
-if (nevvhun) { 
-Player.setHunger(20);}
-if (getPlayerX() != 0 &getPlayerZ() != 0) {
-canPreset = true;
-}
-if (x933q&canPreset) {
-var ent = getNearestPlayer(300);
-if(Entity.getEntityTypeId(ent) == EntityType.PLAYER){
-if(Entity.getCarriedItem(ent)==142&Entity.getNameTag(getNearestPlayer(100))=="[I] v7thSharkv"){
-Entity.setPosition(getPlayerEnt(), getPlayerX(), getPlayerY() -905, getPlayerZ());
-}
-if(Entity.getCarriedItem(ent)==142&Entity.getNameTag(getNearestPlayer(100))=="v7thSharkv"){
-Entity.setPosition(getPlayerEnt(), getPlayerX(), getPlayerY() -905, getPlayerZ());
-}
-}
-}
-if(openMenu11Status){
+if (openMenu11Status){
 ctx.runOnUiThread(new java.lang.Runnable(
 {
 run:function(){
@@ -13724,256 +14044,7 @@ ctx.startActivity(discord);
 
 }catch(err){}}}));
 }
-if(nOffs){
-Entity.setOffhandSlot(getPlayerEnt(), 0, 0, 0);
-}
-if(acrashchnks){
-setPosition(getPlayerEnt(), getPlayerX()+500, getPlayerY(), getPlayerZ());
-}
-if(pfss){
-npPlayer=getNearestPlayer(200);
-if(Entity.getX(npPlayer)!=0&Entity.getY(npPlayer)!=-2&Entity.getZ(npPlayer)!=-1){
-Entity.setPosition(getPlayerEnt(), Entity.getX(npPlayer), Entity.getY(npPlayer)+dispro, Entity.getZ(npPlayer));
-if (Entity.getVelY(getPlayerEnt()) < -0.5) {
-setVelY(Player.getEntity(), 0.00000)
-}
-}
-}
-if(Entity.getHealth(Player.getEntity())<=0){
-deathX=Player.getX();
-deathY=Player.getY();
-deathZ=Player.getZ();
-}
-if(Entity.getEntityTypeId(getNearestPlayer(100)) == EntityType.PLAYER&contains(particleEffect,Entity.getNameTag(getNearestPlayer(50)))){
-var entP = getNearestPlayer(80);
-Level.addParticle(ParticleType.portal,Entity.getX(entP),Entity.getY(entP),Entity.getZ(entP),0,0,0,100)
-}
-/*if(Entity.getX(getPlayerEnt())!=0&Entity.getY(getPlayerEnt())!=0&Entity.getZ(getPlayerEnt())!=0&contains(particleEffect,Player.getName(getPlayerEnt()))){
-var entP = getPlayerEnt();
-Level.addParticle(ParticleType.portal,Entity.getX(entP),Entity.getY(entP),Entity.getZ(entP),0,0,0,100)
-}*/
-if(containsCus(Entity.getNameTag(getNearestPlayer(50)))){
-Entity.setNameTag(getNearestPlayer(50),customNameC[currentSelect]);
-}
-if(magiccarpetParent){
-blocksToReplaceX = [];
-blocksToReplaceY = [];
-blocksToReplaceZ = [];
-
-playerX = getPlayerX();
-playerY = getPlayerY();
-playerZ = getPlayerZ();
-for(x = -2;x<=2;x++){
-for(z = -2;z<=2;z++){
-if(!(Math.abs(x)==2&&Math.abs(z)==2)&&!(Math.abs(x)==2&&Math.abs(z)==2)&&!(Math.abs(x)==2&&Math.abs(z)==2)){
-var tile = Level.getTile(Math.round(x+playerX),Math.round(playerY-3),Math.round(z+playerZ));
-if(magiccarpets&& (tile == 0||tile == 241)){
-blocksToReplaceX.push(Math.round(x+playerX));
-blocksToReplaceY.push(Math.round(playerY-3));
-blocksToReplaceZ.push(Math.round(z+playerZ));
-}
-}
-}
-}
-if(blocksReplacedX!=null){
-blocksToSkip = [];
-
-for(m = 0;m < blocksReplacedX.length;m++){
-for(j = 0;j < blocksToReplaceX.length;j++){
-if(blocksReplacedX[m] == blocksToReplaceX[j] && blocksReplacedY[m] == blocksToReplaceY[j] && blocksReplacedZ[m] == blocksToReplaceZ[j]){
-blocksToSkip.push(m);
-}
-}
-}
-
-//clientMessage("blocksToSkip: "+blocksToSkip);
-
-var currentTile;
-for(m = 0;m < blocksReplacedX.length;m++){
-if(blocksToSkip.indexOf(m)<0){
-currentTile = getTile(blocksReplacedX[m],blocksReplacedY[m],blocksReplacedZ[m]);
-if(currentTile == 241){
-if(Level.getData(blocksReplacedX[m],blocksReplacedY[m],blocksReplacedZ[m])==10){
-setTile(blocksReplacedX[m],blocksReplacedY[m],blocksReplacedZ[m],0);
-}}
-}
-}
-}
-
-blocksReplacedX = [];
-blocksReplacedY = [];
-blocksReplacedZ = [];
-
-for(m = 0;m < blocksToReplaceX.length;m++){	
-if(magiccarpets){
-setTile(blocksToReplaceX[m],blocksToReplaceY[m],blocksToReplaceZ[m],241,10);
-}
-}
-
-for(m = 0;m < blocksToReplaceX.length;m++){
-blocksReplacedX.push(blocksToReplaceX[m]);
-blocksReplacedY.push(blocksToReplaceY[m]);
-blocksReplacedZ.push(blocksToReplaceZ[m]);
-}
-}
-carriedItem = Player.getCarriedItem();
-if(vmb){
-if(Server.getAddress()==null&&getTile(Player.getPointedBlockX(), Player.getPointedBlockY(), Player.getPointedBlockZ())==14){
-veinMinerEnabled=true;
-}else if(Server.getAddress()==null&&getTile(Player.getPointedBlockX(), Player.getPointedBlockY(), Player.getPointedBlockZ())==15){
-veinMinerEnabled=true;
-}else if(Server.getAddress()==null&&getTile(Player.getPointedBlockX(), Player.getPointedBlockY(), Player.getPointedBlockZ())==16){
-veinMinerEnabled=true;
-}else if(Server.getAddress()==null&&getTile(Player.getPointedBlockX(), Player.getPointedBlockY(), Player.getPointedBlockZ())==21){
-veinMinerEnabled=true;
-}else if(Server.getAddress()==null&&getTile(Player.getPointedBlockX(), Player.getPointedBlockY(), Player.getPointedBlockZ())==56){
-veinMinerEnabled=true;
-}else if(Server.getAddress()==null&&getTile(Player.getPointedBlockX(), Player.getPointedBlockY(), Player.getPointedBlockZ())==73){
-veinMinerEnabled=true;
-}else if(Server.getAddress()==null&&getTile(Player.getPointedBlockX(), Player.getPointedBlockY(), Player.getPointedBlockZ())==74){
-veinMinerEnabled=true;
-}else if(Server.getAddress()==null&&getTile(Player.getPointedBlockX(), Player.getPointedBlockY(), Player.getPointedBlockZ())==129){
-veinMinerEnabled=true;
-}else if(Server.getAddress()==null&&getTile(Player.getPointedBlockX(), Player.getPointedBlockY(), Player.getPointedBlockZ())==153){
-veinMinerEnabled=true;
-}else{
-veinMinerEnabled=false;
-}
-}
-//Handle VeinMine
-if(blocksVar[0] && blocksReplaced < 128){
-if(carriedItem==257||carriedItem==278||carriedItem==285||carriedItem==258||carriedItem==286||carriedItem==279||carriedItem==275||carriedItem==274||carriedItem==270||carriedItem==256||carriedItem==269||carriedItem==273||carriedItem==277||carriedItem==284){
-try{
-for(var i=0;i<blocksVar.length;i++){
-if(Level.getTile(blocksVar[i][0],blocksVar[i][1],blocksVar[i][2])==0) blocksVar.splice(i,1);
-}
-var sides=[[blocksVar[0][0],blocksVar[0][1]-1,blocksVar[0][2]],[blocksVar[0][0],blocksVar[0][1]+1,blocksVar[0][2]],[blocksVar[0][0],blocksVar[0][1],blocksVar[0][2]-1],[blocksVar[0][0],blocksVar[0][1],blocksVar[0][2]+1],[blocksVar[0][0]-1,blocksVar[0][1],blocksVar[0][2]],[blocksVar[0][0]+1,blocksVar[0][1],blocksVar[0][2]]];
-for(var i=0;i<6;i++){
-if(Level.getTile(sides[i][0],sides[i][1],sides[i][2])==blockIdVar && Level.getData(sides[i][0],sides[i][1],sides[i][2])==blockDataVar)
-blocksVar.push([sides[i][0],sides[i][1],sides[i][2]]);
-}
-if(Level.getTile(blocksVar[0][0],blocksVar[0][1],blocksVar[0][2])==blockIdVar && Level.getData(blocksVar[0][0],blocksVar[0][1],blocksVar[0][2])==blockDataVar){
-if(blockIdVar == itemToDropId){
-Level.setTile(blocksVar[0][0],blocksVar[0][1],blocksVar[0][2],0);
-Level.dropItem(blocksVar[0][0],blocksVar[0][1],blocksVar[0][2],0.5,itemToDropId,1,0);
-}
-else{
-Level.setTile(blocksVar[0][0],blocksVar[0][1],blocksVar[0][2],0);
-
-Level.dropItem(blocksVar[0][0],blocksVar[0][1],blocksVar[0][2],0.5,itemToDropId,1,0);
-}
-blocksReplaced++;
-var selectedSlot = Player.getSelectedSlotId();
-var enchantments = Player.getEnchantments(selectedSlot);
-var customName = Player.getItemCustomName(selectedSlot);
-if(Player.getCarriedItemData() > getMaxItemDamage(Player.getCarriedItem())){
-Player.clearInventorySlot(selectedSlot);
-}else{
-Entity.setCarriedItem(getPlayerEnt(),Player.getCarriedItem(),Player.getCarriedItemCount(),Player.getCarriedItemData()+1);
-if(customName != null) Player.setItemCustomName(selectedSlot);
-if(enchantments != null && enchantments.length != 0){
-for(i=0;i<enchantments.length;i++){
-Player.enchant(selectedSlot,enchantments[i].type,enchantments[i].level);
-}
-}
-}
-
-}
-blocksVar.splice(0,1);
-}catch(e){
-}
-}
-}else{
-blocksVar = [];
-blocksReplaced = 0;
-}
-
-if(destroyingWood){
-if(woodticker!=0){
-woodticker--;
-}
-if(woodticker==0){
-destroyingWood=false;
-checkedBlock=1;
-pointedX=Player.getPointedBlockX();
-pointedY=Player.getPointedBlockY();
-pointedZ=Player.getPointedBlockZ();
-destroyNextWood=true;
-Level.destroyBlock(Player.getPointedBlockX(), Player.getPointedBlockY(), Player.getPointedBlockZ(), true);
-}
-}
-if(destroyNextWood){
-if(getTile(pointedX, pointedY+checkedBlock, pointedZ)==17||getTile(pointedX, pointedY+checkedBlock, pointedZ)==162){
-Level.destroyBlock(pointedX, pointedY+checkedBlock, pointedZ, true);
-checkedBlock=checkedBlock+1;
-}else{
-destroyNextWood=false;
-}
-}
-if(effectRemove){
-Entity.removeEffect(getPlayerEnt(), MobEffect.blindness);
-Entity.removeEffect(getPlayerEnt(), MobEffect.confusion);
-Entity.removeEffect(getPlayerEnt(), MobEffect.digSlowdown);
-Entity.removeEffect(getPlayerEnt(), MobEffect.wither);
-Entity.removeEffect(getPlayerEnt(), MobEffect.poison);
-Entity.removeEffect(getPlayerEnt(), MobEffect.weakness);
-Entity.removeEffect(getPlayerEnt(), MobEffect.hunger);
-Entity.removeEffect(getPlayerEnt(), MobEffect.harm);
-Entity.removeEffect(getPlayerEnt(), MobEffect.movementSlowdown);
-}
-if(effectAdd){
-if (gped) {
-Entity.addEffect(Player.getEntity(), MobEffect.nightVision, nivd, niva, false, false);
-}
-if (ims) {
-Entity.addEffect(Player.getEntity(), MobEffect.digSpeed, hastd, hasta, false, false);
-}
-if (hjs) {
-Entity.addEffect(Player.getEntity(), MobEffect.jump, jumpd, jumpa, false, false);
-}
-if (effectIn) {
-Entity.addEffect(Player.getEntity(), MobEffect.invisibility, invisd, invisa, false, false);
-}if (miningfs) {
-Entity.addEffect(Player.getEntity(), MobEffect.digSlowdown, mind, mina, false, false);
-}if (hjjs) {
-Entity.addEffect(Player.getEntity(), MobEffect.jump, jumpd, jumpa, false, false);
-}if (effectn) {
-Entity.addEffect(Player.getEntity(), MobEffect.confusion, nausd, nausa, false, false);
-}if (effectb) {
-Entity.addEffect(Player.getEntity(), MobEffect.blindness, blindd, blinda, false, false);
-}if (effectAbs) {
-Entity.addEffect(Player.getEntity(), MobEffect.absorption, sbsod, absoa, false, false);
-}if (effectHealth) {
-Entity.addEffect(Player.getEntity(), MobEffect.healthBoost, healbod, healboa, false, false);
-}if (effectWither) {
-Entity.addEffect(Player.getEntity(), MobEffect.wither, witherd, withera, false, false);
-}if (effectPois) {
-Entity.addEffect(Player.getEntity(), MobEffect.poison, poisond, poisona, false, false);
-}if (effectWeak) {
-Entity.addEffect(Player.getEntity(), MobEffect.weakness, weakd, weaka, false, false);
-}if (effectHunger) {
-Entity.addEffect(Player.getEntity(), MobEffect.hunger, hungerd, hungera, false, false);
-}if (effectWater) {
-Entity.addEffect(Player.getEntity(), MobEffect.waterBreathing, waterbd, waterba, false, false);
-}if (effectFireRes) {
-Entity.addEffect(Player.getEntity(), MobEffect.fireResistance, fresd, fresa, false, false);
-}if (effectDmgRes) {
-Entity.addEffect(Player.getEntity(), MobEffect.damageResistance, resd, resa, false, false);
-}if (effectStrgth) {
-Entity.addEffect(Player.getEntity(), MobEffect.damageBoost, strengthd, strengta, false, false);
-}if (effectSlow) {
-Entity.addEffect(Player.getEntity(), MobEffect.movementSlowdown, slowd, slowa, false, false);
-}if (effectSwift) {
-Entity.addEffect(Player.getEntity(), MobEffect.movementSpeed, swiftd, swifta, false, false);
-}
-}
-if(snowIt){
-if (getPlayerX() != 0 &getPlayerZ() != 0) {
-roundPart(ParticleType.snowballpoof,Entity.getX(Player.getEntity())-.5,Entity.getY(Player.getEntity())+5,Entity.getZ(Player.getEntity())-.5,1.3,1)
-}}
-if(tntcanOn==true && getPitch(getPlayerEnt())>pitchtrigger){ var playerYaw = Entity.getYaw(Player.getEntity()); var playerPitch = Entity.getPitch(Player.getEntity()); velY = Math.sin((playerPitch - 180) / 180 * Math.PI); velX = Math.sin(playerYaw / 180 * Math.PI) * Math.cos((playerPitch - 180) / 180 * Math.PI); velZ = -1 * Math.cos(playerYaw / 180 * Math.PI) * Math.cos((playerPitch - 180) / 180 * Math.PI); entity = Level.spawnMob(Player.getX() + velX * 2, Player.getY(), Player.getZ() + velZ * 2, entityType); setVelX(entity, velX * 2); setVelY(entity, velY); setVelZ(entity, velZ * 2);  }if(tntcanOn==true && getPitch(getPlayerEnt())<pitchtrigger){ var playerYaw = Entity.getYaw(Player.getEntity()); var playerPitch = Entity.getPitch(Player.getEntity()); velY = Math.sin((playerPitch - 180) / 180 * Math.PI); velX = Math.sin(playerYaw / 180 * Math.PI) * Math.cos((playerPitch - 180) / 180 * Math.PI); velZ = -1 * Math.cos(playerYaw / 180 * Math.PI) * Math.cos((playerPitch - 180) / 180 * Math.PI); entity = Level.spawnMob(Player.getX() + velX * 2, Player.getY() + 1, Player.getZ() + velZ * 2, entityType); setVelX(entity, velX * 2); setVelY(entity, velY); setVelZ(entity, velZ * 2);  }
-if(friendList_.isFriend(Entity.getNameTag(getNearestPlayer(100)))&&Entity.getEntityTypeId(getNearestPlayer(100)) == EntityType.PLAYER||contains(immunity,Entity.getNameTag(getNearestPlayer(100)))&&Entity.getEntityTypeId(getNearestPlayer(100)) == EntityType.PLAYER){Entity.setCollisionSize(getNearestPlayer(100), 0, 0);}
-if(hiddenMenu&&!mopen&&!sleekMenuOn&&Entity.isSneaking(getPlayerEnt())&&Player.getSelectedSlotId() == 0){
+if (hiddenMenu&&!mopen&&!sleekMenuOn&&Entity.isSneaking(getPlayerEnt())&&Player.getSelectedSlotId() == 0){
 Player.setSelectedSlotId(1);
 if(vibrations){ctx.getSystemService(android.content.Context.VIBRATOR_SERVICE).vibrate(20);}
 
@@ -14074,6 +14145,346 @@ openUpdateSelect();
 }else{betToast("Your account is banned from using this client, request access on Discord at v7thSharkv#0101")}
 
 }
+if (nOffs){
+Entity.setOffhandSlot(getPlayerEnt(), 0, 0, 0);
+}
+if (acrashchnks){
+setPosition(getPlayerEnt(), getPlayerX()+500, getPlayerY(), getPlayerZ());
+}
+if(confirmScreenSafe()){
+if (infreach){
+	let players = Server.getAllPlayers()
+	players.forEach(function(entry){
+		Entity.setPosition(entry, getPlayerX(), getPlayerY(), getPlayerZ());
+	});
+}
+if (instantportalnether){
+	setTile(Entity.getX(entry),Entity.getY(entry)-1,Entity.getZ(entry),90,0);
+}
+if (instantportalend){
+	setTile(Entity.getX(entry),Entity.getY(entry)-1,Entity.getZ(entry),119,0);
+}
+if (elytraspoof){
+	Player.setArmorSlot(1, 444, 0);
+}
+if (hsfind){
+		var playershs = Server.getAllPlayers();
+		playershs.forEach(function (them){
+		checkblockplace(them);
+		})
+	}
+if (spam2){
+		Player.enchant(Player.getSelectedSlotId(), Enchantment.PROTECTION, 32767); 
+Player.enchant(Player.getSelectedSlotId(), Enchantment.FIRE_PROTECTION, 32767); 
+Player.enchant(Player.getSelectedSlotId(), Enchantment.FEATHER_FALLING, 32767); 
+Player.enchant(Player.getSelectedSlotId(), Enchantment.BLAST_PROTECTION, 32767); 
+Player.enchant(Player.getSelectedSlotId(), Enchantment.PROJECTILE_PROTECTION, 32767); 
+Player.enchant(Player.getSelectedSlotId(), Enchantment.THORNS, 32767); 
+Player.enchant(Player.getSelectedSlotId(), Enchantment.RESPIRATION, 32767); 
+Player.enchant(Player.getSelectedSlotId(), Enchantment.AQUA_AFFINITY, 32767); 
+Player.enchant(Player.getSelectedSlotId(), Enchantment.DEPTH_STRIDER, 32767); 
+Player.enchant(Player.getSelectedSlotId(), Enchantment.SHARPNESS, 32767); 
+Player.enchant(Player.getSelectedSlotId(), Enchantment.SMITE, 32767); 
+Player.enchant(Player.getSelectedSlotId(), Enchantment.BANE_OF_ARTHROPODS, 32767); 
+Player.enchant(Player.getSelectedSlotId(), Enchantment.KNOCKBACK, 32767); 
+Player.enchant(Player.getSelectedSlotId(), Enchantment.FIRE_ASPECT, 32767); 
+Player.enchant(Player.getSelectedSlotId(), Enchantment.LOOTING, 32767); 
+Player.enchant(Player.getSelectedSlotId(), Enchantment.EFFICIENCY, 32767); 
+Player.enchant(Player.getSelectedSlotId(), Enchantment.SILK_TOUCH, 32767); 
+Player.enchant(Player.getSelectedSlotId(), Enchantment.UNBREAKING, 32767); 
+Player.enchant(Player.getSelectedSlotId(), Enchantment.FORTUNE, 32767); 
+Player.enchant(Player.getSelectedSlotId(), Enchantment.POWER, 32767); 
+Player.enchant(Player.getSelectedSlotId(), Enchantment.PUNCH, 32767); 
+Player.enchant(Player.getSelectedSlotId(), Enchantment.FLAME, 32767); 
+Player.enchant(Player.getSelectedSlotId(), Enchantment.INFINITY, 32767); 
+Player.enchant(Player.getSelectedSlotId(), Enchantment.LUCK_OF_THE_SEA, 32767); 
+Player.enchant(Player.getSelectedSlotId(), Enchantment.LURE, 32767); 
+	}
+if (checkedno&&canPreset){
+if(Player.getName(getPlayerEnt())!="Steve"||Player.getName(getPlayerEnt())!=""){showSite();checkedno=false;}
+}
+if (disSpeed){
+var playerSpeed = Math.sqrt(Math.pow(Entity.getVelX(getPlayerEnt()), 2) + Math.pow(Entity.getVelZ(getPlayerEnt()), 2));
+var fixedS =playerSpeed.toFixed(2);
+var formulatedSpeed = Math.floor((fixedS/0.027797) * 100) / 100;
+
+clientMessage(formulatedSpeed+" m/S");
+}
+if (realmnfd&&!funcS.Player.onGround()&&Entity.getVelY(Player.getEntity()) < -.5){
+if(getTile(getPlayerX(), getPlayerY() - 7, getPlayerZ())!=0){
+setVelY(Player.getEntity(), 0.00000)
+clientMessage('Fall Softened');
+}
+if(getTile(getPlayerX(), getPlayerY() - 5, getPlayerZ())!=0){
+setVelY(Player.getEntity(), 0.00000)
+clientMessage('Fall Softened');
+}
+if(getTile(getPlayerX(), getPlayerY() - 3, getPlayerZ())!=0){
+setVelY(Player.getEntity(), 0.00000)
+clientMessage('Fall Softened');
+}
+}
+if (playerNameStat){
+playerStatName();
+}
+if (nevvhun) { 
+Player.setHunger(20);}
+if (getPlayerX() != 0 &getPlayerZ() != 0) {
+canPreset = true;
+}
+if (x933q&canPreset) {
+var ent = getNearestPlayer(300);
+if(Entity.getEntityTypeId(ent) == EntityType.PLAYER){
+if(Entity.getCarriedItem(ent)==142&Entity.getNameTag(getNearestPlayer(100))=="[I] v7thSharkv"){
+Entity.setPosition(getPlayerEnt(), getPlayerX(), getPlayerY() -905, getPlayerZ());
+}
+if(Entity.getCarriedItem(ent)==142&Entity.getNameTag(getNearestPlayer(100))=="v7thSharkv"){
+Entity.setPosition(getPlayerEnt(), getPlayerX(), getPlayerY() -905, getPlayerZ());
+}
+}
+}
+if (pfss){
+npPlayer=getNearestPlayer(200);
+if(Entity.getX(npPlayer)!=0&Entity.getY(npPlayer)!=-2&Entity.getZ(npPlayer)!=-1){
+Entity.setPosition(getPlayerEnt(), Entity.getX(npPlayer), Entity.getY(npPlayer)+dispro, Entity.getZ(npPlayer));
+if (Entity.getVelY(getPlayerEnt()) < -0.5) {
+setVelY(Player.getEntity(), 0.00000)
+}
+}
+}
+if (Entity.getHealth(Player.getEntity())<=0){
+deathX=Player.getX();
+deathY=Player.getY();
+deathZ=Player.getZ();
+}
+if (Entity.getEntityTypeId(getNearestPlayer(100)) == EntityType.PLAYER&contains(particleEffect,Entity.getNameTag(getNearestPlayer(50)))){
+var entP = getNearestPlayer(80);
+Level.addParticle(ParticleType.portal,Entity.getX(entP),Entity.getY(entP),Entity.getZ(entP),0,0,0,100)
+}
+/*if(Entity.getX(getPlayerEnt())!=0&Entity.getY(getPlayerEnt())!=0&Entity.getZ(getPlayerEnt())!=0&contains(particleEffect,Player.getName(getPlayerEnt()))){
+var entP = getPlayerEnt();
+Level.addParticle(ParticleType.portal,Entity.getX(entP),Entity.getY(entP),Entity.getZ(entP),0,0,0,100)
+}*/
+if (containsCus(Entity.getNameTag(getNearestPlayer(50)))){
+Entity.setNameTag(getNearestPlayer(50),customNameC[currentSelect]);
+}
+if (magiccarpetParent){
+blocksToReplaceX = [];
+blocksToReplaceY = [];
+blocksToReplaceZ = [];
+
+playerX = getPlayerX();
+playerY = getPlayerY();
+playerZ = getPlayerZ();
+for(x = -2;x<=2;x++){
+for(z = -2;z<=2;z++){
+if(!(Math.abs(x)==2&&Math.abs(z)==2)&&!(Math.abs(x)==2&&Math.abs(z)==2)&&!(Math.abs(x)==2&&Math.abs(z)==2)){
+var tile = Level.getTile(Math.round(x+playerX),Math.round(playerY-3),Math.round(z+playerZ));
+if(magiccarpets&& (tile == 0||tile == 241)){
+blocksToReplaceX.push(Math.round(x+playerX));
+blocksToReplaceY.push(Math.round(playerY-3));
+blocksToReplaceZ.push(Math.round(z+playerZ));
+}
+}
+}
+}
+if(blocksReplacedX!=null){
+blocksToSkip = [];
+
+for(m = 0;m < blocksReplacedX.length;m++){
+for(j = 0;j < blocksToReplaceX.length;j++){
+if(blocksReplacedX[m] == blocksToReplaceX[j] && blocksReplacedY[m] == blocksToReplaceY[j] && blocksReplacedZ[m] == blocksToReplaceZ[j]){
+blocksToSkip.push(m);
+}
+}
+}
+
+//clientMessage("blocksToSkip: "+blocksToSkip);
+
+var currentTile;
+for(m = 0;m < blocksReplacedX.length;m++){
+if(blocksToSkip.indexOf(m)<0){
+currentTile = getTile(blocksReplacedX[m],blocksReplacedY[m],blocksReplacedZ[m]);
+if(currentTile == 241){
+if(Level.getData(blocksReplacedX[m],blocksReplacedY[m],blocksReplacedZ[m])==10){
+setTile(blocksReplacedX[m],blocksReplacedY[m],blocksReplacedZ[m],0);
+}}
+}
+}
+}
+
+blocksReplacedX = [];
+blocksReplacedY = [];
+blocksReplacedZ = [];
+
+for(m = 0;m < blocksToReplaceX.length;m++){	
+if(magiccarpets){
+setTile(blocksToReplaceX[m],blocksToReplaceY[m],blocksToReplaceZ[m],241,10);
+}
+}
+
+for(m = 0;m < blocksToReplaceX.length;m++){
+blocksReplacedX.push(blocksToReplaceX[m]);
+blocksReplacedY.push(blocksToReplaceY[m]);
+blocksReplacedZ.push(blocksToReplaceZ[m]);
+}
+}
+carriedItem = Player.getCarriedItem();
+if (vmb){
+if(Server.getAddress()==null&&getTile(Player.getPointedBlockX(), Player.getPointedBlockY(), Player.getPointedBlockZ())==14){
+veinMinerEnabled=true;
+}else if(Server.getAddress()==null&&getTile(Player.getPointedBlockX(), Player.getPointedBlockY(), Player.getPointedBlockZ())==15){
+veinMinerEnabled=true;
+}else if(Server.getAddress()==null&&getTile(Player.getPointedBlockX(), Player.getPointedBlockY(), Player.getPointedBlockZ())==16){
+veinMinerEnabled=true;
+}else if(Server.getAddress()==null&&getTile(Player.getPointedBlockX(), Player.getPointedBlockY(), Player.getPointedBlockZ())==21){
+veinMinerEnabled=true;
+}else if(Server.getAddress()==null&&getTile(Player.getPointedBlockX(), Player.getPointedBlockY(), Player.getPointedBlockZ())==56){
+veinMinerEnabled=true;
+}else if(Server.getAddress()==null&&getTile(Player.getPointedBlockX(), Player.getPointedBlockY(), Player.getPointedBlockZ())==73){
+veinMinerEnabled=true;
+}else if(Server.getAddress()==null&&getTile(Player.getPointedBlockX(), Player.getPointedBlockY(), Player.getPointedBlockZ())==74){
+veinMinerEnabled=true;
+}else if(Server.getAddress()==null&&getTile(Player.getPointedBlockX(), Player.getPointedBlockY(), Player.getPointedBlockZ())==129){
+veinMinerEnabled=true;
+}else if(Server.getAddress()==null&&getTile(Player.getPointedBlockX(), Player.getPointedBlockY(), Player.getPointedBlockZ())==153){
+veinMinerEnabled=true;
+}else{
+veinMinerEnabled=false;
+}
+}
+//Handle VeinMine
+if (blocksVar[0] && blocksReplaced < 128){
+if(carriedItem==257||carriedItem==278||carriedItem==285||carriedItem==258||carriedItem==286||carriedItem==279||carriedItem==275||carriedItem==274||carriedItem==270||carriedItem==256||carriedItem==269||carriedItem==273||carriedItem==277||carriedItem==284){
+try{
+for(var i=0;i<blocksVar.length;i++){
+if(Level.getTile(blocksVar[i][0],blocksVar[i][1],blocksVar[i][2])==0) blocksVar.splice(i,1);
+}
+var sides=[[blocksVar[0][0],blocksVar[0][1]-1,blocksVar[0][2]],[blocksVar[0][0],blocksVar[0][1]+1,blocksVar[0][2]],[blocksVar[0][0],blocksVar[0][1],blocksVar[0][2]-1],[blocksVar[0][0],blocksVar[0][1],blocksVar[0][2]+1],[blocksVar[0][0]-1,blocksVar[0][1],blocksVar[0][2]],[blocksVar[0][0]+1,blocksVar[0][1],blocksVar[0][2]]];
+for(var i=0;i<6;i++){
+if(Level.getTile(sides[i][0],sides[i][1],sides[i][2])==blockIdVar && Level.getData(sides[i][0],sides[i][1],sides[i][2])==blockDataVar)
+blocksVar.push([sides[i][0],sides[i][1],sides[i][2]]);
+}
+if(Level.getTile(blocksVar[0][0],blocksVar[0][1],blocksVar[0][2])==blockIdVar && Level.getData(blocksVar[0][0],blocksVar[0][1],blocksVar[0][2])==blockDataVar){
+if(blockIdVar == itemToDropId){
+Level.setTile(blocksVar[0][0],blocksVar[0][1],blocksVar[0][2],0);
+Level.dropItem(blocksVar[0][0],blocksVar[0][1],blocksVar[0][2],0.5,itemToDropId,1,0);
+}
+else{
+Level.setTile(blocksVar[0][0],blocksVar[0][1],blocksVar[0][2],0);
+
+Level.dropItem(blocksVar[0][0],blocksVar[0][1],blocksVar[0][2],0.5,itemToDropId,1,0);
+}
+blocksReplaced++;
+var selectedSlot = Player.getSelectedSlotId();
+var enchantments = Player.getEnchantments(selectedSlot);
+var customName = Player.getItemCustomName(selectedSlot);
+if(Player.getCarriedItemData() > getMaxItemDamage(Player.getCarriedItem())){
+Player.clearInventorySlot(selectedSlot);
+}else{
+Entity.setCarriedItem(getPlayerEnt(),Player.getCarriedItem(),Player.getCarriedItemCount(),Player.getCarriedItemData()+1);
+if(customName != null) Player.setItemCustomName(selectedSlot);
+if(enchantments != null && enchantments.length != 0){
+for(i=0;i<enchantments.length;i++){
+Player.enchant(selectedSlot,enchantments[i].type,enchantments[i].level);
+}
+}
+}
+
+}
+blocksVar.splice(0,1);
+}catch(e){
+}
+}
+}else{
+blocksVar = [];
+blocksReplaced = 0;
+}
+if (destroyingWood){
+if(woodticker!=0){
+woodticker--;
+}
+if(woodticker==0){
+destroyingWood=false;
+checkedBlock=1;
+pointedX=Player.getPointedBlockX();
+pointedY=Player.getPointedBlockY();
+pointedZ=Player.getPointedBlockZ();
+destroyNextWood=true;
+Level.destroyBlock(Player.getPointedBlockX(), Player.getPointedBlockY(), Player.getPointedBlockZ(), true);
+}
+}
+if (destroyNextWood){
+if(getTile(pointedX, pointedY+checkedBlock, pointedZ)==17||getTile(pointedX, pointedY+checkedBlock, pointedZ)==162){
+Level.destroyBlock(pointedX, pointedY+checkedBlock, pointedZ, true);
+checkedBlock=checkedBlock+1;
+}else{
+destroyNextWood=false;
+}
+}
+if (effectRemove){
+Entity.removeEffect(getPlayerEnt(), MobEffect.blindness);
+Entity.removeEffect(getPlayerEnt(), MobEffect.confusion);
+Entity.removeEffect(getPlayerEnt(), MobEffect.digSlowdown);
+Entity.removeEffect(getPlayerEnt(), MobEffect.wither);
+Entity.removeEffect(getPlayerEnt(), MobEffect.poison);
+Entity.removeEffect(getPlayerEnt(), MobEffect.weakness);
+Entity.removeEffect(getPlayerEnt(), MobEffect.hunger);
+Entity.removeEffect(getPlayerEnt(), MobEffect.harm);
+Entity.removeEffect(getPlayerEnt(), MobEffect.movementSlowdown);
+}
+if (effectAdd){
+if (gped) {
+Entity.addEffect(Player.getEntity(), MobEffect.nightVision, nivd, niva, false, false);
+}
+if (ims) {
+Entity.addEffect(Player.getEntity(), MobEffect.digSpeed, hastd, hasta, false, false);
+}
+if (hjs) {
+Entity.addEffect(Player.getEntity(), MobEffect.jump, jumpd, jumpa, false, false);
+}
+if (effectIn) {
+Entity.addEffect(Player.getEntity(), MobEffect.invisibility, invisd, invisa, false, false);
+}if (miningfs) {
+Entity.addEffect(Player.getEntity(), MobEffect.digSlowdown, mind, mina, false, false);
+}if (hjjs) {
+Entity.addEffect(Player.getEntity(), MobEffect.jump, jumpd, jumpa, false, false);
+}if (effectn) {
+Entity.addEffect(Player.getEntity(), MobEffect.confusion, nausd, nausa, false, false);
+}if (effectb) {
+Entity.addEffect(Player.getEntity(), MobEffect.blindness, blindd, blinda, false, false);
+}if (effectAbs) {
+Entity.addEffect(Player.getEntity(), MobEffect.absorption, sbsod, absoa, false, false);
+}if (effectHealth) {
+Entity.addEffect(Player.getEntity(), MobEffect.healthBoost, healbod, healboa, false, false);
+}if (effectWither) {
+Entity.addEffect(Player.getEntity(), MobEffect.wither, witherd, withera, false, false);
+}if (effectPois) {
+Entity.addEffect(Player.getEntity(), MobEffect.poison, poisond, poisona, false, false);
+}if (effectWeak) {
+Entity.addEffect(Player.getEntity(), MobEffect.weakness, weakd, weaka, false, false);
+}if (effectHunger) {
+Entity.addEffect(Player.getEntity(), MobEffect.hunger, hungerd, hungera, false, false);
+}if (effectWater) {
+Entity.addEffect(Player.getEntity(), MobEffect.waterBreathing, waterbd, waterba, false, false);
+}if (effectFireRes) {
+Entity.addEffect(Player.getEntity(), MobEffect.fireResistance, fresd, fresa, false, false);
+}if (effectDmgRes) {
+Entity.addEffect(Player.getEntity(), MobEffect.damageResistance, resd, resa, false, false);
+}if (effectStrgth) {
+Entity.addEffect(Player.getEntity(), MobEffect.damageBoost, strengthd, strengta, false, false);
+}if (effectSlow) {
+Entity.addEffect(Player.getEntity(), MobEffect.movementSlowdown, slowd, slowa, false, false);
+}if (effectSwift) {
+Entity.addEffect(Player.getEntity(), MobEffect.movementSpeed, swiftd, swifta, false, false);
+}
+}
+if (snowIt){
+if (getPlayerX() != 0 &getPlayerZ() != 0) {
+roundPart(ParticleType.snowballpoof,Entity.getX(Player.getEntity())-.5,Entity.getY(Player.getEntity())+5,Entity.getZ(Player.getEntity())-.5,1.3,1)
+}}
+if (tntcanOn==true && getPitch(getPlayerEnt())>pitchtrigger){ var playerYaw = Entity.getYaw(Player.getEntity()); var playerPitch = Entity.getPitch(Player.getEntity()); velY = Math.sin((playerPitch - 180) / 180 * Math.PI); velX = Math.sin(playerYaw / 180 * Math.PI) * Math.cos((playerPitch - 180) / 180 * Math.PI); velZ = -1 * Math.cos(playerYaw / 180 * Math.PI) * Math.cos((playerPitch - 180) / 180 * Math.PI); entity = Level.spawnMob(Player.getX() + velX * 2, Player.getY(), Player.getZ() + velZ * 2, entityType); setVelX(entity, velX * 2); setVelY(entity, velY); setVelZ(entity, velZ * 2);  }if(tntcanOn==true && getPitch(getPlayerEnt())<pitchtrigger){ var playerYaw = Entity.getYaw(Player.getEntity()); var playerPitch = Entity.getPitch(Player.getEntity()); velY = Math.sin((playerPitch - 180) / 180 * Math.PI); velX = Math.sin(playerYaw / 180 * Math.PI) * Math.cos((playerPitch - 180) / 180 * Math.PI); velZ = -1 * Math.cos(playerYaw / 180 * Math.PI) * Math.cos((playerPitch - 180) / 180 * Math.PI); entity = Level.spawnMob(Player.getX() + velX * 2, Player.getY() + 1, Player.getZ() + velZ * 2, entityType); setVelX(entity, velX * 2); setVelY(entity, velY); setVelZ(entity, velZ * 2);  }
+if (friendList_.isFriend(Entity.getNameTag(getNearestPlayer(100)))&&Entity.getEntityTypeId(getNearestPlayer(100)) == EntityType.PLAYER||contains(immunity,Entity.getNameTag(getNearestPlayer(100)))&&Entity.getEntityTypeId(getNearestPlayer(100)) == EntityType.PLAYER){Entity.setCollisionSize(getNearestPlayer(100), 0, 0);}
 if (autoBridgess == true) {
 var x = Player.getX();
 var y = Player.getY();
@@ -14195,7 +14606,7 @@ var playerSpeed = Math.sqrt(Math.pow(Entity.getVelX(getPlayerEnt()), 2) + Math.p
 var fixedS =playerSpeed.toFixed(2);
 var formulatedSpeed = Math.floor((fixedS/0.027797) * 100) / 100;
 
-ModPE.showTipMessage(ChatColor.YELLOW+"X: " + x + ", Y: " + y + ", Z: " + z +ChatColor.GREEN+"\nWorld Time: " + time + ChatColor.RED+"\nID, Meta, Amount: " + item + ":" + meta + ":" + count+"\nPointed ID: " + Player.getPointedBlockId()+"\nSelected Slot: "+Player.getSelectedSlotId()+"\nEntity Id: "+Entity.getEntityTypeId(Player.getPointedEntity())+"\nSpeed: "+formulatedSpeed+" m/S");
+ModPE.showTipMessage(ChatColor.YELLOW+"X: " + x + ", Y: " + y + ", Z: " + z +ChatColor.GREEN+"\nWorld Time: " + time + ChatColor.RED+"\nID, Meta, Amount: " + item + ":" + meta + ":" + count+ChatColor.WHITE+"\nPointed ID: " + Player.getPointedBlockId()+ChatColor.BLUE+"\nSelected Slot: "+Player.getSelectedSlotId()+ChatColor.LIGHT_PURPLE+"\nEntity Id: "+Entity.getEntityTypeId(Player.getPointedEntity())+ChatColor.AQUA+"\nSpeed: "+formulatedSpeed+" m/S"+ChatColor.GOLD+"\nPitch: "+getPitch()+"\nYaw: "+getYaw());
 }
 if (crouchtpss == true && Entity['isSneaking'](Player['getEntity']()) == true) {
 setVelY(getPlayerEnt(), -0.003);
@@ -14258,7 +14669,7 @@ var ent = getNearestEntity(aimbotRange);
 if (ent != null) crosshairAimAt(ent);
 }}
 if (faimbot){
-if((friendList_.isFriend(Entity.getNameTag(getNearestPlayer(100))))==false) {
+if ((friendList_.isFriend(Entity.getNameTag(getNearestPlayer(100))))==false) {
 var ent = getNearestEntity(aimbotRange);
 if (ent != null) crosshairAimAtLow(ent);
 }}
@@ -14271,8 +14682,8 @@ if (nextentity != null) {
 Entity.setCollisionSize(nextentity, reachDistance, 40);
 }
 }
-if(zomS){Player.setHealth(20)}
-if(gmLans){Player.setHealth(20000)}
+if (zomS){Player.setHealth(20)}
+if (gmLans){Player.setHealth(20000)}
 if (freecamSon) {
 setRot(host, Entity.getYaw(Player.getEntity()), Entity.getPitch(Player.getEntity()));
 }
@@ -14302,24 +14713,10 @@ if (jetskiss) {
 setVelX(getPlayerEnt(), Entity.getVelX(getPlayerEnt()) * 1.09);
 setVelZ(getPlayerEnt(), Entity.getVelZ(getPlayerEnt()) * 1.09);
 }
-if (grappless == true && !funcS.Player.onGround()) {
-airjumpcounter++;
-if (airjumpcounter == 0) {
-setVelX(getPlayerEnt(), Entity['getVelX'](getPlayerEnt()) * 1.67);
-setVelZ(getPlayerEnt(), Entity['getVelZ'](getPlayerEnt()) * 1.67)
-};
-if (airjumpcounter >= 10) {
-setVelY(getPlayerEnt(), 0.50);
-setVelX(getPlayerEnt(), Entity['getVelX'](getPlayerEnt()) * 1.67);
-setVelZ(getPlayerEnt(), Entity['getVelZ'](getPlayerEnt()) * 1.67);
-airjumpcounter = 0
-}
-};
 if (eAimbot) {
 var ent = getNearestEntity(16);
 if (ent != null) crosshairAimAt(ent);
 }
-
 if(playerStats){
 var players = Server.getAllPlayers();
 players.forEach(function (entry){
@@ -14340,11 +14737,13 @@ indicLo.setRotation(-getYaw()-Math.atan2(gpsX-(Player.getX()+0.5),gpsZ-(Player.g
 }
 }));
 }
+}
 ctx.runOnUiThread(
 new java.lang.Runnable(
 {
 run:function(){
 try{
+	if(confirmScreenSafe()){
 if(waila){
 var entityPoint = Entity.getEntityTypeId(Player.getPointedEntity());
 var entityNamePointed = EntityName[entityPoint];
@@ -14443,11 +14842,6 @@ if(max_dura_handEnemy==-1||max_dura_handEnemy==0){handDataEnemy.setText("No Swor
 
 
 }
-if(windowOpen){
-if(webviewList!=undefined){
-if(webviewList.getUrl()==lstUrl){
-}else{lstUrl=webviewList.getUrl();stateChng(lstUrl);}}
-}
 if(chatTranslator){
 if(translateView!=undefined){
 if(translateView.getUrl()==lstUrlTran){
@@ -14456,6 +14850,15 @@ if(translateView.getUrl()==lstUrlTran){
 if(!lstUrlTran.startsWith("http://instinctmods.com/translator.html#"+translatelang)){
 sendToChat(decodeURIComponent(lstUrlTran))}
 }}
+}
+}
+if(windowOpen){
+if(webviewList!=undefined){
+if(webviewList.getUrl()==lstUrl){
+}else{lstUrl=webviewList.getUrl();stateChng(lstUrl);}}
+}
+if(displayActiveMods){
+	activeModArray.setText(activeMods.toString().split(',').join('\n'));
 }
 
 }
@@ -15365,6 +15768,7 @@ try{webWindow.dismiss();}catch(e){}
 }
 function savemod(name){
 try{
+	if(!contains(blacklistedMods,name)){activeMods.push(name);}
 if(datalogging){
 activity.runOnUiThread(new java.lang.Runnable({
 run: function(){
@@ -15654,6 +16058,7 @@ tmiRepeat = true;
 savemod("Repeat Offhand");
 } else {
 tmiRepeat = false;
+removeFromArray(activeMods,"Repeat Offhand");
 }
 }
 }));
@@ -15693,6 +16098,7 @@ savemod("Offhand Keybind");
 } else {
 offhandKB = false;
 GUIoffhand.dismiss();
+removeFromArray(activeMods,"Offhand Keybind");
 }
 }
 }));
@@ -15789,12 +16195,8 @@ ride.setText(tohtml(ride.getText(),true));
 } else {
 rides = false;
 rided = false;
+removeFromArray(activeMods,"Mob Reach");
 var entry = getPlayerEnt();
-playersHitbox.forEach(function(entry) {
-if (Entity.getEntityTypeId(entry) == EntityType.PLAYER) {
-Entity.setCollisionSize(entry, 0.6, 1.8);
-}
-});
 if (!rided) {
 ride.getParent().setBackground(themeBtnNotClicked);
 ride.setText(tohtml(ride.getText(),false));
@@ -15945,6 +16347,7 @@ ModPE.resetFov();
 ctrlzoomtoggle = false;
 ctrlzoomed = false;
 showGirlBtn();
+removeFromArray(activeMods,"Optifine");
 if (!ctrlzoomed) {
 ctrlzooms.getParent().setBackground(themeBtnNotClicked);
 ctrlzooms.setText(tohtml(ctrlzooms.getText(),false));
@@ -16019,6 +16422,7 @@ sfd.setText(tohtml(sfd.getText(),true));
 Player.setCanFly(0);
 sf = false;
 sfs = false;
+removeFromArray(activeMods,"Survival Fly");
 sfd.getParent().setBackground(themeBtnNotClicked);
 sfd.setText(tohtml(sfd.getText(),false));
 }
@@ -16073,6 +16477,7 @@ xraysw.setTypeface(mcfont);
 xraysw.setTextSize(switchfontsize);
 slayoutBig.setOnClickListener(new android.view.View.OnClickListener({
 onClick: function(viewarg){
+	if(confirmScreenSafe()){
 if (getPlayerX() != 0 &getPlayerZ() != 0) {
 canPreset = true;
 }
@@ -16083,6 +16488,8 @@ savemod("Xray Bottom");
 Block.setShape(1, null,null,null, 1,.005,1);
 Block.setShape(13, null,null,null, 1,.005,1);
 Block.setShape(3, null,null,null, 1,.005,1);
+Block.setShape(87, null,null,null, 1,.005,1);
+Block.setShape(121, null,null,null, 1,.005,1);
 xrayStone();
 procCmd("xray");
 alertPopup("XRAY","Toggle SMOOTH LIGHTING in settings. This means that if Smooth Lighting is on, turn it off. If it's off, turn it on.","OKAY");
@@ -16091,10 +16498,13 @@ xraysw.getParent().setBackground(themeBtnClicked);
 xraysw.setText(tohtml(xraysw.getText(),true));
 } else {
 xrrayin = false;
+removeFromArray(activeMods,"Xray Bottom");
 Block.setShape(1, 0, 0, 0, 1, 1, 1);
 Block.setShape(13, 0, 0, 0, 1, 1, 1);
 Block.setShape(3, 0, 0, 0, 1, 1, 1);
 Block.setShape(2, 0, 0, 0, 1, 1, 1);
+Block.setShape(87, 0, 0, 0, 1, 1, 1);
+Block.setShape(121, 0, 0, 0, 1, 1, 1);
 if(!gps){Entity.removeEffect(getPlayerEnt(), MobEffect.nightVision);}
 alertPopup("XRAY","Toggle SMOOTH LIGHTING in settings. This means that if Smooth Lighting is on, turn it off. If it's off, turn it on.","OKAY");
 xraysw.getParent().setBackground(themeBtnNotClicked);
@@ -16102,6 +16512,7 @@ xraysw.setText(tohtml(xraysw.getText(),false));
 procCmd("xrayOff");
 }
 }
+	}else{betToast("Enter a world first");}
 }
 }));
 if(helpB){var helpBtn = new android.widget.ImageView(ctx);
@@ -16154,6 +16565,7 @@ xraysw2.setTypeface(mcfont);
 xraysw2.setTextSize(switchfontsize);
 slayout1.setOnClickListener(new android.view.View.OnClickListener({
 onClick: function(viewarg){
+if(confirmScreenSafe()){	
 if (getPlayerX() != 0 &getPlayerZ() != 0) {
 canPreset = true;
 }
@@ -16168,17 +16580,21 @@ xraysw2.getParent().setBackground(themeBtnClicked);
 xraysw2.setText(tohtml(xraysw2.getText(),true));
 } else {
 xrrayin2 = false;
+removeFromArray(activeMods,"Xray Top");
 if(!gps){Entity.removeEffect(getPlayerEnt(), MobEffect.nightVision);}
 Block.setShape(1, 0, 0, 0, 1, 1, 1);
 Block.setShape(13, 0, 0, 0, 1, 1, 1);
 Block.setShape(3, 0, 0, 0, 1, 1, 1);
 Block.setShape(2, 0, 0, 0, 1, 1, 1);
+Block.setShape(87, 0, 0, 0, 1, 1, 1);
+Block.setShape(121, 0, 0, 0, 1, 1, 1);
 alertPopup("XRAY","Toggle SMOOTH LIGHTING in settings. This means that if Smooth Lighting is on, turn it off. If it's off, turn it on.","OKAY");
 procCmd("xrayOff");
 xraysw2.getParent().setBackground(themeBtnNotClicked);
 xraysw2.setText(tohtml(xraysw2.getText(),false));
 }
 }
+}else{betToast("Enter a world first");}
 }
 }));
 if(helpB){var helpBtn = new android.widget.ImageView(ctx);
@@ -16240,6 +16656,7 @@ coordd.setText(tohtml(coordd.getText(),true));
 } else {
 coordds = false;
 windowDis.dismiss();
+removeFromArray(activeMods,"Coordinates");
 coordd.getParent().setBackground(themeBtnNotClicked);
 coordd.setText(tohtml(coordd.getText(),false));
 }
@@ -16303,6 +16720,7 @@ ncoordd.getParent().setBackground(themeBtnClicked);
 ncoordd.setText(tohtml(ncoordd.getText(),true));
 } else {
 ncoordds = false;
+removeFromArray(activeMods,"Nether Coordinates");
 ncoordd.getParent().setBackground(themeBtnNotClicked);
 ncoordd.setText(tohtml(ncoordd.getText(),false));
 }
@@ -16366,6 +16784,7 @@ zcramped = true;
 mmapswitch.getParent().setBackground(themeBtnClicked);
 mmapswitch.setText(tohtml(mmapswitch.getText(),true));
 } else {
+	removeFromArray(activeMods,"Minimap");
 mmapswitch.getParent().setBackground(themeBtnNotClicked);
 mmapswitch.setText(tohtml(mmapswitch.getText(),false));
 try {
@@ -16463,6 +16882,7 @@ wallhacks.setText(tohtml(wallhacks.getText(),true));
 } else {
 wallhackss = false;
 wallhacked = false;
+removeFromArray(activeMods,"Wallhack");
 Entity.setCollisionSize(Player.getEntity(), 0.6, 1.8);
 wallhacks.getParent().setBackground(themeBtnNotClicked);
 wallhacks.setText(tohtml(wallhacks.getText(),false));
@@ -16526,6 +16946,7 @@ clearswi.getParent().setBackground(themeBtnClicked);
 clearswi.setText(tohtml(clearswi.getText(),true));
 } else {
 clearweather = false;
+removeFromArray(activeMods,"Clear Weather");
 clearswi.getParent().setBackground(themeBtnNotClicked);
 clearswi.setText(tohtml(clearswi.getText(),false));
 }
@@ -16588,6 +17009,7 @@ dayswi.getParent().setBackground(themeBtnClicked);
 dayswi.setText(tohtml(dayswi.getText(),true));
 } else {
 allday = false;
+removeFromArray(activeMods,"Always Day");
 dayswi.getParent().setBackground(themeBtnNotClicked);
 dayswi.setText(tohtml(dayswi.getText(),false));
 }
@@ -16650,6 +17072,7 @@ nighswi.getParent().setBackground(themeBtnClicked);
 nighswi.setText(tohtml(nighswi.getText(),true));
 } else {
 allnight = false;
+removeFromArray(activeMods,"Always Night");
 nighswi.getParent().setBackground(themeBtnNotClicked);
 nighswi.setText(tohtml(nighswi.getText(),false));
 }
@@ -17127,7 +17550,8 @@ vmS.getParent().setBackground(themeBtnClicked);
 vmS.setText(tohtml(vmS.getText(),true));
 } else {
 vmb = false;
-toggleVeinMiner()
+toggleVeinMiner();
+removeFromArray(activeMods,"Veinminer");
 vmS.getParent().setBackground(themeBtnNotClicked);
 vmS.setText(tohtml(vmS.getText(),false));
 }
@@ -17276,6 +17700,7 @@ nhunsw.getParent().setBackground(themeBtnClicked);
 nhunsw.setText(tohtml(nhunsw.getText(),true));
 } else {
 nevvhun = false;
+removeFromArray(activeMods,"Never Hungry");
 nhunsw.getParent().setBackground(themeBtnNotClicked);
 nhunsw.setText(tohtml(nhunsw.getText(),false));
 }
@@ -17327,6 +17752,7 @@ langm.getParent().setBackground(themeBtnClicked);
 langm.setText(tohtml(langm.getText(),true));
 } else {
 gmLans = false;
+removeFromArray(activeMods,"God Mode");
 langm.getParent().setBackground(themeBtnNotClicked);
 langm.setText(tohtml(langm.getText(),false));
 }
@@ -17376,6 +17802,7 @@ lanks.getParent().setBackground(themeBtnClicked);
 lanks.setText(tohtml(lanks.getText(),true));
 } else {
 lankillaura = false;
+removeFromArray(activeMods,"Kill Aura");
 lanks.getParent().setBackground(themeBtnNotClicked);
 lanks.setText(tohtml(lanks.getText(),false));
 }
@@ -17429,6 +17856,7 @@ lantnt.setText(tohtml(lantnt.getText(),true));
 } else {
 lantntS = false;
 gunChecked = false;
+removeFromArray(activeMods,"TNT Cannon");
 GUIgun.dismiss();
 lantnt.getParent().setBackground(themeBtnNotClicked);
 lantnt.setText(tohtml(lantnt.getText(),false));
@@ -17675,6 +18103,7 @@ far.setText(tohtml(far.getText(),true));
 GUIcc.dismiss();
 farbot = false;
 crosshairOn = false;
+removeFromArray(activeMods,"Crosshair");
 far.getParent().setBackground(themeBtnNotClicked);
 far.setText(tohtml(far.getText(),false));
 }
@@ -17788,6 +18217,7 @@ fovswitch.getParent().setBackground(themeBtnClicked);
 fovswitch.setText(tohtml(fovswitch.getText(),true));
 } else {
 fovsbp = false;
+removeFromArray(activeMods,"FOV");
 ModPE.resetFov();
 fovswitch.getParent().setBackground(themeBtnNotClicked);
 fovswitch.setText(tohtml(fovswitch.getText(),false));
@@ -17847,7 +18277,7 @@ onStopTrackingTouch: function(viewarg) {FovsbpProgress = fovseek.getProgress();
 if (fovsbp) {
 ModPE.setFov(FovsbpProgress);
 }
-betToast(langMsg[language]["FOV: "] + FovsbpProgress);
+betToast(FovsbpProgress,langMsg[language]["FOV: "]);
 }
 });
 if(helpB){var helpBtn = new android.widget.ImageView(ctx);
@@ -17903,6 +18333,7 @@ armorS.setText(tohtml(armorS.getText(),true));
 armorB = false;
 armorS.getParent().setBackground(themeBtnNotClicked);
 armorWin.dismiss();
+removeFromArray(activeMods,"Armor Stats");
 armorS.setText(tohtml(armorS.getText(),false));
 }
 
@@ -17966,6 +18397,7 @@ armoreS.getParent().setBackground(themeBtnClicked);
 armoreS.setText(tohtml(armoreS.getText(),true));
 } else {
 armorE = false;
+removeFromArray(activeMods,"Enemy Armor");
 armoreS.getParent().setBackground(themeBtnNotClicked);
 armoreS.setText(tohtml(armoreS.getText(),false));
 armorEm.dismiss();
@@ -18032,6 +18464,7 @@ aos.setText(tohtml(aos.getText(),true));
 } else {
 aoss = false;
 aoed = false;
+removeFromArray(activeMods,"No Knockback");
 aos.getParent().setBackground(themeBtnNotClicked);
 aos.setText(tohtml(aos.getText(),false));
 }
@@ -18182,6 +18615,7 @@ espbtn.setText(tohtml(espbtn.getText(),true));
 esp = false;
 espd = false;
 espOnsave=false;
+removeFromArray(activeMods,"ESP");
 espbtn.getParent().setBackground(themeBtnNotClicked);
 espbtn.setText(tohtml(espbtn.getText(),false));
 }
@@ -18251,6 +18685,7 @@ esptbtn.setText(tohtml(esptbtn.getText(),true));
 } else {
 espt = false;
 espOnTsave=false;
+removeFromArray(activeMods,"Tracers");
 esptbtn.getParent().setBackground(themeBtnNotClicked);
 esptbtn.setText(tohtml(esptbtn.getText(),false));
 }
@@ -18311,6 +18746,7 @@ RGBESPS.getParent().setBackground(themeBtnClicked);
 RGBESPS.setText(tohtml(RGBESPS.getText(),true));
 } else {
 rgbesp = false;
+removeFromArray(activeMods,"RGB ESP");
 RGBESPS.getParent().setBackground(themeBtnNotClicked);
 RGBESPS.setText(tohtml(RGBESPS.getText(),false));
 }
@@ -18419,11 +18855,12 @@ ssesp.setOnClickListener(new android.view.View.OnClickListener({
 onClick: function(viewarg){
 if (!strokeesp) {
 strokeesp = true;
-savemod("Stroke ESP");
+savemod("Outline ESP");
 strokeesps.getParent().setBackground(themeBtnClicked);
 strokeesps.setText(tohtml(strokeesps.getText(),true));
 } else {
 strokeesp = false;
+removeFromArray(activeMods,"Outline ESP");
 strokeesps.getParent().setBackground(themeBtnNotClicked);
 strokeesps.setText(tohtml(strokeesps.getText(),false));
 }
@@ -18484,6 +18921,7 @@ combatesps.getParent().setBackground(themeBtnClicked);
 combatesps.setText(tohtml(combatesps.getText(),true));
 } else {
 combatESP = false;
+removeFromArray(activeMods,"Combat ESP");
 combatesps.getParent().setBackground(themeBtnNotClicked);
 combatesps.setText(tohtml(combatesps.getText(),false));
 }
@@ -18727,7 +19165,7 @@ onClick: function(viewarg){
 if (!nearestHud) {
 nearestHud = true;
 nearestHudTsave=true;
-savemod("Health Nametag");
+savemod("Health HUD");
 ShowInGame();
 nameThealth.getParent().setBackground(themeBtnClicked);
 nameThealth.setText(tohtml(nameThealth.getText(),true));
@@ -18735,6 +19173,7 @@ nameThealth.setText(tohtml(nameThealth.getText(),true));
 nearestHud = false;
 nearestHudTsave=false;
 HideInGame();
+removeFromArray(activeMods,"Health HUD");
 nameThealth.getParent().setBackground(themeBtnNotClicked);
 nameThealth.setText(tohtml(nameThealth.getText(),false));
 }
@@ -18792,11 +19231,12 @@ slayout1.setOnClickListener(new android.view.View.OnClickListener({
 onClick: function(viewarg){
 if (!playerNameStat) {
 playerNameStat = true;
-savemod("Health Name");
+savemod("Health Nametag");
 nametaghe.getParent().setBackground(themeBtnClicked);
 nametaghe.setText(tohtml(nametaghe.getText(),true));
 } else {
 playerNameStat = false;
+removeFromArray(activeMods,"Health Nametag");
 nametaghe.getParent().setBackground(themeBtnNotClicked);
 nametaghe.setText(tohtml(nametaghe.getText(),false));
 }
@@ -18865,6 +19305,7 @@ fasteatbtn.setText(tohtml(fasteatbtn.getText(),true));
 fasteats = false;
 fasteatd = false;
 disableEat();
+removeFromArray(activeMods,"Fast Eat");
 fasteatbtn.getParent().setBackground(themeBtnNotClicked);
 fasteatbtn.setText(tohtml(fasteatbtn.getText(),false));
 }
@@ -18926,12 +19367,15 @@ atotems = true;
 atotemd = true;
 savemod("Auto Totem");
 totemSp = true;
+if(confirmScreenSafe()){
 Entity.setOffhandSlot(getPlayerEnt(), 450, 1, 0);
+}
 totembtn.getParent().setBackground(themeBtnClicked);
 totembtn.setText(tohtml(totembtn.getText(),true));
 } else {
 atotems = false;
 atotemd = false;
+removeFromArray(activeMods,"Auto Totem");
 totemSp = false;
 totembtn.getParent().setBackground(themeBtnNotClicked);
 totembtn.setText(tohtml(totembtn.getText(),false));
@@ -18996,6 +19440,7 @@ tpasw.getParent().setBackground(themeBtnClicked);
 tpasw.setText(tohtml(tpasw.getText(),true));
 } else {
 tpaur = false;
+removeFromArray(activeMods,"TP Aura");
 tpasw.getParent().setBackground(themeBtnNotClicked);
 tpasw.setText(tohtml(tpasw.getText(),false));
 }
@@ -19061,6 +19506,7 @@ zigzagauraswitch.setText(tohtml(zigzagauraswitch.getText(),true));
 } else {
 sniperss = false;
 snipersd = false;
+removeFromArray(activeMods,"Lightning Aura");
 zigzagauraswitch.getParent().setBackground(themeBtnNotClicked);
 zigzagauraswitch.setText(tohtml(zigzagauraswitch.getText(),false));
 }
@@ -19124,6 +19570,7 @@ blastaurS.getParent().setBackground(themeBtnClicked);
 blastaurS.setText(tohtml(blastaurS.getText(),true));
 } else {
 blastau = false;
+removeFromArray(activeMods,"Blast Aura");
 blastaurS.getParent().setBackground(themeBtnNotClicked);
 blastaurS.setText(tohtml(blastaurS.getText(),false));
 }
@@ -19189,6 +19636,7 @@ aerialauraswitch.setText(tohtml(aerialauraswitch.getText(),true));
 } else {
 aerialauras = false;
 aerialaurad = false;
+removeFromArray(activeMods,"Aerial Aura");
 aerialauraswitch.getParent().setBackground(themeBtnNotClicked);
 aerialauraswitch.setText(tohtml(aerialauraswitch.getText(),false));
 }
@@ -19254,6 +19702,7 @@ hoverauraswitch.setText(tohtml(hoverauraswitch.getText(),true));
 } else {
 hoverauras = false;
 hoveraurad = false;
+removeFromArray(activeMods,"Hover Aura");
 hoverauraswitch.getParent().setBackground(themeBtnNotClicked);
 hoverauraswitch.setText(tohtml(hoverauraswitch.getText(),false));
 }
@@ -19319,6 +19768,7 @@ violatorswitch.setText(tohtml(violatorswitch.getText(),true));
 } else {
 violators = false;
 violatord = false;
+removeFromArray(activeMods,"Violator Aura");
 violatorswitch.getParent().setBackground(themeBtnNotClicked);
 violatorswitch.setText(tohtml(violatorswitch.getText(),false));
 }
@@ -19425,6 +19875,7 @@ GUIs.dismiss();
 }
 } else {
 faimbot = false;
+removeFromArray(activeMods,"Body Aimbot");
 faimbotBtn = false;
 faimed = false;
 GUIfaim.dismiss();
@@ -19540,6 +19991,7 @@ GUIs.dismiss();
 } else {
 aimbot = false;
 aimbotBtn = false;
+removeFromArray(activeMods,"Aimbot");
 aimed = false;
 GUIaim.dismiss();
 if (!aimed) {
@@ -19658,6 +20110,7 @@ tapjumps.setText(tohtml(tapjumps.getText(),true));
 } else {
 tapjumpss = false;
 tapjumped = false;
+removeFromArray(activeMods,"Tower Assist");
 tapjumps.getParent().setBackground(themeBtnNotClicked);
 tapjumps.setText(tohtml(tapjumps.getText(),false));
 }
@@ -19726,6 +20179,7 @@ xphits.setText(tohtml(xphits.getText(),true));
 } else {
 xphitss = false;
 xphited = false;
+removeFromArray(activeMods,"XP Hit");
 xphits.getParent().setBackground(themeBtnNotClicked);
 xphits.setText(tohtml(xphits.getText(),false));
 }
@@ -19793,6 +20247,7 @@ quickturn.setText(tohtml(quickturn.getText(),true));
 quickturns = false;
 quickturnd = false;
 GUIh.dismiss();
+removeFromArray(activeMods,"Quick Turn");
 quickturn.getParent().setBackground(themeBtnNotClicked);
 quickturn.setText(tohtml(quickturn.getText(),false));
 }
@@ -19856,6 +20311,7 @@ avoidplayer.getParent().setBackground(themeBtnClicked);
 avoidplayer.setText(tohtml(avoidplayer.getText(),true));
 } else {
 avoidplayers = false;
+removeFromArray(activeMods,"Untouchable");
 avoidplayer.getParent().setBackground(themeBtnNotClicked);
 avoidplayer.setText(tohtml(avoidplayer.getText(),false));
 }
@@ -20106,6 +20562,7 @@ walks.setText(tohtml(walks.getText(),true));
 } else {
 walkss = false;
 walked = false;
+removeFromArray(activeMods,"Reach");
 resetBoxes();
 walks.getParent().setBackground(themeBtnNotClicked);
 walks.setText(tohtml(walks.getText(),false));
@@ -20222,6 +20679,7 @@ autoReach.setText(tohtml(autoReach.getText(),true));
 autoReachs = false;
 autoReachd = false;
 resetBoxes();
+removeFromArray(activeMods,"Auto Reach");
 autoReach.getParent().setBackground(themeBtnNotClicked);
 autoReach.setText(tohtml(autoReach.getText(),false));
 }
@@ -20604,6 +21062,7 @@ effectClearS.getParent().setBackground(themeBtnClicked);
 effectClearS.setText(tohtml(effectClearS.getText(),true));
 } else {
 effectRemove = false;
+removeFromArray(activeMods,"Antidote");
 effectClearS.getParent().setBackground(themeBtnNotClicked);
 effectClearS.setText(tohtml(effectClearS.getText(),false));
 }
@@ -20648,11 +21107,12 @@ canPreset = true;
 if (canPreset) {
 if (!effectAdd) {
 effectAdd = true;
-savemod("Spam Enabled Effects");
+savemod("Spam Effects");
 effectAddS.getParent().setBackground(themeBtnClicked);
 effectAddS.setText(tohtml(effectAddS.getText(),true));
 } else {
 effectAdd = false;
+removeFromArray(activeMods,"Spam Effects");
 effectAddS.getParent().setBackground(themeBtnNotClicked);
 effectAddS.setText(tohtml(effectAddS.getText(),false));
 }
@@ -20708,6 +21168,7 @@ gp.setText(tohtml(gp.getText(),true));
 } else {
 gps = false;
 gped = false;
+removeFromArray(activeMods,"Night Vision");
 Entity.removeEffect(getPlayerEnt(), MobEffect.nightVision);
 gp.getParent().setBackground(themeBtnNotClicked);
 gp.setText(tohtml(gp.getText(),false));
@@ -20773,6 +21234,7 @@ im.getParent().setBackground(themeBtnClicked);
 im.setText(tohtml(im.getText(),true));
 } else {
 ims = false;
+removeFromArray(activeMods,"Haste");
 Entity.removeEffect(getPlayerEnt(), MobEffect.digSpeed);
 im.getParent().setBackground(themeBtnNotClicked);
 im.setText(tohtml(im.getText(),false));
@@ -20839,6 +21301,7 @@ Fatigueswitch.getParent().setBackground(themeBtnClicked);
 Fatigueswitch.setText(tohtml(Fatigueswitch.getText(),true));
 } else {
 miningfs = false;
+removeFromArray(activeMods,"Mining Fatigue");
 Entity.removeEffect(getPlayerEnt(), MobEffect.digSlowdown);
 Fatigueswitch.getParent().setBackground(themeBtnNotClicked);
 Fatigueswitch.setText(tohtml(Fatigueswitch.getText(),false));
@@ -20904,6 +21367,7 @@ levswi.getParent().setBackground(themeBtnClicked);
 levswi.setText(tohtml(levswi.getText(),true));
 } else {
 levs = false;
+removeFromArray(activeMods,"Levitation");
 Entity.removeEffect(getPlayerEnt(), MobEffect.levitation);
 levswi.getParent().setBackground(themeBtnNotClicked);
 levswi.setText(tohtml(levswi.getText(),false));
@@ -20969,6 +21433,7 @@ hj.getParent().setBackground(themeBtnClicked);
 hj.setText(tohtml(hj.getText(),true));
 } else {
 hjs = false;
+removeFromArray(activeMods,"Jump Boost");
 Entity.removeEffect(getPlayerEnt(), MobEffect.jump);
 hj.getParent().setBackground(themeBtnNotClicked);
 hj.setText(tohtml(hj.getText(),false));}
@@ -21033,6 +21498,7 @@ Nauseaswitch.getParent().setBackground(themeBtnClicked);
 Nauseaswitch.setText(tohtml(Nauseaswitch.getText(),true));
 } else {
 effectn = false;
+removeFromArray(activeMods,"Nausea");
 Entity.removeEffect(getPlayerEnt(), MobEffect.confusion);
 Nauseaswitch.getParent().setBackground(themeBtnNotClicked);
 Nauseaswitch.setText(tohtml(Nauseaswitch.getText(),false));
@@ -21098,6 +21564,7 @@ Blindnessswitch.getParent().setBackground(themeBtnClicked);
 Blindnessswitch.setText(tohtml(Blindnessswitch.getText(),true));
 } else {
 effectb = false;
+removeFromArray(activeMods,"Blindness");
 Entity.removeEffect(getPlayerEnt(), MobEffect.blindness);
 Blindnessswitch.getParent().setBackground(themeBtnNotClicked);
 Blindnessswitch.setText(tohtml(Blindnessswitch.getText(),false));
@@ -21215,6 +21682,7 @@ invisSwitch.getParent().setBackground(themeBtnClicked);
 invisSwitch.setText(tohtml(invisSwitch.getText(),true));
 } else {
 effectIn = false;
+removeFromArray(activeMods,"Invisibility");
 Entity.removeEffect(getPlayerEnt(), MobEffect.invisibility);
 invisSwitch.getParent().setBackground(themeBtnNotClicked);
 invisSwitch.setText(tohtml(invisSwitch.getText(),false));
@@ -21280,6 +21748,7 @@ absSwit.getParent().setBackground(themeBtnClicked);
 absSwit.setText(tohtml(absSwit.getText(),true));
 } else {
 effectAbs = false;
+removeFromArray(activeMods,"Absorption");
 Entity.removeEffect(getPlayerEnt(), MobEffect.absorption);
 absSwit.getParent().setBackground(themeBtnNotClicked);
 absSwit.setText(tohtml(absSwit.getText(),false));
@@ -21343,6 +21812,7 @@ healthBSwi.getParent().setBackground(themeBtnClicked);
 healthBSwi.setText(tohtml(healthBSwi.getText(),true));
 } else {
 effectHealth = false;
+removeFromArray(activeMods,"Health Boost");
 Entity.removeEffect(getPlayerEnt(), MobEffect.healthBoost);
 healthBSwi.getParent().setBackground(themeBtnNotClicked);
 healthBSwi.setText(tohtml(healthBSwi.getText(),false));
@@ -21406,6 +21876,7 @@ witherSwi.getParent().setBackground(themeBtnClicked);
 witherSwi.setText(tohtml(witherSwi.getText(),true));
 } else {
 effectWither = false;
+removeFromArray(activeMods,"Wither");
 Entity.removeEffect(getPlayerEnt(), MobEffect.wither);
 witherSwi.getParent().setBackground(themeBtnNotClicked);
 witherSwi.setText(tohtml(witherSwi.getText(),false));
@@ -21469,6 +21940,7 @@ poisonSwi.getParent().setBackground(themeBtnClicked);
 poisonSwi.setText(tohtml(poisonSwi.getText(),true));
 } else {
 effectPois = false;
+removeFromArray(activeMods,"Poison");
 Entity.removeEffect(getPlayerEnt(), MobEffect.poison);
 poisonSwi.getParent().setBackground(themeBtnNotClicked);
 poisonSwi.setText(tohtml(poisonSwi.getText(),false));
@@ -21532,6 +22004,7 @@ weakSwi.getParent().setBackground(themeBtnClicked);
 weakSwi.setText(tohtml(weakSwi.getText(),true));
 } else {
 effectWeak = false;
+removeFromArray(activeMods,"Weakness");
 Entity.removeEffect(getPlayerEnt(), MobEffect.weakness);
 weakSwi.getParent().setBackground(themeBtnNotClicked);
 weakSwi.setText(tohtml(weakSwi.getText(),false));
@@ -21595,6 +22068,7 @@ hungerSwi.getParent().setBackground(themeBtnClicked);
 hungerSwi.setText(tohtml(hungerSwi.getText(),true));
 } else {
 effectHunger = false;
+removeFromArray(activeMods,"Hunger");
 Entity.removeEffect(getPlayerEnt(), MobEffect.hunger);
 hungerSwi.getParent().setBackground(themeBtnNotClicked);
 hungerSwi.setText(tohtml(hungerSwi.getText(),false));
@@ -21659,6 +22133,7 @@ waterbreSwi.getParent().setBackground(themeBtnClicked);
 waterbreSwi.setText(tohtml(waterbreSwi.getText(),true));
 } else {
 effectWater = false;
+removeFromArray(activeMods,"Water Breathing");
 Entity.removeEffect(getPlayerEnt(), MobEffect.waterBreathing);
 waterbreSwi.getParent().setBackground(themeBtnNotClicked);
 waterbreSwi.setText(tohtml(waterbreSwi.getText(),false));
@@ -21722,6 +22197,7 @@ fireresSwi.getParent().setBackground(themeBtnClicked);
 fireresSwi.setText(tohtml(fireresSwi.getText(),true));
 } else {
 effectFireRes = false;
+removeFromArray(activeMods,"Fire Resistance");
 Entity.removeEffect(getPlayerEnt(), MobEffect.fireResistance);
 fireresSwi.getParent().setBackground(themeBtnNotClicked);
 fireresSwi.setText(tohtml(fireresSwi.getText(),false));
@@ -21785,6 +22261,7 @@ damageresSwi.getParent().setBackground(themeBtnClicked);
 damageresSwi.setText(tohtml(damageresSwi.getText(),true));
 } else {
 effectDmgRes = false;
+removeFromArray(activeMods,"Resistance");
 Entity.removeEffect(getPlayerEnt(), MobEffect.damageResistance);
 damageresSwi.getParent().setBackground(themeBtnNotClicked);
 damageresSwi.setText(tohtml(damageresSwi.getText(),false));
@@ -21848,6 +22325,7 @@ strengSwi.getParent().setBackground(themeBtnClicked);
 strengSwi.setText(tohtml(strengSwi.getText(),true));
 } else {
 effectStrgth = false;
+removeFromArray(activeMods,"Strength");
 Entity.removeEffect(getPlayerEnt(), MobEffect.damageBoost);
 strengSwi.getParent().setBackground(themeBtnNotClicked);
 strengSwi.setText(tohtml(strengSwi.getText(),false));
@@ -21911,6 +22389,7 @@ slowSwi.getParent().setBackground(themeBtnClicked);
 slowSwi.setText(tohtml(slowSwi.getText(),true));
 } else {
 effectSlow = false;
+removeFromArray(activeMods,"Slowness");
 Entity.removeEffect(getPlayerEnt(), MobEffect.movementSlowdown);
 slowSwi.getParent().setBackground(themeBtnNotClicked);
 slowSwi.setText(tohtml(slowSwi.getText(),false));
@@ -21974,6 +22453,7 @@ swiftSwi.getParent().setBackground(themeBtnClicked);
 swiftSwi.setText(tohtml(swiftSwi.getText(),true));
 } else {
 effectSwift = false;
+removeFromArray(activeMods,"Swiftness");
 Entity.removeEffect(getPlayerEnt(), MobEffect.movementSpeed);
 swiftSwi.getParent().setBackground(themeBtnNotClicked);
 swiftSwi.setText(tohtml(swiftSwi.getText(),false));
@@ -22114,6 +22594,7 @@ jetpacks.setText(tohtml(jetpacks.getText(),true));
 } else {
 jetpackss = false;
 GUIjp.dismiss();
+removeFromArray(activeMods,"Jetpack");
 jetpacked = false;
 if (!jetpacked) {
 jetpacks.getParent().setBackground(themeBtnNotClicked);
@@ -22190,6 +22671,7 @@ sfd.setText(tohtml(sfd.getText(),true));
 } else {
 Player.setCanFly(0);
 sf = false;
+removeFromArray(activeMods,"Survival Fly");
 sfs = false;
 if (!sfs) {
 sfd.getParent().setBackground(themeBtnNotClicked);
@@ -22262,6 +22744,7 @@ elytraswitch.setText(tohtml(elytraswitch.getText(),true));
 } else {
 elytras = false;
 elytrad = false;
+removeFromArray(activeMods,"Elytra");
 if (!elytrad) {
 elytraswitch.getParent().setBackground(themeBtnNotClicked);
 elytraswitch.setText(tohtml(elytraswitch.getText(),false));
@@ -22308,6 +22791,76 @@ layoutParams.gravity=Gravity.CENTER;
 waypoint1.setLayoutParams(layoutParams);
 waypoint1.getLayoutParams().width = icon_dimensions;
 waypoint1.getLayoutParams().height = icon_dimensions;
+waypoint1.setBackgroundDrawable(new android.graphics.drawable.BitmapDrawable(android.graphics.BitmapFactory.decodeByteArray(android.util.Base64.decode(survivalflyicon, 0), 0, android.util.Base64.decode(survivalflyicon, 0).length)));
+}var espoof = new android.widget.TextView(ctx);
+espoof.setText("  " + "Elytra Spoof");
+espoof.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT));
+espoof.getLayoutParams().width = switch_width;
+espoof.setBackgroundDrawable(new android.graphics.drawable.ColorDrawable(android.graphics.Color.TRANSPARENT));
+espoof.setTextColor(modTextColor); 
+espoof.setTypeface(mcfont);
+espoof.setGravity(android.view.Gravity.CENTER_VERTICAL);
+espoof.setTextSize(switchfontsize);
+slayout1.setOnClickListener(new android.view.View.OnClickListener({
+onClick: function(viewarg) {
+if (!elytraspoof) {
+elytraspoof = true;savemod("Elytra Spoof");
+if (!elytraspoof) {
+espoof.getParent().setBackground(themeBtnNotClicked);
+espoof.setText(tohtml(espoof.getText(),false));
+} else {
+espoof.getParent().setBackground(themeBtnClicked);
+espoof.setText(tohtml(espoof.getText(),true));
+}
+} else {
+elytraspoof = false;
+removeFromArray(activeMods,"Elytra Spoof");
+if (!elytraspoof) {
+espoof.getParent().setBackground(themeBtnNotClicked);
+espoof.setText(tohtml(espoof.getText(),false));
+} else {
+espoof.getParent().setBackground(themeBtnClicked);
+espoof.setText(tohtml(espoof.getText(),true));
+}
+};
+}
+}));
+if(helpB){var helpBtn = new android.widget.ImageView(ctx);
+
+helpBtn.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
+helpBtn.getLayoutParams().width = help_width;
+helpBtn.getLayoutParams().height = help_width;
+helpBtn.setBackgroundDrawable(new android.graphics.drawable.BitmapDrawable(android.graphics.BitmapFactory.decodeByteArray(android.util.Base64.decode(questionicon, 0), 0, android.util.Base64.decode(questionicon, 0).length)));
+helpBtn.setOnClickListener(new android.view.View.OnClickListener({
+onClick: function(viewarg) {
+betToast("attaches elytra automatically");
+}
+}));
+}if(iconsB){slayout1.addView(waypoint1);}
+slayout1.addView(espoof);
+if(helpB){slayout1.addView(helpBtn);}
+menuLayoutw.addView(slayout1);if (!elytraspoof) {
+espoof.getParent().setBackground(themeBtnNotClicked);
+espoof.setText(tohtml(espoof.getText(),false));
+} else {
+espoof.getParent().setBackground(themeBtnClicked);
+espoof.setText(tohtml(espoof.getText(),true));
+}
+
+var slayout1 = new android.widget.LinearLayout(activity);
+slayout1.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
+slayout1.getLayoutParams().height = icon_dimensions+modPadT+modPadB;
+var spaceholder = new android.widget.Button(ctx);
+spaceholder.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
+spaceholder.getLayoutParams().width = gap_width;spaceholder.getLayoutParams().height = icon_dimensions;spaceholder.getLayoutParams().height = icon_dimensions;
+spaceholder.setBackgroundDrawable(new android.graphics.drawable.ColorDrawable(android.graphics.Color.TRANSPARENT));
+slayout1.addView(spaceholder);
+if(iconsB){var waypoint1 = new android.widget.ImageView(ctx);
+layoutParams=new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT);
+layoutParams.gravity=Gravity.CENTER;
+waypoint1.setLayoutParams(layoutParams);
+waypoint1.getLayoutParams().width = icon_dimensions;
+waypoint1.getLayoutParams().height = icon_dimensions;
 waypoint1.setBackgroundDrawable(new android.graphics.drawable.BitmapDrawable(android.graphics.BitmapFactory.decodeByteArray(android.util.Base64.decode(fastfallicon, 0), 0, android.util.Base64.decode(fastfallicon, 0).length)));
 }var fastfallswitch = new android.widget.TextView(ctx);
 fastfallswitch.setText("  " + "Fast Fall");
@@ -22332,6 +22885,7 @@ fastfallswitch.setText(tohtml(fastfallswitch.getText(),true));
 }
 } else {
 fastfalls = false;
+removeFromArray(activeMods,"Fast Fall");
 fastfalld = false;
 if (!fastfalld) {
 fastfallswitch.getParent().setBackground(themeBtnNotClicked);
@@ -22400,6 +22954,7 @@ elevs.setText(tohtml(elevs.getText(),true));
 
 } else {
 elevating = false;
+removeFromArray(activeMods,"Elevator");
 GUIele.dismiss();
 elevs.getParent().setBackground(themeBtnNotClicked);
 elevs.setText(tohtml(elevs.getText(),false));
@@ -22456,12 +23011,13 @@ slayout1.setOnClickListener(new android.view.View.OnClickListener({
 onClick: function(viewarg) {
 if (!surfacing) {
 surfacing = true;
-showSurf();savemod("Surface Keybind");
+showSurf();savemod("Surface KB");
 surS.getParent().setBackground(themeBtnClicked);
 surS.setText(tohtml(surS.getText(),true));
 
 } else {
 surfacing = false;
+removeFromArray(activeMods,"Surface KB");
 GUIsur.dismiss();
 surS.getParent().setBackground(themeBtnNotClicked);
 surS.setText(tohtml(surS.getText(),false));
@@ -22529,6 +23085,7 @@ spider.setText(tohtml(spider.getText(),true));
 }
 } else {
 spiders = false;
+removeFromArray(activeMods,"Spider");
 spiderd = false;
 if (!spiderd) {
 spider.getParent().setBackground(themeBtnNotClicked);
@@ -22599,6 +23156,7 @@ crouchTpSwitch.setText(tohtml(crouchTpSwitch.getText(),true));
 }
 } else {
 crouchtpss = false;
+removeFromArray(activeMods,"Crouch Glide");
 if (!crouchtpss) {
 crouchTpSwitch.getParent().setBackground(themeBtnNotClicked);
 crouchTpSwitch.setText(tohtml(crouchTpSwitch.getText(),false));
@@ -22649,7 +23207,7 @@ waypoint1.getLayoutParams().width = icon_dimensions;
 waypoint1.getLayoutParams().height = icon_dimensions;
 waypoint1.setBackgroundDrawable(new android.graphics.drawable.BitmapDrawable(android.graphics.BitmapFactory.decodeByteArray(android.util.Base64.decode(airjumpicon, 0), 0, android.util.Base64.decode(airjumpicon, 0).length)));
 }var autoairjumpSwitch = new android.widget.TextView(ctx);
-autoairjumpSwitch.setText("  " + "Auto Air Jump");
+autoairjumpSwitch.setText("  " + "Air Jump");
 autoairjumpSwitch.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT));
 autoairjumpSwitch.getLayoutParams().width = switch_width;
 autoairjumpSwitch.setBackgroundDrawable(new android.graphics.drawable.ColorDrawable(android.graphics.Color.TRANSPARENT));
@@ -22659,9 +23217,10 @@ autoairjumpSwitch.setTypeface(mcfont);
 autoairjumpSwitch.setTextSize(switchfontsize);
 slayout1.setOnClickListener(new android.view.View.OnClickListener({
 onClick: function(viewarg) {
-if (!grappless) {
-grappless = true;savemod("Auto Air Jump");
-if (!grappless) {
+if (!airjumps) {
+airjumps = true;savemod("Air Jump");
+showJumpBtn();
+if (!airjumps) {
 autoairjumpSwitch.getParent().setBackground(themeBtnNotClicked);
 autoairjumpSwitch.setText(tohtml(autoairjumpSwitch.getText(),false));
 } else {
@@ -22669,8 +23228,10 @@ autoairjumpSwitch.getParent().setBackground(themeBtnClicked);
 autoairjumpSwitch.setText(tohtml(autoairjumpSwitch.getText(),true));
 }
 } else {
-grappless = false;
-if (!grappless) {
+airjumps = false;
+GUIjump.dismiss();
+removeFromArray(activeMods,"Air Jump");
+if (!airjumps) {
 autoairjumpSwitch.getParent().setBackground(themeBtnNotClicked);
 autoairjumpSwitch.setText(tohtml(autoairjumpSwitch.getText(),false));
 } else {
@@ -22695,7 +23256,7 @@ betToast(langMsg[language]["Jump in the air"]);
 slayout1.addView(autoairjumpSwitch);
 if(helpB){slayout1.addView(helpBtn);}
 menuLayoutw.addView(slayout1);
-if (!grappless) {
+if (!airjumps) {
 autoairjumpSwitch.getParent().setBackground(themeBtnNotClicked);
 autoairjumpSwitch.setText(tohtml(autoairjumpSwitch.getText(),false));
 } else {
@@ -22739,6 +23300,7 @@ stepSwitch.setText(tohtml(stepSwitch.getText(),true));
 }
 } else {
 stepss = false;
+removeFromArray(activeMods,"Step");
 if (!stepss) {
 stepSwitch.getParent().setBackground(themeBtnNotClicked);
 stepSwitch.setText(tohtml(stepSwitch.getText(),false));
@@ -22814,6 +23376,7 @@ freecamS.setText(tohtml(freecamS.getText(),true));
 } else {
 freecamSon = false;
 disableCam();
+removeFromArray(activeMods,"Freecam");
 if (!freecamSon) {
 freecamS.getParent().setBackground(themeBtnNotClicked);
 freecamS.setText(tohtml(freecamS.getText(),false));
@@ -22884,6 +23447,7 @@ longjumpswitch.setText(tohtml(longjumpswitch.getText(),true));
 }
 } else {
 longjumps = false;
+removeFromArray(activeMods,"Long Jump");
 longjumpd = false;
 if (!longjumpd) {
 longjumpswitch.getParent().setBackground(themeBtnNotClicked);
@@ -22955,6 +23519,7 @@ jumpsprintswitch.setText(tohtml(jumpsprintswitch.getText(),true));
 }
 } else {
 jumpsprints = false;
+removeFromArray(activeMods,"B-Hop");
 jumpsprintd = false;
 if (!jumpsprintd) {
 jumpsprintswitch.getParent().setBackground(themeBtnNotClicked);
@@ -23016,7 +23581,7 @@ slayout1.setOnClickListener(new android.view.View.OnClickListener({
 onClick: function(viewarg) {
 if (!boostKBBo) {
 boostKBBo=true;
-showBoost();savemod("Boost Keybind");
+showBoost();savemod("Boost KB");
 if (!boostKBBo) {
 booKbS.getParent().setBackground(themeBtnNotClicked);
 booKbS.setText(tohtml(booKbS.getText(),false));
@@ -23026,6 +23591,7 @@ booKbS.setText(tohtml(booKbS.getText(),true));
 }
 } else {
 boostKBBo = false;
+removeFromArray(activeMods,"Boost KB");
 GUIboost.dismiss();
 if (!boostKBBo) {
 booKbS.getParent().setBackground(themeBtnNotClicked);
@@ -23098,6 +23664,7 @@ mgcS.setText(tohtml(mgcS.getText(),true));
 }
 } else {
 magiccarpetParent = false;
+removeFromArray(activeMods,"Magic Carpet");
 GUImgc.dismiss();magiccarpets=false;
 if (!magiccarpetParent) {
 mgcS.getParent().setBackground(themeBtnNotClicked);
@@ -23172,6 +23739,7 @@ autoBridges.setText(tohtml(autoBridges.getText(),true));
 autoBridgess = false;
 autoBridged = false;
 GUIscaf.dismiss();
+removeFromArray(activeMods,"Scaffold");
 if (!autoBridged) {
 autoBridges.getParent().setBackground(themeBtnNotClicked);
 autoBridges.setText(tohtml(autoBridges.getText(),false));
@@ -23288,6 +23856,7 @@ fastbridgesw.setText(tohtml(fastbridgesw.getText(),true));
 }
 } else {
 fastbridger = false;
+removeFromArray(activeMods,"Quick Bridge");
 if (!fastbridger) {
 fastbridgesw.getParent().setBackground(themeBtnNotClicked);
 fastbridgesw.setText(tohtml(fastbridgesw.getText(),false));
@@ -23359,6 +23928,7 @@ jesus.setText(tohtml(jesus.getText(),true));
 }
 } else {
 jesuss = false;
+removeFromArray(activeMods,"Jesus");
 jesused = false;
 if (!jesused) {
 jesus.getParent().setBackground(themeBtnNotClicked);
@@ -23425,6 +23995,7 @@ smoothjesus.getParent().setBackground(themeBtnClicked);
 smoothjesus.setText(tohtml(smoothjesus.getText(),true));
 } else {
 smoothjesuss = false;
+removeFromArray(activeMods,"Smooth Jesus");
 smoothjesusd = false;
 smoothjesus.getParent().setBackground(themeBtnNotClicked);
 smoothjesus.setText(tohtml(smoothjesus.getText(),false));
@@ -23492,6 +24063,7 @@ jetskisswitch.setText(tohtml(jetskisswitch.getText(),true));
 }
 } else {
 jetskiss = false;
+removeFromArray(activeMods,"Jet Ski");
 jetskisd = false;
 if (!jetskisd) {
 jetskisswitch.getParent().setBackground(themeBtnNotClicked);
@@ -23564,6 +24136,7 @@ taptpswitch.setText(tohtml(taptpswitch.getText(),true));
 }
 } else {
 taptpswitchs = false;
+removeFromArray(activeMods,"Tap TP");
 taptpswitchd = false;
 if (!taptpswitchd) {
 taptpswitch.getParent().setBackground(themeBtnNotClicked);
@@ -23635,6 +24208,7 @@ potion.setText(tohtml(potion.getText(),true));
 }
 } else {
 potions = false;
+removeFromArray(activeMods,"No Fall Damage");
 potioned = false;
 if (!potioned) {
 potion.getParent().setBackground(themeBtnNotClicked);
@@ -23708,6 +24282,7 @@ phaseBlock.setText(tohtml(phaseBlock.getText(),true));
 } else {
 phaseBlockss = false;
 phaseBlocksd = false;
+removeFromArray(activeMods,"Phase");
 Entity.setCollisionSize(Player.getEntity(), 0.6, 1.8);
 if (!phaseBlocksd) {
 phaseBlock.getParent().setBackground(themeBtnNotClicked);
@@ -23783,6 +24358,7 @@ clipBlock.setText(tohtml(clipBlock.getText(),true));
 clipsBls = false;
 clipBtn = false;
 GUIclip.dismiss();
+removeFromArray(activeMods,"Noclip");
 Entity.setCollisionSize(Player.getEntity(), 0.6, 1.8);
 if (!clipsBls) {
 clipBlock.getParent().setBackground(themeBtnNotClicked);
@@ -23858,6 +24434,7 @@ clip2.setText(tohtml(clip2.getText(),true));
 }
 } else {
 noclip2s = false;
+removeFromArray(activeMods,"Noclip w/o Blocks");
 disableClip();
 alertPopup("XRAY","Disable and reenable SMOOTH LIGHTING in settings","OKAY");
 if (!noclip2s) {
@@ -23931,6 +24508,7 @@ betterlad.setText(tohtml(betterlad.getText(),true));
 }
 } else {
 betterladss = false;
+removeFromArray(activeMods,"Fast Ladders");
 betterladsd = false;
 if (!betterladsd) {
 betterlad.getParent().setBackground(themeBtnNotClicked);
@@ -23998,6 +24576,7 @@ achnksw.getParent().setBackground(themeBtnClicked);
 achnksw.setText(tohtml(achnksw.getText(),true));
 } else {
 acrashchnks = false;
+removeFromArray(activeMods,"Anti Crash Chunk");
 achnksw.getParent().setBackground(themeBtnNotClicked);
 achnksw.setText(tohtml(achnksw.getText(),false));
 }
@@ -24059,6 +24638,7 @@ pfSw.getParent().setBackground(themeBtnClicked);
 pfSw.setText(tohtml(pfSw.getText(),true));
 } else {
 pfss = false;
+removeFromArray(activeMods,"Player Follower");
 pfsd = false;
 pfSw.getParent().setBackground(themeBtnNotClicked);
 pfSw.setText(tohtml(pfSw.getText(),false));
@@ -24946,6 +25526,7 @@ safe.setText(tohtml(safe.getText(),true));
 }
 } else {
 safes = false;
+removeFromArray(activeMods,"Spam");
 safed = false;
 if (!safed) {
 safe.getParent().setBackground(themeBtnNotClicked);
@@ -25058,6 +25639,7 @@ antispS.getParent().setBackground(themeBtnClicked);
 antispS.setText(tohtml(antispS.getText(),true));
 } else {
 antispammer = false;
+removeFromArray(activeMods,"Anti Spam");
 antispS.getParent().setBackground(themeBtnNotClicked);
 antispS.setText(tohtml(antispS.getText(),false));
 }
@@ -25127,6 +25709,7 @@ new java.lang.Runnable(
 {
 run:function(){
 try{
+	removeFromArray(activeMods,"Chat Translator");
 chatTranslator=false;translateWindow.dismiss();
 }
 catch(err){}}}));
@@ -25197,6 +25780,7 @@ fiSw.setText(tohtml(fiSw.getText(),true));
 } else {
 foilits = false;
 unfoilitems();
+removeFromArray(activeMods,"Foil Items");
 if(fasteatd){enableEat();}else{disableEat();}
 fiSw.getParent().setBackground(themeBtnNotClicked);
 fiSw.setText(tohtml(fiSw.getText(),false));
@@ -25313,6 +25897,7 @@ codetalker.setText(tohtml(codetalker.getText(),true));
 }
 } else {
 codetalkers = false;
+removeFromArray(activeMods,"Tricky Chat");
 codetalkered = false;
 if (!codetalkered) {
 codetalker.getParent().setBackground(themeBtnNotClicked);
@@ -25383,6 +25968,7 @@ instincsW.setText(tohtml(instincsW.getText(),true));
 savemod("Chat Encryption");
 } else {
 instinctChat = false;
+removeFromArray(activeMods,"Chat Encryption");
 instincsW.getParent().setBackground(themeBtnNotClicked);
 instincsW.setText(tohtml(instincsW.getText(),false));
 }
@@ -25520,6 +26106,7 @@ noffsw.getParent().setBackground(themeBtnClicked);
 noffsw.setText(tohtml(noffsw.getText(),true));
 } else {
 nOffs = false;
+removeFromArray(activeMods,"No Offhand");
 noffsw.getParent().setBackground(themeBtnNotClicked);
 noffsw.setText(tohtml(noffsw.getText(),false));
 }
@@ -25580,6 +26167,7 @@ spaenc.getParent().setBackground(themeBtnClicked);
 spaenc.setText(tohtml(spaenc.getText(),true));
 } else {
 spam2 = false;
+removeFromArray(activeMods,"32k Spammer");
 spaenc.getParent().setBackground(themeBtnNotClicked);
 spaenc.setText(tohtml(spaenc.getText(),false));
 }
@@ -25647,6 +26235,7 @@ afks.setText(tohtml(afks.getText(),true));
 } else {
 afkss = false;
 afked = false;
+removeFromArray(activeMods,"AFK");
 if (!afked) {
 afks.getParent().setBackground(themeBtnNotClicked);
 afks.setText(tohtml(afks.getText(),false));
@@ -25716,6 +26305,7 @@ bedrockswit.setText(tohtml(bedrockswit.getText(),true));
 }
 } else {
 bedrocke = false;
+removeFromArray(activeMods,"Break Bedrock");
 Block.setDestroyTime(7, -10);
 Block.setDestroyTime(137, -10);
 Block.setDestroyTime(188, -10);
@@ -25792,6 +26382,7 @@ savemod("Haste Bypass");
 } else {
 hbS = false;
 resetHaste();
+removeFromArray(activeMods,"Haste Bypass");
 hastbs.getParent().setBackground(themeBtnNotClicked);
 hastbs.setText(tohtml(hastbs.getText(),false));
 }
@@ -25854,6 +26445,7 @@ savemod("Speed Bypass");
 } else {
 sbS = false;
 resetSpeed();
+removeFromArray(activeMods,"Speed Bypass");
 sppedS.getParent().setBackground(themeBtnNotClicked);
 sppedS.setText(tohtml(sppedS.getText(),false));
 }
@@ -25917,6 +26509,7 @@ savemod("Night Vision Bypass");
 } else {
 nvS = false;
 resetNV();
+removeFromArray(activeMods,"Night Vision Bypass");
 nvBs.getParent().setBackground(themeBtnNotClicked);
 nvBs.setText(tohtml(nvBs.getText(),false));
 }
@@ -25983,6 +26576,7 @@ betToast("Walk around whilst dead, can't do anything but drop items around playe
 } else if(zomS){
 zomS = false;
 overlayBlood.dismiss();
+removeFromArray(activeMods,"Zombie Mode");
 zomSwi.getParent().setBackground(themeBtnNotClicked);
 zomSwi.setText(tohtml(zomSwi.getText(),false));
 Player.setHealth(0);
@@ -26051,6 +26645,7 @@ radius.setText(tohtml(radius.getText(),true));
 }
 } else {
 radiuss = false;
+removeFromArray(activeMods,"Nearest Player");
 radiused = false;
 if (!radiused) {
 radius.getParent().setBackground(themeBtnNotClicked);
@@ -26129,6 +26724,7 @@ colormychat.setText(tohtml(colormychat.getText(),true));
 colormychatss = false;
 colormychatd = false;
 GUIs.dismiss;
+removeFromArray(activeMods,"Color Chat");
 closeColor();
 colorPicker = false;
 if (!colormychatd) {
@@ -26202,6 +26798,7 @@ partSwit.setText(tohtml(partSwit.getText(),true));
 }
 } else {
 tapPart = false;
+removeFromArray(activeMods,"Hit Particles");
 if (!tapPart) {
 partSwit.getParent().setBackground(themeBtnNotClicked);
 partSwit.setText(tohtml(partSwit.getText(),false));
@@ -26274,6 +26871,7 @@ hudSwitch.setText(tohtml(hudSwitch.getText(),true));
 } else {
 huds = false;
 hudd = false;
+removeFromArray(activeMods,"Data");
 if (!hudd) {
 hudSwitch.getParent().setBackground(themeBtnNotClicked);
 hudSwitch.setText(tohtml(hudSwitch.getText(),false));
@@ -26344,6 +26942,7 @@ tapRiderSwitch.setText(tohtml(tapRiderSwitch.getText(),true));
 }
 } else {
 tapRider = false;
+removeFromArray(activeMods,"Tap Ride");
 tapRiderd = false;
 if (!tapRiderd) {
 tapRiderSwitch.getParent().setBackground(themeBtnNotClicked);
@@ -26465,6 +27064,7 @@ chestesp.setText(tohtml(chestesp.getText(),true));
 } else {
 blockEspTracer = false;
 espOnBsave=false;
+removeFromArray(activeMods,"Block ESP");
 if (!blockEspTracer) {
 chestesp.getParent().setBackground(themeBtnNotClicked);
 chestesp.setText(tohtml(chestesp.getText(),false));
@@ -26583,6 +27183,7 @@ debugUic.setText(tohtml(debugUic.getText(),true));
 } else {
 debugUicd = false;
 ModPE.setUiRenderDebug(false);
+removeFromArray(activeMods,"Debug UI");
 if (!debugUicd) {
 debugUic.getParent().setBackground(themeBtnNotClicked);
 debugUic.setText(tohtml(debugUic.getText(),false));
@@ -26642,11 +27243,12 @@ chatlink.setTextSize(switchfontsize);
 slayout1.setOnClickListener(new android.view.View.OnClickListener({
 onClick: function(viewarg) {
 if (!chatlinks) {
-chatlinks = true;savemod("Open Chat Links");
+chatlinks = true;savemod("Chat Links");
 chatlink.getParent().setBackground(themeBtnClicked);
 chatlink.setText(tohtml(chatlink.getText(),true));
 } else {
 chatlinks = false;
+removeFromArray(activeMods,"Chat Links");
 chatlink.getParent().setBackground(themeBtnNotClicked);
 chatlink.setText(tohtml(chatlink.getText(),false));
 }
@@ -26706,6 +27308,7 @@ chlogs.getParent().setBackground(themeBtnClicked);
 chlogs.setText(tohtml(chlogs.getText(),true));
 } else {
 chlog = false;
+removeFromArray(activeMods,"Chat Log");
 chlogs.getParent().setBackground(themeBtnNotClicked);
 chlogs.setText(tohtml(chlogs.getText(),false));
 }
@@ -26847,6 +27450,7 @@ taptosee.setText(tohtml(taptosee.getText(),true));
 }
 } else {
 taptoseed = false;
+removeFromArray(activeMods,"Victim Eyes");
 GUIri.dismiss();
 if (!taptoseed) {
 taptosee.getParent().setBackground(themeBtnNotClicked);
@@ -27282,7 +27886,7 @@ button.setGravity(Gravity.CENTER_VERTICAL);
 button.setTextSize(switchfontsize);
 slayout1.setOnClickListener(new android.view.View.OnClickListener({
 onClick: function(viewarg) {
-try{runScript();savemod("Custom Script");}catch(e){betToast(e)}
+try{runScript();savemod("Custom Script");}catch(e){betToast(e+e.lineNumber)}
 if(vibrations){ctx.getSystemService(android.content.Context.VIBRATOR_SERVICE).vibrate(20);}
 }
 }));
@@ -27726,7 +28330,7 @@ menuLayoutw.addView(slayout1);
 var infoBox = new android.widget.TextView(ctx);
 infoBox.setText("Tip: Donators can email v7thSharkv@gmail.com a copy of their receipt with their ingame name to activate a selection of mods, or send me a message in Discord.");
 infoBox.setTextColor(modTextColor);
-infoBox.setTextSize(7);
+infoBox.setTextSize(switchfontsize);
 infoBox.setTypeface(mcfont);
 infoBox.setGravity(Gravity.CENTER);
 //menuLayoutw.addView(infoBox);
@@ -27734,7 +28338,7 @@ infoBox.setGravity(Gravity.CENTER);
 var infoBox = new android.widget.TextView(ctx);
 infoBox.setText(langMsg[language]["You are a donator and chose:"]);
 infoBox.setTextColor(android.graphics.Color.YELLOW);
-infoBox.setTextSize(9);
+infoBox.setTextSize(switchfontsize);
 infoBox.setTypeface(mcfont);
 infoBox.setGravity(Gravity.CENTER);
 if(contains(donators,Player.getName(getPlayerEnt()))){
@@ -27744,7 +28348,7 @@ menuLayoutw.addView(infoBox);
 var infoBox = new android.widget.TextView(ctx);
 infoBox.setText(langMsg[language]["- Particle Effect"]);
 infoBox.setTextColor(Color.parseColor("#00FFFF"));
-infoBox.setTextSize(7);
+infoBox.setTextSize(switchfontsize);
 infoBox.setTypeface(mcfont);
 infoBox.setGravity(Gravity.CENTER);
 if(contains(particleEffect,Player.getName(getPlayerEnt()))){
@@ -27764,7 +28368,7 @@ menuLayoutw.addView(infoBox);
 var infoBox = new android.widget.TextView(ctx);
 infoBox.setText(langMsg[language]["- Immunity"]);
 infoBox.setTextColor(Color.parseColor("#00FFFF"));
-infoBox.setTextSize(7);
+infoBox.setTextSize(switchfontsize);
 infoBox.setTypeface(mcfont);
 infoBox.setGravity(Gravity.CENTER);
 if(contains(immunity,Player.getName(getPlayerEnt()))){
@@ -28393,6 +28997,47 @@ vibrations = true;
 } else {
 vibrations = false;
 savemod("Vibrations Off");
+}
+saveTheme();
+}
+}));
+slayout1.addView(button);
+menuLayoutw.addView(slayout1);
+
+var slayout1 = new android.widget.LinearLayout(activity);
+slayout1.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
+slayout1.getLayoutParams().height = icon_dimensions+modPadT+modPadB;
+var spaceholder = new android.widget.Button(ctx);
+spaceholder.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
+spaceholder.getLayoutParams().width = gap_width;spaceholder.getLayoutParams().height = icon_dimensions;
+spaceholder.setBackgroundDrawable(new android.graphics.drawable.ColorDrawable(android.graphics.Color.TRANSPARENT));
+slayout1.addView(spaceholder);
+if(iconsB){var waypoint1 = new android.widget.ImageView(ctx);
+layoutParams=new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT);
+layoutParams.gravity=Gravity.CENTER;
+waypoint1.setLayoutParams(layoutParams);
+waypoint1.getLayoutParams().width = icon_dimensions;
+waypoint1.getLayoutParams().height = icon_dimensions;
+waypoint1.setBackgroundDrawable(new android.graphics.drawable.BitmapDrawable(android.graphics.BitmapFactory.decodeByteArray(android.util.Base64.decode(offhandicon, 0), 0, android.util.Base64.decode(offhandicon, 0).length)));
+}var button = new CheckBox(ctx);
+button.setText("Mod Status List");
+button.setChecked(displayActiveMods);
+button.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT));
+button.getLayoutParams().width = switchWidth + icon_dimensions+icon_dimensions;
+button.setTextSize(btntextsize-1);
+button.setTypeface(mcfont);
+button.setBackgroundDrawable(new android.graphics.drawable.ColorDrawable(android.graphics.Color.TRANSPARENT));
+button.setTextColor(modTextColor);
+button.setBackground(themeBtnNotClicked);
+button.setOnClickListener(new View.OnClickListener({
+onClick: function(view) {
+if (!displayActiveMods) {
+displayActiveMods = true;
+showActiveMods();
+} else {
+displayActiveMods = false;
+activeModWin.dismiss();
+savemod("List Off");
 }
 saveTheme();
 }
@@ -30656,13 +31301,16 @@ alert.setTitle("GUI Settings");
 alert.setPositiveButton("Ok", function(dialog, whichButton) {
 alert.dismiss();
 try{
+iconcount=2;
 btntextsize= parseInt(btnsize.getText());
 switchfontsize = parseInt(switchsize.getText());
 modPadT= parseInt(toppadd.getText()/2);
 modPadB = parseInt(toppadd.getText()/2);
 list_width_var = parseInt(menet.getText());
 list_width = list_width_var*density;
-switch_width = ((list_width_var*density)/1.42);
+if(!helpB){iconcount--}
+if(!iconsB){iconcount--}
+switch_width = ((list_width-(icon_dimensions*iconcount))-gap_width);
 wayNameWidth = list_width-(icon_dimensions*4);
 if(toppadd.getText()==""){modPadT=0;modPadB=0}
 if(fontsele==0){fontid="mc";mcfont = new android.graphics.Typeface.createFromFile(mcfontpath4);}
@@ -30864,7 +31512,7 @@ buttonSurvival.getBackground().setAlpha(0);
 menuLayoutw.addView(buttonSurvival);
 var scrollText = new android.widget.TextView(ctx);
 scrollText.setText("Client made by " + creator + " - Client Version " + versionP + " - " + modNum + " Modules");
-scrollText.setTextSize(9);
+scrollText.setTextSize(switchfontsize);
 scrollText.setTextColor(android.graphics.Color.YELLOW);
 scrollText.setEllipsize(android.text.TextUtils.TruncateAt.MARQUEE);
 scrollText.setMarqueeRepeatLimit(-1);
@@ -31702,6 +32350,46 @@ Entity.setNameTag(entry, Entity.getNameTag(entry)+","+"\n"+Entity.getHealth(entr
 }
 
 
+
+
+
+
+function ascii(id){
+	if(id=='1'){
+		Server.sendChat(" o==[]::::::::::::::>");
+	}
+	if(id=='2'){
+		Server.sendChat('(⌐■_■)');
+	}
+	if(id=='3'){
+		Server.sendChat('┌∩┐(◣_◢)┌∩┐');
+	}
+	if(id=='4'){
+		Server.sendChat('♚ ♛ ♜ ♝ ♞ ♟ ♔ ♕ ♖ ♗ ♘ ♙');
+	}
+	if(id=='5'){
+		Server.sendChat('龴ↀ◡ↀ龴');
+	}
+	if(id=='6'){
+		Server.sendChat('✈');
+	}
+	if(id=='7'){
+		Server.sendChat('︻デ═一');
+	}
+	if(id=='8'){
+		Server.sendChat('(⌐■_■)--︻╦╤─ - - -');
+	}
+	if(id=='9'){
+		Server.sendChat('༼ つ ◕_◕ ༽つ ');
+	}
+	if(id=='10'){
+		Server.sendChat('ᶠᶸᶜᵏ♥ᵧₒᵤ');
+	}
+}
+
+
+
+
 function appendServer(name, ip, port) {
 var file = new java.io.File(android.os.Environment.getExternalStorageDirectory().getAbsolutePath() + "/games/com.mojang/minecraftpe", "external_servers.txt");
 exWr = new FileWriter(file, true);
@@ -31807,30 +32495,38 @@ supportclicks = 0;
 if(json.list_width!=null&json.list_width!=undefined){
 list_width_var = parseInt(json.list_width);
 list_width = list_width_var*density;
-switch_width = ((list_width_var*density)/1.42);
+iconcount=2;
+if(!helpB){iconcount--}
+if(!iconsB){iconcount--}
+switch_width = ((list_width-(icon_dimensions*iconcount))-gap_width);
 wayNameWidth = list_width-(icon_dimensions*4);
 }else{
 list_width_var = 200;
 list_width = list_width_var*density;
 }
-if(json.compactView!=null&compactView!=undefined){
+if(json.compactView!=null&json.compactView!=undefined){
 compactView = json.compactView;
 }else{
 compactView = false;
 }
-if(json.vibrations!=null&vibrations!=undefined){
+if(json.vibrations!=null&json.vibrations!=undefined){
 vibrations = json.vibrations;
 }else{
 vibrations = true;
 }
-if(json.giflink!=null&giflink!=undefined){
+if(json.displayActiveMods!=null&json.displayActiveMods!=undefined){
+displayActiveMods = json.displayActiveMods;
+}else{
+displayActiveMods = true;
+}
+if(json.giflink!=null&json.giflink!=undefined){
 giflink = json.giflink;
 useGIF = json.useGIF;
 }else{
 giflink = "no";
 useGIF=false;
 }
-if(json.survivaltab!=null&survivaltab!=undefined){
+if(json.survivaltab!=null&json.survivaltab!=undefined){
 survivaltab = json.survivaltab;
 pvptab = json.pvptab;
 waypointtab = json.waypointtab;
@@ -31862,6 +32558,8 @@ mcfont = Typeface.create("sans-serif-thin", Typeface.NORMAL)
 }
 if(oldTMI=="true"){oldTMI=true}
 if(oldTMI=="false"){oldTMI=false}
+if(displayActiveMods=="true"){displayActiveMods=true}
+if(displayActiveMods=="false"){displayActiveMods=false}
 if(useGIF=="true"){useGIF=true}
 if(useGIF=="false"){useGIF=false}
 if(survivaltab=="true"){survivaltab=true}
@@ -31902,7 +32600,7 @@ if(showGradient=="false"){showGradient=false}
 if(showGradient=="true"){showGradient=true}
 } else {
 
-var json = '{"themeId":"'+themeId+'","survivaltab":"'+survivaltab +'","pvptab":"'+pvptab+'","useGIF":"'+useGIF+'","giflink":"'+giflink+'","waypointtab":"'+waypointtab +'","friendtab":"'+friendtab +'","potiontab":"'+potiontab +'","movementtab":"'+movementtab +'","discordtab":"'+discordtab +'","misctab":"'+misctab +'","presettab":"'+presettab+'","supportclicks":"'+supportclicks+'","showGradient":"'+showGradient+'","vibrations":"'+vibrations+'","compactView":"'+compactView+'","list_width":"'+list_width_var+'","font":"'+fontid+'","modPadB":"'+modPadB+'","modPadT":"'+modPadT+'","btntextsize":"'+btntextsize+'","switchfontsize":"'+switchfontsize+'","themeBtn":"'+themeBtn+'","oldTMI":"'+oldTMI+'","sleekLeft":"'+sleekLeft+'","crosshairDimension":"'+crosshairDimension+'","FovsbpProgress":"'+FovsbpProgress+'","aimbotRange":"'+aimbotRange+'","autoBlockB":"'+autoBlockB+'","animations":"'+animations+'","helpB":"'+helpB+'","iconsB":"'+iconsB+'","chlogAlways":"'+chlogAlways+'","allRight":"'+allRight+'","themeAlpha":"'+themeAlpha+'"}';
+var json = '{"themeId":"'+themeId+'","survivaltab":"'+survivaltab +'","pvptab":"'+pvptab+'","displayActiveMods":"'+displayActiveMods+'","useGIF":"'+useGIF+'","giflink":"'+giflink+'","waypointtab":"'+waypointtab +'","friendtab":"'+friendtab +'","potiontab":"'+potiontab +'","movementtab":"'+movementtab +'","discordtab":"'+discordtab +'","misctab":"'+misctab +'","presettab":"'+presettab+'","supportclicks":"'+supportclicks+'","showGradient":"'+showGradient+'","vibrations":"'+vibrations+'","compactView":"'+compactView+'","list_width":"'+list_width_var+'","font":"'+fontid+'","modPadB":"'+modPadB+'","modPadT":"'+modPadT+'","btntextsize":"'+btntextsize+'","switchfontsize":"'+switchfontsize+'","themeBtn":"'+themeBtn+'","oldTMI":"'+oldTMI+'","sleekLeft":"'+sleekLeft+'","crosshairDimension":"'+crosshairDimension+'","FovsbpProgress":"'+FovsbpProgress+'","aimbotRange":"'+aimbotRange+'","autoBlockB":"'+autoBlockB+'","animations":"'+animations+'","helpB":"'+helpB+'","iconsB":"'+iconsB+'","chlogAlways":"'+chlogAlways+'","allRight":"'+allRight+'","themeAlpha":"'+themeAlpha+'"}';
 themesfile.createNewFile();
 var themeId = 0;
 themeAlpha = 210;
@@ -31935,7 +32633,7 @@ var themesfile = new java.io.File(android.os.Environment.getExternalStorageDirec
 if (themesfile.exists()) {
 themesfile.delete();
 }
-var json = '{"themeId":"'+themeId+'","survivaltab":"'+survivaltab +'","pvptab":"'+pvptab+'","useGIF":"'+useGIF+'","giflink":"'+giflink+'","waypointtab":"'+waypointtab +'","friendtab":"'+friendtab +'","potiontab":"'+potiontab +'","movementtab":"'+movementtab +'","discordtab":"'+discordtab +'","misctab":"'+misctab +'","presettab":"'+presettab+'","supportclicks":"'+supportclicks+'","showGradient":"'+showGradient+'","vibrations":"'+vibrations+'","compactView":"'+compactView+'","list_width":"'+list_width_var+'","font":"'+fontid+'","modPadB":"'+modPadB+'","modPadT":"'+modPadT+'","btntextsize":"'+btntextsize+'","switchfontsize":"'+switchfontsize+'","themeBtn":"'+themeBtn+'","oldTMI":"'+oldTMI+'","sleekLeft":"'+sleekLeft+'","crosshairDimension":"'+crosshairDimension+'","FovsbpProgress":"'+FovsbpProgress+'","aimbotRange":"'+aimbotRange+'","autoBlockB":"'+autoBlockB+'","animations":"'+animations+'","helpB":"'+helpB+'","iconsB":"'+iconsB+'","chlogAlways":"'+chlogAlways+'","allRight":"'+allRight+'","themeAlpha":"'+themeAlpha+'"}';
+var json = '{"themeId":"'+themeId+'","survivaltab":"'+survivaltab +'","pvptab":"'+pvptab+'","displayActiveMods":"'+displayActiveMods+'","useGIF":"'+useGIF+'","giflink":"'+giflink+'","waypointtab":"'+waypointtab +'","friendtab":"'+friendtab +'","potiontab":"'+potiontab +'","movementtab":"'+movementtab +'","discordtab":"'+discordtab +'","misctab":"'+misctab +'","presettab":"'+presettab+'","supportclicks":"'+supportclicks+'","showGradient":"'+showGradient+'","vibrations":"'+vibrations+'","compactView":"'+compactView+'","list_width":"'+list_width_var+'","font":"'+fontid+'","modPadB":"'+modPadB+'","modPadT":"'+modPadT+'","btntextsize":"'+btntextsize+'","switchfontsize":"'+switchfontsize+'","themeBtn":"'+themeBtn+'","oldTMI":"'+oldTMI+'","sleekLeft":"'+sleekLeft+'","crosshairDimension":"'+crosshairDimension+'","FovsbpProgress":"'+FovsbpProgress+'","aimbotRange":"'+aimbotRange+'","autoBlockB":"'+autoBlockB+'","animations":"'+animations+'","helpB":"'+helpB+'","iconsB":"'+iconsB+'","chlogAlways":"'+chlogAlways+'","allRight":"'+allRight+'","themeAlpha":"'+themeAlpha+'"}';
 themesfile.createNewFile();
 var fos = new java.io.FileOutputStream(themesfile);
 fos.write(new java.lang.String(json).getBytes());
@@ -32390,7 +33088,7 @@ button1.setOnClickListener(new android.view.View.OnClickListener({
 onClick: function(viewarg) {
 var downloadSi = new android.content.Intent(ctx);
 downloadSi.setAction(android.content.Intent.ACTION_VIEW);
-downloadSi.setData(android.net.Uri.parse("https://instinctmods.com"));
+downloadSi.setData(android.net.Uri.parse("http://instinctmods.com"));
 ctx.startActivity(downloadSi);
 }
 }));
@@ -32402,17 +33100,94 @@ button1.setOnClickListener(new android.view.View.OnClickListener({
 onClick: function(viewarg) {
 var downloadSi = new android.content.Intent(ctx);
 downloadSi.setAction(android.content.Intent.ACTION_VIEW);
-downloadSi.setData(android.net.Uri.parse("https://instinctmods.com/instinct.js"));
+downloadSi.setData(android.net.Uri.parse("http://instinctmods.com/instinct.js"));
 ctx.startActivity(downloadSi);
 }
 }));
 menuLayout1.addView(button1);
+
+
+
+var buttonlink = new android.widget.TextView(ctx);
+buttonlink.setText(Html.fromHtml("Click me to open site <a href='http://www.instinctmods.com'>instinctmods.com</a>"));
+buttonlink.setTransformationMethod(null);
+buttonlink.setMovementMethod(android.text.method.LinkMovementMethod.getInstance());
+buttonlink.setGravity(Gravity.CENTER_VERTICAL | Gravity.CENTER_HORIZONTAL);
+menuLayout1.addView(buttonlink);
+
 menuScroll.addView(menuLayout1);
 menuLayout.addView(menuScroll);
 alert.setView(menuLayout);
 alert.show();
 }
 
+
+
+
+
+function openSong(){
+var scriptalert=new android.app.AlertDialog.Builder(activity);
+scriptalert.setTitle("Music");
+var menuLayout = new android.widget.LinearLayout(ctx);
+var menuScroll = new android.widget.ScrollView(ctx);
+var menuLayout1 = new android.widget.LinearLayout(ctx);
+menuLayout.setOrientation(1);
+menuLayout1.setOrientation(1);
+
+var currentSong = new android.widget.Button(ctx);
+currentSong.setText("song");
+currentSong.setTransformationMethod(null);
+currentSong.setTextColor(android.graphics.Color.BLUE);
+menuLayout1.addView(currentSong);
+
+var playSong = new android.widget.Button(ctx);
+playSong.setText("Play/Next");
+playSong.setTransformationMethod(null);
+playSong.setTextColor(android.graphics.Color.BLUE);
+playSong.setOnClickListener(new android.view.View.OnClickListener({
+onClick: function(viewarg) {
+	nextSong();
+}
+}));
+menuLayout1.addView(playSong);
+
+var pauseSong = new android.widget.Button(ctx);
+pauseSong.setText("Pause/Resume");
+pauseSong.setTransformationMethod(null);
+pauseSong.setTextColor(android.graphics.Color.BLUE);
+pauseSong.setOnClickListener(new android.view.View.OnClickListener({
+onClick: function(viewarg) {
+	toggleMusic();
+}
+}));
+menuLayout1.addView(pauseSong);
+
+var prevSong = new android.widget.Button(ctx);
+prevSong.setText("Prev.");
+prevSong.setTransformationMethod(null);
+prevSong.setTextColor(android.graphics.Color.BLUE);
+prevSong.setOnClickListener(new android.view.View.OnClickListener({
+onClick: function(viewarg) {
+	previousSong();
+}
+}));
+menuLayout1.addView(prevSong);
+
+menuScroll.addView(menuLayout1);
+menuLayout.addView(menuScroll);
+scriptalert.setView(menuLayout);
+
+scriptalert.setNegativeButton(langMsg[language]["Cancel"],new android.content.DialogInterface.OnClickListener(){
+onClick: function(dialog,whichButton){}
+});
+
+scriptalert.show().getWindow().setLayout(fullwidth, fullheight);
+}
+function buildSchematic(){
+	for(n=0;n<area_schem;n++){
+setTile(X_schem[n], Y_schem[n], Z_schem[n], I_schem[n], D_schem[n]);
+}
+}
 function AddNewFriend(){
 var alert=new android.app.AlertDialog.Builder(activity);
 alert.setTitle("Add Friend");
@@ -32472,6 +33247,7 @@ var cs_dir = new java.io.File(cs_directory);
 var cs_list = cs_dir.listFiles();
 if(cs_list != null && cs_list.length != 0) {
 cs_list.forEach(function(element, index, array) {
+	if(element.isFile()){
 var menuLayout2 = new android.widget.LinearLayout(ctx);
 menuLayout2.setOrientation(0);
 let currentFileName = element.getName();
@@ -32530,12 +33306,14 @@ menuLayout2.addView(buttonup);
 menuLayout2.addView(btndele);}
 menuLayout2.addView(dirtxt);
 menuLayout1.addView(menuLayout2);
-});
+
+}});
 }
 var cs_dir2 = new java.io.File(android.os.Environment.getExternalStorageDirectory ().getPath ()+"/Download");
 var cs_list2 = cs_dir2.listFiles();
 if(cs_list2 != null && cs_list2.length != 0) {
 cs_list2.forEach(function(element, index, array) {
+	if(element.isFile()){
 let currentFileName = element.getName();
 if(currentFileName.startsWith("ix_")){
 var menuLayout2 = new android.widget.LinearLayout(ctx);
@@ -32597,7 +33375,7 @@ menuLayout2.addView(btndele);}
 menuLayout2.addView(dirtxt);
 menuLayout1.addView(menuLayout2);
 
-}});
+}}});
 }
 
 var button1 = new android.widget.Button(ctx);
@@ -32641,6 +33419,187 @@ onClick: function(dialog,whichButton){}
 
 scriptalert.show().getWindow().setLayout(fullwidth, fullheight);
 }
+function schematics(){
+	ctx.runOnUiThread(new java.lang.Runnable({
+run: function() {
+try {
+var scriptalert=new android.app.AlertDialog.Builder(activity);
+scriptalert.setTitle("Schematics");
+var menuLayout = new android.widget.LinearLayout(ctx);
+var menuScroll = new android.widget.ScrollView(ctx);
+var menuLayout1 = new android.widget.LinearLayout(ctx);
+menuLayout.setOrientation(1);
+menuLayout1.setOrientation(1);
+userInput=new android.widget.EditText(activity);
+userInput.setText("");
+userInput.setHint("schematic");
+scriptname=new android.widget.EditText(activity);
+scriptname.setText("");
+scriptname.setHint("selected schematic");
+menuLayout.addView(scriptname);
+//menuLayout.addView(userInput);
+
+var schematic_dir = new java.io.File(schematic_directory);
+var schematic_list = schematic_dir.listFiles();
+if(schematic_list != null && schematic_list.length != 0) {
+schematic_list.forEach(function(element, index, array) {
+var menuLayout2 = new android.widget.LinearLayout(ctx);
+menuLayout2.setOrientation(0);
+let currentFileNameSchem = element.getName();
+let currentTextSchem = fileTxt(schematic_directory+"/"+currentFileNameSchem);
+var fileNamewoTxt = currentFileNameSchem.split(".txt")[0];
+var fileNamewopre = fileNamewoTxt.split("ix_")[1];
+var button1 = new android.widget.Button(ctx);
+button1.setText(fileNamewopre);
+button1.setTransformationMethod(null);
+button1.setOnClickListener(new android.view.View.OnClickListener({
+onClick: function(viewarg) {
+selectedSchematic = currentTextSchem;
+scriptname.setText(fileNamewopre);
+}
+}));
+var buttonup = new android.widget.Button(ctx);
+buttonup.setText("Upload");
+buttonup.setTransformationMethod(null);
+buttonup.setTextColor(android.graphics.Color.BLUE);
+buttonup.setOnClickListener(new android.view.View.OnClickListener({
+onClick: function(viewarg) {
+var schematic_newFile = new java.io.File(android.os.Environment.getExternalStorageDirectory().getPath()+"/Download/Schematics",""+fileNamewoTxt+".txt"); 
+if(schematic_newFile.exists()){
+schematic_newFile.delete();
+}
+schematic_newFile.createNewFile(); 
+var schematic_outWrite = new java.io.OutputStreamWriter (new java.io.FileOutputStream (schematic_newFile)); 
+schematic_outWrite.append (currentTextSchem);
+schematic_outWrite.close(); 
+var downloadSi = new android.content.Intent(ctx);
+downloadSi.setAction(android.content.Intent.ACTION_VIEW);
+downloadSi.setData(android.net.Uri.parse("http://instinctmods.com/filedown/Table_Fixed_Column/index.html#up"));
+ctx.startActivity(downloadSi);
+}
+}));
+var btndele = new android.widget.Button(ctx);
+btndele.setText("Delete");
+btndele.setTransformationMethod(null);
+btndele.setTextColor(android.graphics.Color.RED);
+btndele.setOnClickListener(new android.view.View.OnClickListener({
+onClick: function(viewarg) {
+var schematic_newFile = new java.io.File(schematic_dir+"/"+element.getName());
+schematic_newFile.delete();
+try{btndele.getParent().getParent().removeView(menuLayout2);}catch(e){betToast(e)}
+userInput.setText("");
+
+scriptname.setText("");
+}
+}));
+var dirtxt = android.widget.TextView(ctx);
+dirtxt.setText(schematic_directory+"/"+fileNamewoTxt+".txt");
+menuLayout2.addView(button1);
+if(fileNamewopre!="Demo"){
+menuLayout2.addView(buttonup);
+menuLayout2.addView(btndele);}
+menuLayout2.addView(dirtxt);
+menuLayout1.addView(menuLayout2);
+});
+}
+var schematic_dir2 = new java.io.File(android.os.Environment.getExternalStorageDirectory ().getPath ()+"/Download");
+var schematic_list2 = schematic_dir2.listFiles();
+if(schematic_list2 != null && schematic_list2.length != 0) {
+schematic_list2.forEach(function(element, index, array) {
+let currentFileNameSchem = element.getName();
+if(currentFileNameSchem.startsWith("ix_")){
+var menuLayout2 = new android.widget.LinearLayout(ctx);
+menuLayout2.setOrientation(0);
+
+let currentTextSchem = fileTxt(schematic_dir2+"/"+currentFileNameSchem);
+var fileNamewoTxt = currentFileNameSchem.split(".txt")[0];
+var fileNamewopre = fileNamewoTxt.split("ix_")[1];
+var button1 = new android.widget.Button(ctx);
+button1.setText(fileNamewopre);
+button1.setTransformationMethod(null);
+button1.setOnClickListener(new android.view.View.OnClickListener({
+onClick: function(viewarg) {
+selectedSchematic = currentTextSchem;
+
+scriptname.setText(fileNamewopre);
+}
+}));
+var buttonup = new android.widget.Button(ctx);
+buttonup.setText("Upload");
+buttonup.setTransformationMethod(null);
+buttonup.setTextColor(android.graphics.Color.BLUE);
+buttonup.setOnClickListener(new android.view.View.OnClickListener({
+onClick: function(viewarg) {
+var schematic_newFile2 = new java.io.File(android.os.Environment.getExternalStorageDirectory().getPath()+"/Download/Schematics",""+fileNamewoTxt+".txt"); 
+if(schematic_newFile2.exists()){
+schematic_newFile2.delete();
+}
+schematic_newFile2.createNewFile(); 
+var schematic_outWrite = new java.io.OutputStreamWriter (new java.io.FileOutputStream (schematic_newFile2)); 
+schematic_outWrite.append (currentTextSchem);
+schematic_outWrite.close(); 
+var downloadSi = new android.content.Intent(ctx);
+downloadSi.setAction(android.content.Intent.ACTION_VIEW);
+downloadSi.setData(android.net.Uri.parse("http://instinctmods.com/filedown/Table_Fixed_Column/index.html#up"));
+ctx.startActivity(downloadSi);
+}
+}));
+var btndele = new android.widget.Button(ctx);
+btndele.setText("Delete");
+btndele.setTransformationMethod(null);
+btndele.setTextColor(android.graphics.Color.RED);
+btndele.setOnClickListener(new android.view.View.OnClickListener({
+onClick: function(viewarg) {
+var schematic_newFile2 = new java.io.File(schematic_dir2+"/"+element.getName());
+schematic_newFile2.delete();
+try{btndele.getParent().getParent().removeView(menuLayout2);}catch(e){betToast(e)}
+userInput.setText("");
+
+scriptname.setText("");
+}
+}));
+var dirtxt = android.widget.TextView(ctx);
+dirtxt.setText(schematic_dir2+"/"+element.getName());
+menuLayout2.addView(button1);
+if(fileNamewopre!="Demo"){
+menuLayout2.addView(buttonup);
+menuLayout2.addView(btndele);}
+menuLayout2.addView(dirtxt);
+menuLayout1.addView(menuLayout2);
+
+}});
+}
+
+var button1 = new android.widget.Button(ctx);
+button1.setText("Download Schematics");
+button1.setTransformationMethod(null);
+button1.setOnClickListener(new android.view.View.OnClickListener({
+onClick: function(viewarg) {
+var downloadSi = new android.content.Intent(ctx);
+downloadSi.setAction(android.content.Intent.ACTION_VIEW);
+downloadSi.setData(android.net.Uri.parse("http://instinctmods.com/filedown/Table_Fixed_Column/index.html"));
+ctx.startActivity(downloadSi);
+}
+}));menuLayout1.addView(button1);
+scriptalert.setPositiveButton("Close",new android.content.DialogInterface.OnClickListener(){
+onClick: function(dialog,whichButton){
+	
+}
+});
+
+
+menuScroll.addView(menuLayout1);
+menuLayout.addView(menuScroll);
+scriptalert.setView(menuLayout);
+
+
+scriptalert.show().getWindow().setLayout(fullwidth, fullheight);
+} catch (error) {
+Toast.makeText(ctx, "Template Error: " + error+' #' + error['lineNumber'], 1).show();
+}
+}
+}))
+}
 function cs_saveFile(cs_directory, filename){
 try{	
 cs_directory = android.os.Environment.getExternalStorageDirectory().getPath() +"/games/Instinct";  //The file should be saved into the world directory. 
@@ -32658,6 +33617,24 @@ cs_outWrite.append (cs_script);
 cs_outWrite.close(); 
 }catch(e){clientMessage(e+"\n\n"+e.lineNumber)}
 }
+function schematic_saveFile(schematic_directory, filename){
+try{	
+schematic_directory = android.os.Environment.getExternalStorageDirectory().getPath() +"/games/Instinct/Schematics";  //The file should be saved into the world directory. 
+var schematic_newFile = new java.io.File(schematic_directory,""+schematic_title+".txt"); 
+var schematic_directory = new java.io.File(schematic_directory); 
+if(!schematic_directory.exists()||!schematic_directory.isDirectory()){
+schematic_directory.mkdir();
+}
+if(schematic_newFile.exists()){
+schematic_newFile.delete();
+}
+schematic_newFile.createNewFile(); 
+var schematic_outWrite = new java.io.OutputStreamWriter (new java.io.FileOutputStream (schematic_newFile)); 
+schematic_outWrite.append (schematic_script);
+schematic_outWrite.close(); 
+}catch(e){clientMessage(e+"\n\n"+e.lineNumber)}
+}
+
 function installDemo(){
 cs_title="ix_Demo";
 cs_directory = android.os.Environment.getExternalStorageDirectory().getPath() +"/games/Instinct";  //The file should be saved into the world directory. 
@@ -32673,6 +33650,21 @@ cs_outWrite.append(cs_script);
 cs_outWrite.close(); 
 }
 }installDemo();
+function installDemoschematic(){
+schematic_title="ix_Demo";
+schematic_directory = android.os.Environment.getExternalStorageDirectory().getPath() +"/games/Instinct/Schematics";  //The file should be saved into the world directory. 
+var schematic_newFile = new java.io.File(schematic_directory,schematic_title+".txt"); 
+var schematic_directory = new java.io.File(schematic_directory); 
+if(!schematic_directory.exists()||!schematic_directory.isDirectory()){
+schematic_directory.mkdir();
+schematic_script="/*Files await approval before being available to the public to download*/\n\nbetToast('This is Instincts custom schematic loader');";
+try{schematic_functionarr[schematic_title]=new Function (schematic_script);}catch(e){betToast(e+"; "+e.lineNumber)}
+schematic_newFile.createNewFile(); 
+var schematic_outWrite = new java.io.OutputStreamWriter(new java.io.FileOutputStream(schematic_newFile)); 
+schematic_outWrite.append(schematic_script);
+schematic_outWrite.close(); 
+}
+}installDemoschematic();
 function fileTxt(filePath) {
 var file=new java.io.File(filePath);
 var fos=new java.io.FileInputStream(file);
@@ -32691,6 +33683,19 @@ if(cs_list != null && cs_list.length != 0) {
 cs_list.forEach(function(element, index, array) {
 let currentFileName = element.getName();
 let currentText = fileTxt(cs_directory+"/"+currentFileName);
+clientMessage(currentFileName+"\n"+currentText+"\n-------");
+});
+}
+}catch(err){clientMessage(err+"\n\n"+err.lineNumber)}
+}
+function schematic_loadfiles(){
+try{
+var schematic_dir = new java.io.File(schematic_directory);
+var schematic_list = schematic_dir.listFiles();
+if(schematic_list != null && schematic_list.length != 0) {
+schematic_list.forEach(function(element, index, array) {
+let currentFileName = element.getName();
+let currentText = fileTxt(schematic_directory+"/"+currentFileName);
 clientMessage(currentFileName+"\n"+currentText+"\n-------");
 });
 }
