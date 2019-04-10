@@ -19838,41 +19838,6 @@ faimbotBtn = true;
 faimed = true;
 savemod("Body Aimbot");
 fshowAimbotBtn();
-menuC.dismiss();
-
-mopen = false;
-if (openMenu1Status == true) {
-changeGUI.dismiss();
-openMenu1Status = false;
-}
-if (openMenu2Status == true) {
-changeGUI2.dismiss();
-openMenu2Status = false;
-}
-if (openMenu3Status == true) {
-changeGUI3.dismiss();
-openMenu3Status = false;
-}
-if (openMenu4Status == true) {
-changeGUI4.dismiss();
-openMenu4Status = false;
-}
-if (openMenu5Status == true) {
-changeGUI5.dismiss();
-openMenu5Status = false;
-}
-if (openMenu6Status == true) {
-changeGUI6.dismiss();
-openMenu6Status = false;
-}
-if (openMenu7Status == true) {
-changeGUI7.dismiss();
-openMenu7Status = false;
-}
-GUIclose.dismiss();
-if (colormychatd == true) {
-GUIs.dismiss();
-}
 } else {
 faimbot = false;
 removeFromArray(activeMods,"Body Aimbot");
@@ -19953,41 +19918,6 @@ aimbotBtn = true;
 aimed = true;
 savemod("Aimbot");
 showAimbotBtn();
-menuC.dismiss();
-
-mopen = false;
-if (openMenu1Status == true) {
-changeGUI.dismiss();
-openMenu1Status = false;
-}
-if (openMenu2Status == true) {
-changeGUI2.dismiss();
-openMenu2Status = false;
-}
-if (openMenu3Status == true) {
-changeGUI3.dismiss();
-openMenu3Status = false;
-}
-if (openMenu4Status == true) {
-changeGUI4.dismiss();
-openMenu4Status = false;
-}
-if (openMenu5Status == true) {
-changeGUI5.dismiss();
-openMenu5Status = false;
-}
-if (openMenu6Status == true) {
-changeGUI6.dismiss();
-openMenu6Status = false;
-}
-if (openMenu7Status == true) {
-changeGUI7.dismiss();
-openMenu7Status = false;
-}
-GUIclose.dismiss();
-if (colormychatd == true) {
-GUIs.dismiss();
-}
 } else {
 aimbot = false;
 aimbotBtn = false;
