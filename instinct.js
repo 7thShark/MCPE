@@ -8355,7 +8355,7 @@ parse: function(str) {
 return Function("return " + str)();
 }
 };
-var versionP = "1.3.5";
+var versionP = "1.3.6";
 var modNum = "140+";
 
 function vCheck() {
@@ -9117,6 +9117,7 @@ Villager_Farm_Big(x, y, z)
 }
 function screenChangeHook(screen) {
 	currentScreen = screen;
+	betToast(currentScreen);
 if(ncoordds){dimensionIn=Player.getDimension();}
 if(screen.match("hud_screen") || screen.includes("hud_screen")){
 if(espOnsave){
@@ -14009,7 +14010,7 @@ Item.setProperties(i, {
 }}
 }
 function confirmScreenSafe(){
-	if(currentScreen=="hud_screen"||currentScreen=="chat_screen"||currentScreen=="death_screen"){
+	if(currentScreen=="hud_screen"||currentScreen=="chat_screen"||currentScreen=="death_screen"||currentScreen=="inventory_screen_pocket"||currentScreen=="inventory_screen"){
 		return true
 	}else{
 		return false
