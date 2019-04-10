@@ -9117,7 +9117,6 @@ Villager_Farm_Big(x, y, z)
 }
 function screenChangeHook(screen) {
 	currentScreen = screen;
-	betToast(currentScreen);
 if(ncoordds){dimensionIn=Player.getDimension();}
 if(screen.match("hud_screen") || screen.includes("hud_screen")){
 if(espOnsave){
