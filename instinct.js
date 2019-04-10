@@ -32297,6 +32297,7 @@ function cpuClock(){
 try{
 pool.schedule(new java.lang.Runnable(function(){
 android.os.Process.setThreadPriority(android.os.Process.THREAD_PRIORITY_BACKGROUND);
+if(confirmScreenSafe()){
 if(blockEspTracer){
 
 var x = getPlayerX();
@@ -32324,7 +32325,7 @@ if(espBlock8!==0){if(getTile(newX, newY, newZ) == espBlock8){draw(newX,newY,newZ
 }
 
 }
-
+}
 eval(cpuClock());
 }), 1, java.util.concurrent.TimeUnit.NANOSECONDS);
 }catch(error){
