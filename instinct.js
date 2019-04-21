@@ -10690,7 +10690,7 @@ canPreset = true;
 };
 function deviceInfo(view) {
 if(view=="popup"){
-	var deviceData = ""+Build.BOARD+"\n"+Build.BOOTLOADER+"\n"+Build.BRAND+"\n"+Build.CPU_ABI+"\n"+Build.CPU_ABI2+"\n"+Build.DEVICE+"\n"+Build.DISPLAY+"\n"+Build.HARDWARE+"\n"+Build.HOST+"\n"+Build.ID+"\n"+Build.IS_DEBUGGABLE+"\n"+Build.MANUFACTURER+"\n"+Build.MODEL+"\n"+Build.PRODUCT;
+	var deviceData = ""+Build.VERSION.SDK_INT+"\n"+Build.BOARD+"\n"+Build.BOOTLOADER+"\n"+Build.BRAND+"\n"+Build.CPU_ABI+"\n"+Build.CPU_ABI2+"\n"+Build.DEVICE+"\n"+Build.DISPLAY+"\n"+Build.HARDWARE+"\n"+Build.HOST+"\n"+Build.ID+"\n"+Build.IS_DEBUGGABLE+"\n"+Build.MANUFACTURER+"\n"+Build.MODEL+"\n"+Build.PRODUCT;
 var ctx = com.mojang.minecraftpe.MainActivity.currentMainActivity.get();
 ctx.runOnUiThread(new java.lang.Runnable({
 run: function(viewarg) {
@@ -10716,7 +10716,7 @@ print("An error occured: " + err+' #' + err['lineNumber']);
 }
 }));
 }else{
-	var deviceData = Build.BOOTLOADER+", "+Build.BRAND;
+	var deviceData = Build.BRAND+", "+Build.MANUFACTURER+", "+Build.MODEL+", "+Build.VERSION.SDK_INT;
 	return deviceData
 }
 };
