@@ -1326,6 +1326,7 @@ betterladss = false,
 EntityName = {"-1":"Unknown","10":"Chicken","11":"Cow","12":"Pig","13":"Sheep","14":"Wolf","15":"Villager","16":"Mooshroom","17":"Squid","18":"Rabbit","19":"Bat","20":"Iron Golem","21":"Snow Golem","22":"Ocelot","23":"Horse","24":"Donkey","25":"Mule","26":"Skeleton Horse","27":"Zombie Horse","28":"Polar Bear","29":"Llama","32":"Zombie","33":"Creeper","34":"Skeleton","35":"Spider","36":"Zombie Pigman","37":"Slime","38":"Enderman","39":"Silverfish","40":"Cave Spider","41":"Ghast","42":"Magma Cube","43":"Blaze","44":"Zombie Villager","45":"Witch","46":"Stray","47":"Husk","48":"Wither Skeleton","49":"Guardian","50":"Elder Guardian","52":"Wither","53":"Ender Dragon","54":"Shulker","55":"Endermite","57":"Vindicator","63":"Player","104":"Evoker","105":"Vex",},
 vmb=false,
 betterladsd = false,
+borderChooser=false,
 speedTick=10,
 speedometerS=false,
 swapForeground=false,
@@ -30394,6 +30395,7 @@ themeBlackSwitch.setText(tohtml(themeBlackSwitch.getText(),true));
 
 
 function blackColorChoose() {
+	if(!borderChooser){borderChooser=true;
 var ctx = com.mojang.minecraftpe.MainActivity.currentMainActivity.get();
 ctx.runOnUiThread(new java.lang.Runnable({
 run: function() {
@@ -30539,6 +30541,8 @@ Toast.makeText(ctx, "Template Error: " + error+' #' + error['lineNumber'], 1).sh
 }
 }
 }))
+}else{
+		guiAm.dismiss();borderChooser=false}
 };
 
 
