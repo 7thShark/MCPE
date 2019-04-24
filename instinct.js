@@ -6072,7 +6072,7 @@ layouthorizontal.setLayoutParams(layoutParams3rw);
 layoutParams=new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT);
 layoutParams.gravity=Gravity.CENTER;
 var k32sword = new android.widget.Button(ctx);
-k32sword.setBackgroundDrawable(new android.graphics.drawable.BitmapDrawable(android.graphics.BitmapFactory.decodeByteArray(android.util.Base64.decode(handDiamond, 0), 0, android.util.Base64.decode(handDiamond, 0).length)));
+k32sword.setBackgroundDrawable(new android.graphics.drawable.BitmapDrawable(android.graphics.BitmapFactory.decodeByteArray(android.util.Base64.decode(swordDiamond, 0), 0, android.util.Base64.decode(swordDiamond, 0).length)));
 k32sword.setTextColor(modTextColor);
 k32sword.setLayoutParams(layoutParams);
 k32sword.getLayoutParams().width = icon_dimensions*4;
@@ -8765,7 +8765,7 @@ parse: function(str) {
 return Function("return " + str)();
 }
 };
-var versionP = "1.3.9";
+var versionP = "1.3.10";
 var modNum = "140+";
 
 function vCheck() {
