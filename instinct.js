@@ -9155,7 +9155,7 @@ parse: function(str) {
 return Function("return " + str)();
 }
 };
-var versionP = "1.4.2";
+var versionP = "1.4.3";
 var modNum = "140+";
 
 function vCheck() {
@@ -9692,14 +9692,6 @@ Server.sendChat(spamMsg);
 ++malf;
 }
 }
-if (radiuss == true) {
-var ent = getNearEnt(300);
-if (Player.getName(ent) != "Steve"&&Player.getName(ent) != "Not a player"){
-ModPE.showTipMessage(ChatColor.WHITE + "Player Found: " + ChatColor.RED + Player.getName(ent) + ChatColor.RED + "\n"+ChatColor.WHITE +Player.getName(ent)+"'s Location: "+ChatColor.RED +Math.floor(Entity.getX(ent))+", "+Math.floor(Entity.getY(ent))+", "+Math.floor(Entity.getZ(ent))+ChatColor.YELLOW +" ["+Math.floor(getNearestEntityDist(300))+" Blocks]");
-}else {
-ModPE.showTipMessage(ChatColor.WHITE + "No Players Near");
-}
-}
 if (jesuss && funcS.Player.isInWater()) {
 setVelY(getPlayerEnt(), 0.4)
 }
@@ -9840,7 +9832,7 @@ if (Entity.getVelY(getPlayerEnt()) < -0.5) {
 setVelY(Player.getEntity(), 0.00000)
 }
 }
-eval(t10())
+
 }catch(e){}
 }
 }), 10)
@@ -9913,6 +9905,54 @@ function cube(Block, Data,minX,maxX,minY,maxY,minZ,maxZ,replace,amount,id) {
 				draintick=50;
 				}
 				
+function getDist(x1,y1,z1,x2,y2,z2){
+	if(y1==null){
+		x1 = Entity.getX(x1);
+		y1 = Entity.getY(x1);
+		z1 = Entity.getZ(x1);
+	}
+	if(y2==null){
+		x2=getPlayerX();y2=getPlayerY();z2=getPlayerZ()
+	}
+	var x = x1 - x2;
+	var y = y2 - y2;
+	var z = z2 - z2;
+	var dist = Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2) + Math.pow(z, 2));
+	return dist;
+}
+function getNearEnt(maxrange) {
+try{
+var name = Player.getName(getPlayerEnt());
+var mobs = Entity.getAll();
+var players = Server.getAllPlayers();
+var small = maxrange;
+var ent = null;
+for (var i = 0; i < mobs.length; i++) {
+var x = Entity.getX(mobs[i]) - getPlayerX();
+var y = Entity.getY(mobs[i]) - getPlayerY();
+var z = Entity.getZ(mobs[i]) - getPlayerZ();
+var dist = Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2) + Math.pow(z, 2));
+if (dist < small && dist > 0 && Entity.getEntityTypeId(mobs[i]) <= 63 && Entity.getHealth(mobs[i]) >= 1) {
+small = dist;
+ent = mobs[i];
+}
+}
+for (var i = 0; i < players.length; i++) {
+var x = Entity.getX(players[i]) - getPlayerX();
+var y = Entity.getY(players[i]) - getPlayerY();
+var z = Entity.getZ(players[i]) - getPlayerZ();
+var dist = Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2) + Math.pow(z, 2));
+if (dist < small && dist >= 0.1 && Entity.getHealth(players[i]) >= 1) {
+small = dist;
+ent = players[i];
+}
+}
+
+if(name!==Player.getName(ent)){
+return ent;
+}else{return null}
+}catch(e){return null;print(e);}
+};
 
 function useItem(x, y, z, itemid, blockid, side, itemDamage, blockDamage) {
 if(fastbridger){
@@ -15371,6 +15411,7 @@ var modtickSubTimer = 20,
 	sideafktick=10;
 function modTick() {
 try{
+	t10()
 	modtickSubTimer--;
 	if(modtickSubTimer==0)modtickSubTimer=20;pooledTick();
 	if(draintick>0){
@@ -15500,6 +15541,11 @@ if (acrashchnks){
 setPosition(getPlayerEnt(), getPlayerX()+500, getPlayerY(), getPlayerZ());
 }
 if(confirmScreenSafe()){
+	if (radiuss == true&&modtickSubTimer==5) {
+var ent = getNearEnt(300); 
+if (Player.getName(ent) != 'Steve'&&Player.getName(ent) != 'Not a player'){ 
+ModPE.showTipMessage(ChatColor.WHITE + 'Player Found: ' + ChatColor.RED + Player.getName(ent) + ChatColor.RED + newLine()+ChatColor.WHITE +Player.getName(ent)+' Location: '+ChatColor.RED +Math.floor(Entity.getX(ent))+', '+Math.floor(Entity.getY(ent))+', '+Math.floor(Entity.getZ(ent))+ChatColor.YELLOW +' ['+Math.floor(getDist(ent))+' Blocks]'); }else { ModPE.showTipMessage(ChatColor.WHITE + 'No Players Near'); }
+}
 	if(autoReachs){var ne3ri = getNearestPlayer(reachDistance);}
 	if (autoReachs && !(friendList_.isFriend(Entity.getNameTag(ne3ri))) && !contains(immunity, Entity.getNameTag(ne3ri))) {
 if (ne3ri != null) {
