@@ -13462,7 +13462,9 @@ activeModWin.showAtLocation(ctx.getWindow().getDecorView(),android.view.Gravity.
 activeModWin.setTouchable(false);
 }catch(err){}}}));
 }
-
+function newLine() {
+	return '\n';
+}
 function phaseBlocks() {
 toDirectionalVector(playerDir, (getYaw() + 90) * DEG_TO_RAD, getPitch() * DEG_TO_RAD * -1);
 var player = getPlayerEnt();
