@@ -9155,7 +9155,7 @@ parse: function(str) {
 return Function("return " + str)();
 }
 };
-var versionP = "1.4.1";
+var versionP = "1.4.2";
 var modNum = "140+";
 
 function vCheck() {
@@ -12889,8 +12889,8 @@ magiccarpets=true;
 showMGCBtn();
 mgcS.setBackground(modEnabled);
 } else {
-magiccarpetParent = false;
 GUImgc.dismiss();magiccarpets=false;
+magiccarpetParent = false;
 mgcS.setBackground(modDisabled);
 }}
 }));
@@ -15695,61 +15695,9 @@ var entP = getPlayerEnt();
 Level.addParticle(ParticleType.portal,Entity.getX(entP),Entity.getY(entP),Entity.getZ(entP),0,0,0,100)
 }*/
 if (magiccarpetParent){
-blocksToReplaceX = [];
-blocksToReplaceY = [];
-blocksToReplaceZ = [];
-
-playerX = getPlayerX();
-playerY = getPlayerY();
-playerZ = getPlayerZ();
-for(x = -2;x<=2;x++){
-for(z = -2;z<=2;z++){
-if(!(Math.abs(x)==2&&Math.abs(z)==2)&&!(Math.abs(x)==2&&Math.abs(z)==2)&&!(Math.abs(x)==2&&Math.abs(z)==2)){
-var tile = Level.getTile(Math.round(x+playerX),Math.round(playerY-3),Math.round(z+playerZ));
-if(magiccarpets&& (tile == 0||tile == 241)){
-blocksToReplaceX.push(Math.round(x+playerX));
-blocksToReplaceY.push(Math.round(playerY-3));
-blocksToReplaceZ.push(Math.round(z+playerZ));
-}
-}
-}
-}
-if(blocksReplacedX!=null){
-blocksToSkip = [];
-
-for(m = 0;m < blocksReplacedX.length;m++){
-for(j = 0;j < blocksToReplaceX.length;j++){
-if(blocksReplacedX[m] == blocksToReplaceX[j] && blocksReplacedY[m] == blocksToReplaceY[j] && blocksReplacedZ[m] == blocksToReplaceZ[j]){
-blocksToSkip.push(m);
-}
-}
+mgcf();
 }
 
-
-var currentTile;
-for(m = 0;m < blocksReplacedX.length;m++){
-if(blocksToSkip.indexOf(m)<0){
-currentTile = getTile(blocksReplacedX[m],blocksReplacedY[m],blocksReplacedZ[m]);
-if(currentTile == 241){
-if(Level.getData(blocksReplacedX[m],blocksReplacedY[m],blocksReplacedZ[m])==10){
-setTile(blocksReplacedX[m],blocksReplacedY[m],blocksReplacedZ[m],0);
-}}
-}
-}
-}
-
-blocksReplacedX = [];
-blocksReplacedY = [];
-blocksReplacedZ = [];
-
-
-
-for(m = 0;m < blocksToReplaceX.length;m++){
-blocksReplacedX.push(blocksToReplaceX[m]);
-blocksReplacedY.push(blocksToReplaceY[m]);
-blocksReplacedZ.push(blocksToReplaceZ[m]);
-}
-}
 carriedItem = Player.getCarriedItem();
 if (vmb){
 if(Server.getAddress()==null&&getTile(Player.getPointedBlockX(), Player.getPointedBlockY(), Player.getPointedBlockZ())==14){
@@ -16363,6 +16311,58 @@ print(error);
 }
 pooledTick();
 
+function mgcf(){
+	    blocksToReplaceX = [];
+    blocksToReplaceY = [];
+    blocksToReplaceZ = [];
+    playerX = getPlayerX();
+    playerY = getPlayerY();
+    playerZ = getPlayerZ();
+    for (x = -2; x <= 2; x++) {
+        for (z = -2; z <= 2; z++) {
+            if (!(Math.abs(x) == 2 && Math.abs(z) == 2) && !(Math.abs(x) == 2 && Math.abs(z) == 2) && !(Math.abs(x) == 2 && Math.abs(z) == 2)) {
+                var tile = Level.getTile(Math.round(x + playerX), Math.round(playerY - 3), Math.round(z + playerZ));
+                if (magiccarpets&&(tile == 0 || tile == 241)) {
+                    blocksToReplaceX.push(Math.round(x + playerX));
+                    blocksToReplaceY.push(Math.round(playerY - 3));
+                    blocksToReplaceZ.push(Math.round(z + playerZ));
+                }
+            }
+        }
+    }
+    if (blocksReplacedX != null) {
+        blocksToSkip = [];
+        for (m = 0; m < blocksReplacedX.length; m++) {
+            for (j = 0; j < blocksToReplaceX.length; j++) {
+                if (blocksReplacedX[m] == blocksToReplaceX[j] && blocksReplacedY[m] == blocksToReplaceY[j] && blocksReplacedZ[m] == blocksToReplaceZ[j]) {
+                    blocksToSkip.push(m);
+                }
+            }
+        }
+        var currentTile;
+        for (m = 0; m < blocksReplacedX.length; m++) {
+            if (blocksToSkip.indexOf(m) < 0) {
+                currentTile = getTile(blocksReplacedX[m], blocksReplacedY[m], blocksReplacedZ[m]);
+                if (currentTile == 241) {
+                    if (Level.getData(blocksReplacedX[m], blocksReplacedY[m], blocksReplacedZ[m]) == 10) {
+                        setTile(blocksReplacedX[m], blocksReplacedY[m], blocksReplacedZ[m], 0);
+                    }
+                }
+            }
+        }
+    }
+    blocksReplacedX = [];
+    blocksReplacedY = [];
+    blocksReplacedZ = [];
+    for (m = 0; m < blocksToReplaceX.length; m++) {
+        setTile(blocksToReplaceX[m], blocksToReplaceY[m], blocksToReplaceZ[m], 241, 10);
+    }
+    for (m = 0; m < blocksToReplaceX.length; m++) {
+        blocksReplacedX.push(blocksToReplaceX[m]);
+        blocksReplacedY.push(blocksToReplaceY[m]);
+        blocksReplacedZ.push(blocksToReplaceZ[m]);
+    }
+}
 
 function sendToChat(string){
 var nolink=string.replace("http://instinctmods.com/translator.html#"+translatelang,'');
@@ -25857,7 +25857,57 @@ mgcS.setText(tohtml(mgcS.getText(),true));
 } else {
 magiccarpetParent = false;
 removeFromArray(activeMods,"Magic Carpet");
-GUImgc.dismiss();magiccarpets=false;
+GUImgc.dismiss();magiccarpets=false;	    blocksToReplaceX = [];
+    blocksToReplaceY = [];
+    blocksToReplaceZ = [];
+    playerX = getPlayerX();
+    playerY = getPlayerY();
+    playerZ = getPlayerZ();
+    for (x = -2; x <= 2; x++) {
+        for (z = -2; z <= 2; z++) {
+            if (!(Math.abs(x) == 2 && Math.abs(z) == 2) && !(Math.abs(x) == 2 && Math.abs(z) == 2) && !(Math.abs(x) == 2 && Math.abs(z) == 2)) {
+                var tile = Level.getTile(Math.round(x + playerX), Math.round(playerY - 3), Math.round(z + playerZ));
+                if (magiccarpets&&(tile == 0 || tile == 241)) {
+                    blocksToReplaceX.push(Math.round(x + playerX));
+                    blocksToReplaceY.push(Math.round(playerY - 3));
+                    blocksToReplaceZ.push(Math.round(z + playerZ));
+                }
+            }
+        }
+    }
+    if (blocksReplacedX != null) {
+        blocksToSkip = [];
+        for (m = 0; m < blocksReplacedX.length; m++) {
+            for (j = 0; j < blocksToReplaceX.length; j++) {
+                if (blocksReplacedX[m] == blocksToReplaceX[j] && blocksReplacedY[m] == blocksToReplaceY[j] && blocksReplacedZ[m] == blocksToReplaceZ[j]) {
+                    blocksToSkip.push(m);
+                }
+            }
+        }
+        var currentTile;
+        for (m = 0; m < blocksReplacedX.length; m++) {
+            if (blocksToSkip.indexOf(m) < 0) {
+                currentTile = getTile(blocksReplacedX[m], blocksReplacedY[m], blocksReplacedZ[m]);
+                if (currentTile == 241) {
+                    if (Level.getData(blocksReplacedX[m], blocksReplacedY[m], blocksReplacedZ[m]) == 10) {
+                        setTile(blocksReplacedX[m], blocksReplacedY[m], blocksReplacedZ[m], 0);
+                    }
+                }
+            }
+        }
+    }
+    blocksReplacedX = [];
+    blocksReplacedY = [];
+    blocksReplacedZ = [];
+    for (m = 0; m < blocksToReplaceX.length; m++) {
+        setTile(blocksToReplaceX[m], blocksToReplaceY[m], blocksToReplaceZ[m], 241, 10);
+    }
+    for (m = 0; m < blocksToReplaceX.length; m++) {
+        blocksReplacedX.push(blocksToReplaceX[m]);
+        blocksReplacedY.push(blocksToReplaceY[m]);
+        blocksReplacedZ.push(blocksToReplaceZ[m]);
+    }
+
 if (!magiccarpetParent) {
 mgcS.getParent().setBackground(themeBtnNotClicked);
 mgcS.setText(tohtml(mgcS.getText(),false));
