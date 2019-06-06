@@ -962,6 +962,8 @@ jumpsprintd = false,
 htmltxtcolor = "#fffff",
 spammsg1="",
 deathcOM=false,
+setfollowing="empty",
+setfollow=false,
 elytrad = false,
 blockEspTracer = false,
 elytras = false,
@@ -1386,6 +1388,7 @@ fireproof=false,
 helpB=false,
 gliding=false,
 starty=0,
+mobheadby=false,
 realmnfd=false,
 levs=false,
 x933q=true,
@@ -3706,7 +3709,7 @@ if(freecamSon){
 funcS.Render.drawLine(gl, freeX, freeY+.5, freeZ+.5, getPlayerX(), getPlayerY()-1, getPlayerZ());
 }
 }
-}catch(e){betToast(e)}
+}catch(e){}
 }
 });
 ctx.runOnUiThread(new java.lang.Runnable({
@@ -4109,7 +4112,6 @@ while ((line = reader.readLine()) != null) allCont.append(line + "\n");
 reader.close();
 result(allCont.toString(), null);
 } catch (e) {
-betToast(e);
 result(null, e);
 }
 }
@@ -4355,7 +4357,7 @@ ent = players[i];
 if(Player.getName(getPlayerEnt())!==Player.getName(ent)){
 return ent;
 }else{return null}
-}catch(e){return null;betToast(e);}
+}catch(e){return null;}
 };
 var indicLo=new android.widget.ImageView(activity);
 var comBac=new android.widget.ImageView(activity);
@@ -4413,11 +4415,9 @@ try {
 //net.zhuoweizhang.mcpelauncher.ScriptManager.setEnabled(modpeFile, true);
 }
 catch(err) {
-clientMessage(err.lineNumber+" Error: \n" + err);
 }
 }
 catch(err) {
-clientMessage(err.lineNumber+" Error: \n" + err);
 }
 }
 }
@@ -5484,7 +5484,9 @@ tpBtn.setTextColor(android.graphics.Color.GREEN);
 ampEt.setText(amplification.toString());
 durEt.setText(durationer.toString());
 ampEt.setHint("amplification");
-durEt.setHint("duration");
+durEt.setHint("duration");		
+ampEt.setHintTextColor(Color.parseColor("#b7b7b7"));		
+durEt.setHintTextColor(Color.parseColor("#b7b7b7"));
 ampEt.setTextColor(themeText);
 ampEt.setTextSize(14);
 ampEt.setTypeface(mcfont);
@@ -7028,7 +7030,10 @@ etY.setText("0");
 etZ.setText("0");
 etX.setHint("X");
 etY.setHint("Y");
-etZ.setHint("Z");
+etZ.setHint("Z");		
+etX.setHintTextColor(Color.parseColor("#b7b7b7"));		
+etY.setHintTextColor(Color.parseColor("#b7b7b7"));		
+etZ.setHintTextColor(Color.parseColor("#b7b7b7"));
 etX.setTextColor(themeText);
 etX.setTextSize(14);
 etX.setTypeface(mcfont);
@@ -7160,7 +7165,10 @@ etAmount.setText("0");
 etDamage.setText("0");
 etId.setHint("ID");
 etAmount.setHint("Amount");
-etDamage.setHint("Damage/Meta");
+etDamage.setHint("Damage/Meta");		
+etId.setHintTextColor(Color.parseColor("#b7b7b7"));		
+etAmount.setHintTextColor(Color.parseColor("#b7b7b7"));		
+etDamage.setHintTextColor(Color.parseColor("#b7b7b7"));
 tmiLayout.setGravity(android.view.Gravity.CENTER);
 tmiLayout.setOrientation(android.widget.LinearLayout.VERTICAL);
 tmiMainHor.setOrientation(android.widget.LinearLayout.HORIZONTAL);
@@ -7351,7 +7359,10 @@ etAmount.setText("0");
 etDamage.setText("0");
 etId.setHint("ID");
 etAmount.setHint("Amount");
-etDamage.setHint("Damage/Meta");
+etDamage.setHint("Damage/Meta");		
+etId.setHintTextColor(Color.parseColor("#b7b7b7"));		
+etAmount.setHintTextColor(Color.parseColor("#b7b7b7"));		
+etDamage.setHintTextColor(Color.parseColor("#b7b7b7"));
 tmiLayout.setGravity(android.view.Gravity.CENTER);
 tmiLayout.setOrientation(android.widget.LinearLayout.VERTICAL);
 tmiMainHor.setOrientation(android.widget.LinearLayout.HORIZONTAL);
@@ -8260,6 +8271,8 @@ horizonLay.setOrientation(0);
 layoutBtns.setOrientation(1);
 menuLayout.setOrientation(1);
 menuLayout1.setOrientation(1);
+menuLayout1.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
+menuLayout1.getLayoutParams().width = list_width*2;
 horizonLay.addView(layoutBtns);
 horizonLay.addView(menuLayout1);
 menuLayout1.addView(menuLayout);
@@ -8272,6 +8285,8 @@ var button = new android.widget.Button(ctx);
 button.setText("Welcome");
 button.setBackgroundDrawable(new android.graphics.drawable.ColorDrawable(android.graphics.Color.BLACK));
 button.setTextColor(android.graphics.Color.YELLOW);
+button.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
+button.getLayoutParams().width = list_width;
 button.setTextSize(titleSize);
 button.setTypeface(mcfont);
 button.setBackground(xbg2);
@@ -8650,7 +8665,8 @@ etId.setInputType(number);
 etAmount.setInputType(number);
 etDamage.setInputType(number);
 etId.setText("54");
-etId.setHint("ID");
+etId.setHint("ID");		
+etId.setHintTextColor(Color.parseColor("#b7b7b7"));
 tmiLayout.setGravity(android.view.Gravity.CENTER);
 tmiLayout.setOrientation(android.widget.LinearLayout.VERTICAL);
 tmiMainHor.setOrientation(android.widget.LinearLayout.HORIZONTAL);
@@ -9139,7 +9155,7 @@ parse: function(str) {
 return Function("return " + str)();
 }
 };
-var versionP = "1.4.0";
+var versionP = "1.4.1";
 var modNum = "140+";
 
 function vCheck() {
@@ -9211,8 +9227,7 @@ GUIcc.setTouchable(false);
 GUIcc.setBackgroundDrawable(new android.graphics.drawable.BitmapDrawable(android.graphics.BitmapFactory.decodeByteArray(android.util.Base64.decode(crosshairicon, 0), 0, android.util.Base64.decode(crosshairicon, 0).length)));
 GUIcc.showAtLocation(ctx.getWindow().getDecorView(), Gravity.CENTER | Gravity.CENTER, 0, 0);
 GUIcc.setTouchable(false);
-} catch (err) {
-betToast(ctx, "An error occured: " + err+' #' + error['lineNumber'], 1).show();
+} catch (e) {
 }
 }
 }));
@@ -9678,13 +9693,10 @@ Server.sendChat(spamMsg);
 }
 }
 if (radiuss == true) {
-var ent = getNearestPlayer(300);
-if (Player.getName(ent) != "Steve"){
-if(Player.getName(ent) != "Not a player") {
+var ent = getNearEnt(300);
+if (Player.getName(ent) != "Steve"&&Player.getName(ent) != "Not a player"){
 ModPE.showTipMessage(ChatColor.WHITE + "Player Found: " + ChatColor.RED + Player.getName(ent) + ChatColor.RED + "\n"+ChatColor.WHITE +Player.getName(ent)+"'s Location: "+ChatColor.RED +Math.floor(Entity.getX(ent))+", "+Math.floor(Entity.getY(ent))+", "+Math.floor(Entity.getZ(ent))+ChatColor.YELLOW +" ["+Math.floor(getNearestEntityDist(300))+" Blocks]");
 }else {
-ModPE.showTipMessage(ChatColor.WHITE + "No Players Near");
-}}else {
 ModPE.showTipMessage(ChatColor.WHITE + "No Players Near");
 }
 }
@@ -9719,6 +9731,8 @@ if (Entity.getVelY(getPlayerEnt()) < -0.5) {
 setVelY(Player.getEntity(), 0.00000)
 }
 }
+var ent = getNearestEntity(6);
+if (ent != null) crosshairAimAt(ent);
 }
 if (hoverauras&&friendName!=Player.getName(getNearestPlayer(100))&&!(friendList_.isFriend(Entity.getNameTag(getNearestPlayer(1000))))&&!contains(immunity,Entity.getNameTag(getNearestPlayer(1000)))) {
 var ent = getNearestEntity(6);
@@ -10760,8 +10774,8 @@ onClick: function(viewarg) {
 if(vibrations){ctx.getSystemService(android.content.Context.VIBRATOR_SERVICE).vibrate(20);}
 toDirectionalVector(playerDir, (getYaw()+90) * Math['PI'] / 180, getPitch() * Math['PI'] / 180 * -1);
 setVelX(getPlayerEnt(), 12 * playerDir[0]);
-setVelZ(getPlayerEnt(), 12 * playerDir[2])
-setVelY(getPlayerEnt(), 1 * playerDir[1])
+setVelZ(getPlayerEnt(), 12 * playerDir[2]);
+setVelY(getPlayerEnt(), 1 * playerDir[1]);
 }
 }));
 button.setOnLongClickListener(new android.view.View.OnLongClickListener({
@@ -13190,21 +13204,21 @@ bootLayoutEnemy.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.WRAP_
 bootLayoutEnemy.getLayoutParams().width = switch_width;
 itemLayoutEnemy.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
 itemLayoutEnemy.getLayoutParams().width = switch_width;
+var selectedene = getNearestEntity(160);
+var nameEnemy = Entity.getNameTag(selectedene);
+var healthEnemy = Entity.getHealth(selectedene);
+var max_healthEnemy = Entity.getMaxHealth(selectedene);
+var headEnemy = Entity.getArmor(selectedene, 0) ;
+var chestEnemy = Entity.getArmor(selectedene, 1);
+var legsEnemy = Entity.getArmor(selectedene, 2);
+var feetEnemy = Entity.getArmor(selectedene, 3);
+var handEnemy = Entity.getCarriedItem(selectedene);
 
-var nameEnemy = Entity.getNameTag(getNearestEntity(160));
-var healthEnemy = Entity.getHealth(getNearestEntity(160));
-var max_healthEnemy = Entity.getMaxHealth(getNearestEntity(160));
-var headEnemy = Entity.getArmor(getNearestEntity(160), 0) ;
-var chestEnemy = Entity.getArmor(getNearestEntity(160), 1);
-var legsEnemy = Entity.getArmor(getNearestEntity(160), 2);
-var feetEnemy = Entity.getArmor(getNearestEntity(160), 3);
-var handEnemy = Entity.getCarriedItem(getNearestEntity(160));
-
-var head_damageEnemy = Entity.getArmorDamage(getNearestEntity(160), 0);
-var chest_damageEnemy = Entity.getArmorDamage(getNearestEntity(160), 1);
-var legs_damageEnemy = Entity.getArmorDamage(getNearestEntity(160), 2);
-var feet_damageEnemy = Entity.getArmorDamage(getNearestEntity(160), 3);
-var hand_damageEnemy = Entity.getCarriedItemData(getNearestEntity(160));
+var head_damageEnemy = Entity.getArmorDamage(selectedene, 0);
+var chest_damageEnemy = Entity.getArmorDamage(selectedene, 1);
+var legs_damageEnemy = Entity.getArmorDamage(selectedene, 2);
+var feet_damageEnemy = Entity.getArmorDamage(selectedene, 3);
+var hand_damageEnemy = Entity.getCarriedItemData(selectedene);
 
 var max_dura_headEnemy = Item.getMaxDamage(headEnemy);
 var max_dura_chestEnemy = Item.getMaxDamage(chestEnemy);
@@ -13221,7 +13235,7 @@ nameIconEnemy.getBackground().setAlpha(130);
 nameDataEnemy=new android.widget.TextView(ctx);
 nameDataEnemy.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT));
 nameDataEnemy.setTextColor(android.graphics.Color.WHITE);
-nameDataEnemy.setTextSize(btntextsize-2);
+nameDataEnemy.setTextSize(btntextsize);
 nameDataEnemy.setText(healthEnemy+"/"+max_healthEnemy);
 //nameLayout.addView(nameIcon);
 nameLayoutEnemy.addView(nameDataEnemy);
@@ -13235,7 +13249,7 @@ healthIconEnemy.getBackground().setAlpha(130);
 healthDataEnemy=new android.widget.TextView(ctx);
 healthDataEnemy.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT));
 healthDataEnemy.setTextColor(android.graphics.Color.WHITE);
-healthDataEnemy.setTextSize(btntextsize-2);
+healthDataEnemy.setTextSize(btntextsize);
 healthDataEnemy.setText(healthEnemy+"/"+max_healthEnemy);
 healthLayoutEnemy.addView(healthIconEnemy);
 healthLayoutEnemy.addView(healthDataEnemy);
@@ -13248,7 +13262,7 @@ headIconEnemy.setImageBitmap(android.graphics.BitmapFactory.decodeByteArray(andr
 headDataEnemy=new android.widget.TextView(ctx);
 headDataEnemy.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT));
 headDataEnemy.setTextColor(android.graphics.Color.WHITE);
-headDataEnemy.setTextSize(btntextsize-2);
+headDataEnemy.setTextSize(btntextsize);
 headDataEnemy.setText(max_dura_headEnemy-head_damageEnemy+"/"+max_dura_headEnemy);
 headLayoutEnemy.addView(headIconEnemy);
 headLayoutEnemy.addView(headDataEnemy);
@@ -13261,7 +13275,7 @@ chestIconEnemy.setImageBitmap(android.graphics.BitmapFactory.decodeByteArray(and
 chestDataEnemy=new android.widget.TextView(ctx);
 chestDataEnemy.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT));
 chestDataEnemy.setTextColor(android.graphics.Color.WHITE);
-chestDataEnemy.setTextSize(btntextsize-2);
+chestDataEnemy.setTextSize(btntextsize);
 chestDataEnemy.setText(max_dura_chestEnemy-chest_damageEnemy+"/"+max_dura_chestEnemy);
 chestLayoutEnemy.addView(chestIconEnemy);
 chestLayoutEnemy.addView(chestDataEnemy);
@@ -13274,7 +13288,7 @@ legIconEnemy.setImageBitmap(android.graphics.BitmapFactory.decodeByteArray(andro
 legDataEnemy=new android.widget.TextView(ctx);
 legDataEnemy.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT));
 legDataEnemy.setTextColor(android.graphics.Color.WHITE);
-legDataEnemy.setTextSize(btntextsize-2);
+legDataEnemy.setTextSize(btntextsize);
 legDataEnemy.setText(max_dura_legsEnemy-legs_damageEnemy+"/"+max_dura_legsEnemy);
 legLayoutEnemy.addView(legIconEnemy);
 legLayoutEnemy.addView(legDataEnemy);
@@ -13287,7 +13301,7 @@ feetIconEnemy.setImageBitmap(android.graphics.BitmapFactory.decodeByteArray(andr
 feetDataEnemy=new android.widget.TextView(ctx);
 feetDataEnemy.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT));
 feetDataEnemy.setTextColor(android.graphics.Color.WHITE);
-feetDataEnemy.setTextSize(btntextsize-2);
+feetDataEnemy.setTextSize(btntextsize);
 feetDataEnemy.setText(max_dura_feetEnemy-feet_damageEnemy+"/"+max_dura_feetEnemy);
 bootLayoutEnemy.addView(feetIconEnemy);
 bootLayoutEnemy.addView(feetDataEnemy);
@@ -13301,7 +13315,7 @@ handDataEnemy=new android.widget.TextView(ctx);
 handDataEnemy=new android.widget.TextView(ctx);
 handDataEnemy.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT));
 handDataEnemy.setTextColor(android.graphics.Color.WHITE);
-handDataEnemy.setTextSize(btntextsize-2);
+handDataEnemy.setTextSize(btntextsize);
 handDataEnemy.setText(max_dura_handEnemy-hand_damageEnemy+"/"+max_dura_handEnemy);
 itemLayoutEnemy.addView(handIconEnemy);
 itemLayoutEnemy.addView(handDataEnemy);
@@ -13319,7 +13333,7 @@ armorEm=new android.widget.PopupWindow(mainLayout,RelativeLayout.LayoutParams.WR
 armorEm.setTouchable(false);
 armorEm.showAtLocation(ctx.getWindow().getDecorView(),android.view.Gravity.CENTER|android.view.Gravity.CENTER,0+icon_dimensions*9,0);
 armorEm.setTouchable(false);
-}catch(err){betToast(err)}}}));
+}catch(err){}}}));
 }
 function showWAILA(){
 ctx.runOnUiThread(
@@ -15352,13 +15366,13 @@ Item.setProperties(i, {
 }
 var dw_ = new android.content.Intent(ctx);
 var r=255,g=0,b=0;
-var modtickSubTimer = 30,
+var modtickSubTimer = 20,
 	draintick = -10,
 	sideafktick=10;
 function modTick() {
 try{
 	modtickSubTimer--;
-	if(modtickSubTimer==0)modtickSubTimer=30;pooledTick();
+	if(modtickSubTimer==0)modtickSubTimer=20;pooledTick();
 	if(draintick>0){
 	draintick--;
 	if(draintick==0){cubing=false;betToast("Done draining");draintick = -10;}}
@@ -15486,6 +15500,12 @@ if (acrashchnks){
 setPosition(getPlayerEnt(), getPlayerX()+500, getPlayerY(), getPlayerZ());
 }
 if(confirmScreenSafe()){
+	if(autoReachs){var ne3ri = getNearestPlayer(reachDistance);}
+	if (autoReachs && !(friendList_.isFriend(Entity.getNameTag(ne3ri))) && !contains(immunity, Entity.getNameTag(ne3ri))) {
+if (ne3ri != null) {
+Entity.setCollisionSize(ne3ri, reachDistance, 10);
+}
+}
 if (sideafk){
 	setVelX(Player.getEntity(), 0);
 	sideafktick--;
@@ -15577,6 +15597,9 @@ setTile(Entity.getX(entry),Entity.getY(entry)-1,Entity.getZ(entry),119,0);
 }
 if (elytraspoof){
 Player.setArmorSlot(1, 444, 0);
+}
+if (mobheadby){
+Player.setArmorSlot(0, 397, 0);
 }
 if (hsfind){
 var playershs = Server.getAllPlayers();
@@ -15702,7 +15725,6 @@ blocksToSkip.push(m);
 }
 }
 
-//clientMessage("blocksToSkip: "+blocksToSkip);
 
 var currentTile;
 for(m = 0;m < blocksReplacedX.length;m++){
@@ -15720,11 +15742,7 @@ blocksReplacedX = [];
 blocksReplacedY = [];
 blocksReplacedZ = [];
 
-for(m = 0;m < blocksToReplaceX.length;m++){	
-if(magiccarpets){
-setTile(blocksToReplaceX[m],blocksToReplaceY[m],blocksToReplaceZ[m],241,10);
-}
-}
+
 
 for(m = 0;m < blocksToReplaceX.length;m++){
 blocksReplacedX.push(blocksToReplaceX[m]);
@@ -16122,6 +16140,18 @@ Entity.setNameTag(entry, namestore);
 }
 })
 }
+if(setfollow){
+var players = Server.getAllPlayers();
+players.forEach(function (entry){
+if(Entity.getNameTag(entry)==setfollowing){
+	if(Entity.getX(entry)!=0&Entity.getY(entry)!=-2&Entity.getZ(entry)!=-1){
+		Entity.setPosition(getPlayerEnt(), Entity.getX(entry), Entity.getY(entry)+dispro, Entity.getZ(entry));
+	if (Entity.getVelY(getPlayerEnt()) < -0.5) {
+		setVelY(Player.getEntity(), 0.00000)
+	}
+	}
+}})
+}
 if(indiSta){
 activity.runOnUiThread(new java.lang.Runnable({
 run: function(){
@@ -16140,6 +16170,49 @@ run:function(){
 try{
 if(confirmScreenSafe()){
 
+		if(armorE&&modtickSubTimer==1){
+var selectedene = getNearestEntity(160);
+nameEnemy = Entity.getNameTag(selectedene);
+healthEnemy = Entity.getHealth(selectedene);
+max_healthEnemy = Entity.getMaxHealth(selectedene);
+headEnemy = Entity.getArmor(selectedene, 0) ;
+chestEnemy = Entity.getArmor(selectedene, 1);
+legsEnemy = Entity.getArmor(selectedene, 2);
+feetEnemy = Entity.getArmor(selectedene, 3);
+handEnemy = Entity.getCarriedItem(selectedene);
+
+head_damageEnemy = Entity.getArmorDamage(selectedene, 0);
+chest_damageEnemy = Entity.getArmorDamage(selectedene, 1);
+legs_damageEnemy = Entity.getArmorDamage(selectedene, 2);
+feet_damageEnemy = Entity.getArmorDamage(selectedene, 3);
+hand_damageEnemy = Entity.getCarriedItemData(selectedene);
+
+max_dura_headEnemy = Item.getMaxDamage(headEnemy)+1;
+max_dura_chestEnemy = Item.getMaxDamage(chestEnemy)+1;
+max_dura_legsEnemy = Item.getMaxDamage(legsEnemy)+1;
+max_dura_feetEnemy = Item.getMaxDamage(feetEnemy)+1;
+max_dura_handEnemy = Item.getMaxDamage(handEnemy)+1;
+	}
+if (armorE&&modtickSubTimer==1){
+nameDataEnemy.setText(nameEnemy);
+healthDataEnemy.setText(healthEnemy+"/"+max_healthEnemy);
+headDataEnemy.setText(max_dura_headEnemy-head_damageEnemy+"/"+max_dura_headEnemy);
+chestDataEnemy.setText(max_dura_chestEnemy-chest_damageEnemy+"/"+max_dura_chestEnemy);
+legDataEnemy.setText(max_dura_legsEnemy-legs_damageEnemy+"/"+max_dura_legsEnemy);
+feetDataEnemy.setText(max_dura_feetEnemy-feet_damageEnemy+"/"+max_dura_feetEnemy);
+handDataEnemy.setText(max_dura_handEnemy-hand_damageEnemy+"/"+max_dura_handEnemy);
+if (Player.getName(selectedene)== "Steve"||Player.getName(selectedene) == "Not a player"){nameDataEnemy.setText("Nobody")}
+if(healthEnemy==0){healthDataEnemy.setText("Dead");}
+if(max_dura_headEnemy==0){headDataEnemy.setText("No Helmet");}
+if(max_dura_chestEnemy==0){chestDataEnemy.setText("No Chest");}
+if(max_dura_legsEnemy==0){legDataEnemy.setText("No Leggings");}
+if(max_dura_feetEnemy==0){feetDataEnemy.setText("No Boots");}
+if(max_dura_handEnemy==0||max_dura_handEnemy==0){handDataEnemy.setText("No Sword");}
+/*if(max_dura_chestEnemy==433){
+	chestIconEnemy.setImageBitmap(android.graphics.BitmapFactory.decodeByteArray(android.util.Base64.decode(chestElytra, 0), 0, android.util.Base64.decode(chestElytra, 0).length));
+}*/
+
+}
 
 if(waila){
 var entityPoint = Entity.getEntityTypeId(Player.getPointedEntity());
@@ -16264,57 +16337,9 @@ if(confirmScreenSafe()){
 	if (playerNameStat){
 playerStatName();
 }
-		if(armorE){
-nameEnemy = Entity.getNameTag(getNearestEntity(160));
-healthEnemy = Entity.getHealth(getNearestEntity(160));
-max_healthEnemy = Entity.getMaxHealth(getNearestEntity(160));
-headEnemy = Entity.getArmor(getNearestEntity(160), 0) ;
-chestEnemy = Entity.getArmor(getNearestEntity(160), 1);
-legsEnemy = Entity.getArmor(getNearestEntity(160), 2);
-feetEnemy = Entity.getArmor(getNearestEntity(160), 3);
-handEnemy = Entity.getCarriedItem(getNearestEntity(160));
-
-head_damageEnemy = Entity.getArmorDamage(getNearestEntity(160), 0);
-chest_damageEnemy = Entity.getArmorDamage(getNearestEntity(160), 1);
-legs_damageEnemy = Entity.getArmorDamage(getNearestEntity(160), 2);
-feet_damageEnemy = Entity.getArmorDamage(getNearestEntity(160), 3);
-hand_damageEnemy = Entity.getCarriedItemData(getNearestEntity(160));
-
-max_dura_headEnemy = Item.getMaxDamage(headEnemy)+1;
-max_dura_chestEnemy = Item.getMaxDamage(chestEnemy)+1;
-max_dura_legsEnemy = Item.getMaxDamage(legsEnemy)+1;
-max_dura_feetEnemy = Item.getMaxDamage(feetEnemy)+1;
-max_dura_handEnemy = Item.getMaxDamage(handEnemy)+1;
-	}
-if (armorE){
-nameDataEnemy.setText(nameEnemy);
-healthDataEnemy.setText(healthEnemy+"/"+max_healthEnemy);
-headDataEnemy.setText(max_dura_headEnemy-head_damageEnemy+"/"+max_dura_headEnemy);
-chestDataEnemy.setText(max_dura_chestEnemy-chest_damageEnemy+"/"+max_dura_chestEnemy);
-legDataEnemy.setText(max_dura_legsEnemy-legs_damageEnemy+"/"+max_dura_legsEnemy);
-feetDataEnemy.setText(max_dura_feetEnemy-feet_damageEnemy+"/"+max_dura_feetEnemy);
-handDataEnemy.setText(max_dura_handEnemy-hand_damageEnemy+"/"+max_dura_handEnemy);
-if (Player.getName(name)== "Steve"||Player.getName(name) == "Not a player"){nameDataEnemy.setText("Nobody")}
-if(healthEnemy==0){healthDataEnemy.setText("Dead");}
-if(max_dura_headEnemy==0){headDataEnemy.setText("No Helmet");}
-if(max_dura_chestEnemy==0){chestDataEnemy.setText("No Chest");}
-if(max_dura_legsEnemy==0){legDataEnemy.setText("No Leggings");}
-if(max_dura_feetEnemy==0){feetDataEnemy.setText("No Boots");}
-if(max_dura_handEnemy==0||max_dura_handEnemy==0){handDataEnemy.setText("No Sword");}
-/*if(max_dura_chestEnemy==433){
-	chestIconEnemy.setImageBitmap(android.graphics.BitmapFactory.decodeByteArray(android.util.Base64.decode(chestElytra, 0), 0, android.util.Base64.decode(chestElytra, 0).length));
-}*/
-
-}
 
 if (showParticles){
 Level.addParticle(ParticleType.flame,Player.getX(),Player.getY()+1,Player.getZ(),0,0,0,10);
-}
-if (autoReachs && !(friendList_.isFriend(Entity.getNameTag(name))) && !contains(immunity, Entity.getNameTag(name))) {
-var nextentity = name;
-if (nextentity != null) {
-Entity.setCollisionSize(nextentity, reachDistance, 10);
-}
 }
 if (Entity.getEntityTypeId(name) == EntityType.PLAYER && contains(particleEffect, Entity.getNameTag(name))) {
 Level.addParticle(ParticleType.flame, Entity.getX(name), Entity.getY(name) + 1, Entity.getZ(name), 0, 0, 0, 10)
@@ -16349,11 +16374,7 @@ clientMessage("§b[Google]§f "+nourl);
 
 
 }
-function speedBypass(){
-for(var i = 0; i < 406; i++){
-Block.setFriction(i, 0.3);
-}
-}
+function speedBypass(){ for(var i = 0; i < 406; i++){ Block.setFriction(i, 0.3); } }
 function hasteBypass(){
 for(var i = -255; i < 406; i++){
 Block.setDestroyTime(i, 0.01);
@@ -22267,7 +22288,11 @@ var tpLayout = new android.widget.LinearLayout(ctx);
 var etX = new android.widget.EditText(ctx);
 var etY = new android.widget.EditText(ctx);
 var etZ = new android.widget.EditText(ctx);
-var etR = new android.widget.EditText(ctx);
+var etR = new android.widget.EditText(ctx);		
+etX.setHintTextColor(Color.parseColor("#b7b7b7"));		
+etY.setHintTextColor(Color.parseColor("#b7b7b7"));		
+etZ.setHintTextColor(Color.parseColor("#b7b7b7"));		
+etR.setHintTextColor(Color.parseColor("#b7b7b7"));
 var txtX = android.widget.TextView(ctx);
 txtX.setTextSize(12);
 txtX.setText(" X:");
@@ -26930,6 +26955,70 @@ waypoint1.setLayoutParams(layoutParams);
 waypoint1.getLayoutParams().width = icon_dimensions;
 waypoint1.getLayoutParams().height = icon_dimensions;
 waypoint1.setBackgroundDrawable(new android.graphics.drawable.BitmapDrawable(android.graphics.BitmapFactory.decodeByteArray(android.util.Base64.decode(leadicon, 0), 0, android.util.Base64.decode(leadicon, 0).length)));
+}var nfo = new android.widget.TextView(ctx);
+nfo.setText("  " + "Name Follower");
+nfo.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT));
+nfo.getLayoutParams().width = switch_width;
+nfo.setBackgroundDrawable(new android.graphics.drawable.ColorDrawable(android.graphics.Color.TRANSPARENT));
+nfo.setTextColor(modTextColor); 
+nfo.setGravity(android.view.Gravity.CENTER_VERTICAL);
+nfo.setTypeface(mcfont);
+nfo.setTextSize(switchfontsize);
+nfo.getBackground().setAlpha(130);
+slayout1.setOnClickListener(new android.view.View.OnClickListener({
+onClick: function(viewarg) {
+	if(!pfsd){
+if (!setfollow) {
+	chooseName();
+setfollow = true;savemod("Name Follower");
+nfo.getParent().setBackground(themeBtnClicked);
+nfo.setText(tohtml(nfo.getText(),true));
+} else {
+setfollow = false;
+removeFromArray(activeMods,"Name Follower");
+nfo.getParent().setBackground(themeBtnNotClicked);
+nfo.setText(tohtml(nfo.getText(),false));
+}
+}else{betToast("Disable Player Follower");}
+}
+}));
+if(helpB){var helpBtn = new android.widget.ImageView(ctx);
+
+helpBtn.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
+helpBtn.getLayoutParams().width = help_width;
+helpBtn.getLayoutParams().height = help_width;
+helpBtn.setBackgroundDrawable(new android.graphics.drawable.BitmapDrawable(android.graphics.BitmapFactory.decodeByteArray(android.util.Base64.decode(questionicon, 0), 0, android.util.Base64.decode(questionicon, 0).length)));
+helpBtn.setOnClickListener(new android.view.View.OnClickListener({
+onClick: function(viewarg) {
+betToast(langMsg[language]["Sets your coordinates 150 blocks above the nearest player, they can't see you from below."]);
+}
+}));
+}if(iconsB){slayout1.addView(waypoint1);}
+slayout1.addView(nfo);
+if(helpB){slayout1.addView(helpBtn);}
+menuLayoutw.addView(slayout1);if (!setfollow) {
+nfo.getParent().setBackground(themeBtnNotClicked);
+nfo.setText(tohtml(nfo.getText(),false));
+} else {
+nfo.getParent().setBackground(themeBtnClicked);
+nfo.setText(tohtml(nfo.getText(),true));
+}
+
+var slayout1 = new android.widget.LinearLayout(activity);
+slayout1.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
+slayout1.getLayoutParams().height = icon_dimensions+modPadT+modPadB;
+var spaceholder = new android.widget.Button(ctx);
+spaceholder.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
+spaceholder.getLayoutParams().width = gap_width;spaceholder.getLayoutParams().height = icon_dimensions;
+spaceholder.setBackgroundDrawable(new android.graphics.drawable.ColorDrawable(android.graphics.Color.TRANSPARENT));
+slayout1.addView(spaceholder);
+if(iconsB){var waypoint1 = new android.widget.ImageView(ctx);
+layoutParams=new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT);
+layoutParams.gravity=Gravity.CENTER;
+waypoint1.setLayoutParams(layoutParams);
+waypoint1.getLayoutParams().width = icon_dimensions;
+waypoint1.getLayoutParams().height = icon_dimensions;
+waypoint1.setBackgroundDrawable(new android.graphics.drawable.BitmapDrawable(android.graphics.BitmapFactory.decodeByteArray(android.util.Base64.decode(leadicon, 0), 0, android.util.Base64.decode(leadicon, 0).length)));
 }var pfSw = new android.widget.TextView(ctx);
 pfSw.setText("  " + "Player Follower");
 pfSw.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT));
@@ -26942,6 +27031,7 @@ pfSw.setTextSize(switchfontsize);
 pfSw.getBackground().setAlpha(130);
 slayout1.setOnClickListener(new android.view.View.OnClickListener({
 onClick: function(viewarg) {
+	if(!setfollow){
 if (!pfsd) {
 pfss = true;savemod("Player Follower");
 pfsd = true;
@@ -26954,6 +27044,7 @@ pfsd = false;
 pfSw.getParent().setBackground(themeBtnNotClicked);
 pfSw.setText(tohtml(pfSw.getText(),false));
 }
+}else{betToast("Disable Name Follower");}
 }
 }));
 if(helpB){var helpBtn = new android.widget.ImageView(ctx);
@@ -28002,6 +28093,70 @@ antispS.setText(tohtml(antispS.getText(),false));
 antispS.getParent().setBackground(themeBtnClicked);
 antispS.setText(tohtml(antispS.getText(),true));
 }
+
+
+var slayout1 = new android.widget.LinearLayout(activity);
+slayout1.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
+slayout1.getLayoutParams().height = icon_dimensions+modPadT+modPadB;
+var spaceholder = new android.widget.Button(ctx);
+spaceholder.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
+spaceholder.getLayoutParams().width = gap_width;spaceholder.getLayoutParams().height = icon_dimensions;
+spaceholder.setBackgroundDrawable(new android.graphics.drawable.ColorDrawable(android.graphics.Color.TRANSPARENT));
+slayout1.addView(spaceholder);
+if(iconsB){var waypoint1 = new android.widget.ImageView(ctx);
+layoutParams=new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT);
+layoutParams.gravity=Gravity.CENTER;
+waypoint1.setLayoutParams(layoutParams);
+waypoint1.getLayoutParams().width = icon_dimensions;
+waypoint1.getLayoutParams().height = icon_dimensions;
+waypoint1.setBackgroundDrawable(new android.graphics.drawable.BitmapDrawable(android.graphics.BitmapFactory.decodeByteArray(android.util.Base64.decode(mobheadicon, 0), 0, android.util.Base64.decode(mobheadicon, 0).length)));
+}var mobh = new android.widget.TextView(ctx);
+mobh.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT));
+mobh.getLayoutParams().width = switch_width;
+mobh.setText("  " + "Apply Mob Head");
+mobh.setBackgroundDrawable(new android.graphics.drawable.ColorDrawable(android.graphics.Color.TRANSPARENT));
+mobh.setTextColor(modTextColor);
+mobh.setGravity(Gravity.CENTER_VERTICAL);
+mobh.setTypeface(mcfont);
+mobh.setTextSize(switchfontsize);
+slayout1.setOnClickListener(new android.view.View.OnClickListener({
+onClick: function(viewarg) {
+if (!mobheadby) {
+betToast("Use Classic UI and move head to crafting section for realms");
+mobheadby = true;savemod("Mob Head");
+mobh.getParent().setBackground(themeBtnClicked);
+mobh.setText(tohtml(mobh.getText(),true));
+} else {
+mobheadby = false;
+removeFromArray(activeMods,"Mob Head");
+mobh.getParent().setBackground(themeBtnNotClicked);
+mobh.setText(tohtml(mobh.getText(),false));
+}
+
+}
+}));
+if(helpB){var helpBtn = new android.widget.ImageView(ctx);
+
+helpBtn.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
+helpBtn.getLayoutParams().width = help_width;
+helpBtn.getLayoutParams().height = help_width;
+helpBtn.setBackgroundDrawable(new android.graphics.drawable.BitmapDrawable(android.graphics.BitmapFactory.decodeByteArray(android.util.Base64.decode(questionicon, 0), 0, android.util.Base64.decode(questionicon, 0).length)));
+helpBtn.setOnClickListener(new android.view.View.OnClickListener({
+onClick: function(viewarg) {
+betToast("Applies mob head, move to crafting section after.");
+}
+}));
+}if(iconsB){slayout1.addView(waypoint1);}
+slayout1.addView(mobh);
+if(helpB){slayout1.addView(helpBtn);}
+menuLayoutw.addView(slayout1);if (!mobheadby) {
+mobh.getParent().setBackground(themeBtnNotClicked);
+mobh.setText(tohtml(mobh.getText(),false));
+} else {
+mobh.getParent().setBackground(themeBtnClicked);
+mobh.setText(tohtml(mobh.getText(),true));
+}
+
 
 var slayout1 = new android.widget.LinearLayout(activity);
 slayout1.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
@@ -33614,7 +33769,10 @@ var tmiMainHor = new android.widget.LinearLayout(ctx);
 tmiMainHor.setBackground(bg);
 var etId = new android.widget.EditText(ctx);
 var etAmount = new android.widget.EditText(ctx);
-var etDamage = new android.widget.EditText(ctx);
+var etDamage = new android.widget.EditText(ctx);		
+etId.setHintTextColor(Color.parseColor("#b7b7b7"));		
+etAmount.setHintTextColor(Color.parseColor("#b7b7b7"));		
+etDamage.setHintTextColor(Color.parseColor("#b7b7b7"));
 var oldbox = new android.widget.TextView(ctx);
 oldbox.setText(tmiList);
 oldbox.setTextColor(modTextColor);
@@ -35332,7 +35490,6 @@ var outWrite = new java.io.OutputStreamWriter(new java.io.FileOutputStream(newFi
 outWrite.append(content);
 outWrite.close();
 } catch (err) {
-clientMessage(err);
 }
 };
 
@@ -35711,7 +35868,6 @@ else
 Warning(Coordinates(nme,cx,cz),lang[language]["Error"],lang[language]["Input must be X,Z. Example"]+": "+cx+","+cy+","+cz);
 }
 catch(err){
-clientMessage(err);
 }
 }
 });
@@ -35721,7 +35877,6 @@ onClick: function(dialog,whichButton){}
 alert.show();
 }
 catch(err){
-clientMessage(err);
 }
 }
 function Warning(funct,title,msg){
@@ -35735,7 +35890,6 @@ onClick: function(dialog,whichButton){}
 alert.show();
 }
 catch(err){
-clientMessage(err);
 }
 }
 function CreateButton(w){
@@ -35895,7 +36049,6 @@ alert.show();
 }
 }
 catch(err){
-clientMessage(err);
 }
 return slayout;
 }
@@ -35927,7 +36080,6 @@ outWrite.append("\n"+waypoints_W[j].name_W+"@"+waypoints_W[j].x+"@"+waypoints_W[
 outWrite.close();
 }
 catch(err){
-clientMessage(err);
 }
 }
 var custFunctions = {};
@@ -36182,6 +36334,45 @@ alert.setView(menuLayout);
 alert.setPositiveButton("Ok",new android.content.DialogInterface.OnClickListener(){
 onClick: function(dialog,whichButton){
 addFriendToList(userInput.getText());
+}
+});
+
+alert.setNegativeButton(langMsg[language]["Cancel"],new android.content.DialogInterface.OnClickListener(){
+onClick: function(dialog,whichButton){}
+});
+alert.show();
+}
+
+function chooseName(){
+var alert=new android.app.AlertDialog.Builder(activity);
+alert.setTitle("Choose Who To Follow");
+var menuLayout = new android.widget.LinearLayout(ctx);
+var menuScroll = new android.widget.ScrollView(ctx);
+var menuLayout1 = new android.widget.LinearLayout(ctx);
+menuLayout.setOrientation(1);
+menuLayout1.setOrientation(1);
+userInput=new android.widget.EditText(activity);
+userInput.setText("");
+menuLayout.addView(userInput);
+
+function newTPlist(item, index) {
+var button1 = new android.widget.Button(ctx);
+button1.setText(item);
+button1.setTransformationMethod(null);
+button1.setOnClickListener(new android.view.View.OnClickListener({
+onClick: function(viewarg) {
+userInput.setText(item);
+}
+}));
+menuLayout1.addView(button1);
+};
+Server.getAllPlayerNames().forEach(newTPlist);
+menuScroll.addView(menuLayout1);
+menuLayout.addView(menuScroll);
+alert.setView(menuLayout);
+alert.setPositiveButton("Ok",new android.content.DialogInterface.OnClickListener(){
+onClick: function(dialog,whichButton){
+setfollowing = userInput.getText();
 }
 });
 
