@@ -9532,6 +9532,11 @@ new android.os.Handler().postDelayed(new java.lang.Runnable({
 run: function() {
 try{
 if(confirmScreenSafe()){
+		if (radiuss == true) {
+var ent = getNearEnt(300); 
+if (Player.getName(ent) != 'Steve'&&Player.getName(ent) != 'Not a player'){ 
+ModPE.showTipMessage(ChatColor.WHITE + 'Player Found: ' + ChatColor.RED + Player.getName(ent) + ChatColor.RED + "\n"+ChatColor.WHITE +Player.getName(ent)+' Location: '+ChatColor.RED +Math.floor(Entity.getX(ent))+', '+Math.floor(Entity.getY(ent))+', '+Math.floor(Entity.getZ(ent))+ChatColor.YELLOW +' ['+Math.floor(getDist(ent))+' Blocks]'); }else { ModPE.showTipMessage(ChatColor.WHITE + 'No Players Near'); }
+}
 	if (autoBridgess) {
 var x = getPlayerX();
 var y = getPlayerY();
@@ -15543,11 +15548,6 @@ if (acrashchnks){
 setPosition(getPlayerEnt(), getPlayerX()+500, getPlayerY(), getPlayerZ());
 }
 if(confirmScreenSafe()){
-	if (radiuss == true&&modtickSubTimer==5) {
-var ent = getNearEnt(300); 
-if (Player.getName(ent) != 'Steve'&&Player.getName(ent) != 'Not a player'){ 
-ModPE.showTipMessage(ChatColor.WHITE + 'Player Found: ' + ChatColor.RED + Player.getName(ent) + ChatColor.RED + "\n"+ChatColor.WHITE +Player.getName(ent)+' Location: '+ChatColor.RED +Math.floor(Entity.getX(ent))+', '+Math.floor(Entity.getY(ent))+', '+Math.floor(Entity.getZ(ent))+ChatColor.YELLOW +' ['+Math.floor(getDist(ent))+' Blocks]'); }else { ModPE.showTipMessage(ChatColor.WHITE + 'No Players Near'); }
-}
 	if(autoReachs){var ne3ri = getNearestPlayer(reachDistance);}
 	if (autoReachs && !(friendList_.isFriend(Entity.getNameTag(ne3ri))) && !contains(immunity, Entity.getNameTag(ne3ri))) {
 if (ne3ri != null) {
