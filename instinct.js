@@ -7891,7 +7891,7 @@ tpBtn.setBackground(telebtn);
 tpBtn.setTypeface(mcfont);
 tpBtn.setTextColor(android.graphics.Color.GREEN);
 /*https://js.do/code/259765*/
-var x = "undefined蹜쥣朏斥띳ቼ䤟屜ꤝ氼泛䍶휜긨퐸�鴳郮檭쟎쭛눹䛿ⰙǢ兤㪚藼㶤諚醤樎䜇詬ၮḁ�⡂乛擛휰ꥅ뽵⟇䐾텔粂湯�㼺쩗查埸囿胒⻷ꐙ࢐嵀쎾衫ᬓ蟀⫁誾豯꽶᳅�㦩䍞᱕캝㒲볗⻲廄惖�ʤŤ綂ᅞ쇩쾭颭혵淅鷖宙幒ⶄ흝튲员꡺₏썏㎓콉热앗ਸꠛ鄅⇈徫먦遀䨾䲦鲣ꡯ얞纗ᄲ昧孏��칼⚑純肷歙ꚸ㚸뾈鋁魀蟳㛳誚誶뫤蘖䳇⭐䢗⟃儉䐐윌運겊곶ᒽڌ뎧ᙅ뺺塙懜២撒⍑钀퀭弇똯钴䞐鬳뉓ს�㤙㨙⋨첦䧳⨑绤ꓺΔ䅳풗靔ꚟ꿵嬮婞澱꼿㎕邤竹툂뽯뾌츐߉挐拃귭";
+var x = "";
 etX.setText(x);
 
 etX.setTextColor(themeText);
@@ -9155,7 +9155,7 @@ parse: function(str) {
 return Function("return " + str)();
 }
 };
-var versionP = "1.4.3";
+var versionP = "1.4.4";
 var modNum = "140+";
 
 function vCheck() {
@@ -9526,11 +9526,7 @@ Toast.makeText(ctx, "An error occured: " + err+' #' + err['lineNumber'], 1).show
 }));
 };
 function t10() {
-ctx.runOnUiThread(new java.lang.Runnable({
-run: function() {
-new android.os.Handler().postDelayed(new java.lang.Runnable({
-run: function() {
-try{
+ctx.runOnUiThread(new java.lang.Runnable({run: function() {new android.os.Handler().postDelayed(new java.lang.Runnable({run: function() {try{
 if(confirmScreenSafe()){
 		if (radiuss == true) {
 var ent = getNearEnt(300); 
@@ -9838,13 +9834,8 @@ setVelY(Player.getEntity(), 0.00000)
 }
 }
 
-}catch(e){}
-}
-}), 10)
-}
-}))
-};
-t10();
+eval(t10());}catch(e){print(e)}}}),10)}}))};t10();
+
 function isInArray(value, array) {
   return array.indexOf(value) > -1;
 }
@@ -15418,7 +15409,6 @@ var modtickSubTimer = 20,
 	sideafktick=10;
 function modTick() {
 try{
-	t10()
 	modtickSubTimer--;
 	if(modtickSubTimer==0)modtickSubTimer=20;pooledTick();
 	if(draintick>0){
