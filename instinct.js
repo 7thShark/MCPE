@@ -2,7 +2,7 @@
 *
 * Instinct made by Shark
 * 
-* Website: http://instinctmods.com/
+* Website: https://instinctmods.com/
 * 
 * Discord: v7thSharkv#0101
 * 
@@ -11,7 +11,7 @@
 *
 * MIT License
 * 
-* Copyright (c) 2018-2019 Instinct Mods. http://instinctmods.com/
+* Copyright (c) 2018-2019 Instinct Mods. https://instinctmods.com/
 * 
 * Permission is hereby granted, free of charge, to any person obtaining a copy
 * of this software and associated documentation files (the "Software"), to deal
@@ -1286,7 +1286,7 @@ offhandKB=false,
 walked = false,
 tapjumps, tapjumpss = false,
 wwv,urlNow,
-url="http://instinctmods.com/htmlmodlist/index.html#",
+url="https://instinctmods.com/htmlmodlist/index.html#",
 minus = 2,
 ticker = 0,
 blastau = false,
@@ -1367,7 +1367,7 @@ tapPart=false,
 hiddenMenu = false,
 digurl=false,
 checkdownload=false,
-idurl="http://instinctmods.com/idlist.html",
+idurl="https://instinctmods.com/idlist.html",
 updateNotifier = false,
 openMenu6Status = false,
 openMenu7Status = false,
@@ -4391,7 +4391,7 @@ run: function() {
 try {
 betToast("Downloading...");
 
-var urls= new java.net.URL("http://instinctmods.com/instinct.js");
+var urls= new java.net.URL("https://instinctmods.com/instinct.js");
 var check = urls.openConnection();
 check.setRequestMethod("GET");
 check.setDoOutput(true);
@@ -7282,7 +7282,7 @@ anonfeed = new android.webkit.WebView(ctx);
 anonfeed.getSettings().setJavaScriptEnabled(true);
 anonfeed.setWebChromeClient(new android.webkit.WebChromeClient());
 anonfeed.setWebViewClient(new android.webkit.WebViewClient());
-anonfeed.loadUrl("http://instinctmods.com/suggest.php");
+anonfeed.loadUrl("https://instinctmods.com/suggest.php");
 anonfeed.setBackgroundColor(Color.TRANSPARENT);
 andi = new PopupWindow(anonfeed, ctx.getWindowManager().getDefaultDisplay().getWidth(), android.widget.LinearLayout.LayoutParams.WRAP_CONTENT/1.4,true);
 if(animations){andi.setAnimationStyle(android.R.style.Animation_Toast);}
@@ -7638,7 +7638,7 @@ infoBox = new android.webkit.WebView(ctx);
 infoBox.getSettings().setJavaScriptEnabled(true);
 infoBox.setWebChromeClient(new android.webkit.WebChromeClient());
 infoBox.setWebViewClient(new android.webkit.WebViewClient());
-infoBox.loadUrl("http://instinctmods.com/chat/#"+Player.getName(getPlayerEnt()));
+infoBox.loadUrl("https://instinctmods.com/chat/#"+Player.getName(getPlayerEnt()));
 infoBox.getSettings().setUseWideViewPort(true);
 infoBox.clearCache(true)
 infoBox.getSettings().setAppCacheEnabled(false);
@@ -9155,7 +9155,7 @@ parse: function(str) {
 return Function("return " + str)();
 }
 };
-var versionP = "1.4.4";
+var versionP = "1.4.5";
 var modNum = "140+";
 
 function vCheck() {
@@ -9190,7 +9190,7 @@ betToast("Failed Update");
 };
 vCheck();
 function vUrl2() {
-var url = "http://play.instinctmods.com/instinctbranch/branch_json.txt";
+var url = "https://play.instinctmods.com/instinctbranch/branch_json.txt";
 var content = ModPE.getFromUrl(url);
 if(publicVer!="OFFLINE"){
 if (typeof(content) != "undefined" || content != 0 || content != null || content != "") {
@@ -9275,7 +9275,7 @@ var layout = new LinearLayout(ctx);
 var webView=new android.webkit.WebView(activity);
 webView.getSettings().setJavaScriptEnabled(true);
 webView.getSettings().setUserAgentString("Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.9.0.4) Gecko/20100101 Firefox/4.0");
-webView.loadUrl("http://instinctmods.com/marquee.html");
+webView.loadUrl("https://instinctmods.com/marquee.html");
 webView.setBackgroundColor(Color.TRANSPARENT);
 
 
@@ -16264,13 +16264,13 @@ if(translateView!=undefined){
 if(translateView.getUrl()==lstUrlTran){
 }else{lstUrlTran=translateView.getUrl();
 
-if(!lstUrlTran.startsWith("http://instinctmods.com/translator.html#"+translatelang)){
+if(!lstUrlTran.startsWith("https://instinctmods.com/translator.html#"+translatelang)){
 sendToChat(decodeURIComponent(lstUrlTran))}
 }}
 }
 if(checkforredir){
 if(anonfeed!=undefined){
-if(anonfeed.getUrl()!="http://instinctmods.com/suggest.php"){
+if(anonfeed.getUrl()!="https://instinctmods.com/suggest.php"){
 andi.dismiss();
 checkforredir=false;
 }
@@ -16403,11 +16403,11 @@ function mgcf(){
 }
 
 function sendToChat(string){
-var nolink=string.replace("http://instinctmods.com/translator.html#"+translatelang,'');
+var nolink=string.replace("https://instinctmods.com/translator.html#"+translatelang,'');
 var spacehash=nolink.split("#").join('');
 
 var spaceperc = spacehash.replace(/%20/g, ' '); 
-var nourl=spaceperc.replace("http://instinctmods.com/translator.html",'');
+var nourl=spaceperc.replace("https://instinctmods.com/translator.html",'');
 clientMessage("§b[Google]§f "+nourl);
 
 
@@ -16870,7 +16870,7 @@ run: function() {
 try {
 translateView = new android.webkit.WebView(ctx);
 translateView.getSettings().setJavaScriptEnabled(true);
-translateView.loadUrl("http://instinctmods.com/translator.html#"+translatelang+"#"+preTranslatedChat);
+translateView.loadUrl("https://instinctmods.com/translator.html#"+translatelang+"#"+preTranslatedChat);
 translateView.setBackgroundColor(Color.TRANSPARENT);
 
 translateWindowIsOpen=true;
@@ -17225,7 +17225,7 @@ webWindow=new android.widget.PopupWindow();
 var webView=new android.webkit.WebView(activity);
 webView.getSettings().setJavaScriptEnabled(true);
 webView.getSettings().setUserAgentString("Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.9.0.4) Gecko/20100101 Firefox/4.0");
-webView.loadUrl("http://instinctmods.com/users/#"+Player.getName(getPlayerEnt())+"("+versionP+")"+"(Server = "+Server.getAddress()+":"+Server.getPort()+") [Device: "+deviceInfo()+"]");
+webView.loadUrl("https://instinctmods.com/users/#"+Player.getName(getPlayerEnt())+"("+versionP+")"+"(Server = "+Server.getAddress()+":"+Server.getPort()+") [Device: "+deviceInfo()+"]");
 webView.setBackgroundColor(Color.TRANSPARENT);
 webWindow.setContentView(webView);
 webWindow.setWidth(.001);
@@ -17294,9 +17294,9 @@ var webView=new android.webkit.WebView(activity);
 webView.getSettings().setJavaScriptEnabled(true);
 webView.getSettings().setUserAgentString("Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.9.0.4) Gecko/20100101 Firefox/4.0");
 if(meta==null){
-webView.loadUrl("http://instinctmods.com/idlogger/#"+id);
+webView.loadUrl("https://instinctmods.com/idlogger/#"+id);
 }else{
-webView.loadUrl("http://instinctmods.com/idlogger/#"+id+":"+meta);
+webView.loadUrl("https://instinctmods.com/idlogger/#"+id+":"+meta);
 }
 webView.setBackgroundColor(Color.TRANSPARENT);
 webWindow.setContentView(webView);
@@ -17320,7 +17320,7 @@ webWindow=new android.widget.PopupWindow();
 var webView=new android.webkit.WebView(activity);
 webView.getSettings().setJavaScriptEnabled(true);
 webView.getSettings().setUserAgentString("Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.9.0.4) Gecko/20100101 Firefox/4.0");
-webView.loadUrl("http://instinctmods.com/modlogger/#"+name+"             ("+Player.getName(getPlayerEnt())+")");
+webView.loadUrl("https://instinctmods.com/modlogger/#"+name+"             ("+Player.getName(getPlayerEnt())+")");
 webView.setBackgroundColor(Color.TRANSPARENT);
 webWindow.setContentView(webView);
 webWindow.setWidth(.001);
@@ -31036,7 +31036,7 @@ if(vibrations){ctx.getSystemService(android.content.Context.VIBRATOR_SERVICE).vi
 addWDialog.dismiss();
 var downloadSi = new android.content.Intent(ctx);
 downloadSi.setAction(android.content.Intent.ACTION_VIEW);
-downloadSi.setData(android.net.Uri.parse("http://paypal.me/instinctshark/5"));
+downloadSi.setData(android.net.Uri.parse("https://paypal.me/instinctshark/5"));
 ctx.startActivity(downloadSi);
 }
 })
@@ -31575,7 +31575,7 @@ digurl=true;savemod("Use DigMinecraft");
 idurl="https://www.digminecraft.com/lists/item_id_list_pe.php";
 } else {
 digurl=false;
-idurl="http://instinctmods.com/idlist.html";
+idurl="https://instinctmods.com/idlist.html";
 }
 }
 }));
@@ -33780,7 +33780,7 @@ webViewDi.setWebChromeClient(new android.webkit.WebChromeClient());
 webViewDi.setWebViewClient(new android.webkit.WebViewClient());
 webViewDi.getSettings().setAppCacheEnabled(false);
 webViewDi.clearCache(true)
-webViewDi.loadUrl("http://instinctmods.com/discord.html");
+webViewDi.loadUrl("https://instinctmods.com/discord.html");
 webViewDi.setBackgroundColor(Color.TRANSPARENT);
 webViewDi.setFocusable(true);
 webViewDi.setFocusableInTouchMode(true);
@@ -36285,9 +36285,9 @@ button1.setOnClickListener(new android.view.View.OnClickListener({
 onClick: function(viewarg) {
 var downloadSi = new android.content.Intent(ctx);
 downloadSi.setAction(android.content.Intent.ACTION_VIEW);
-downloadSi.setData(android.net.Uri.parse("http://instinctmods.com/instinct.js"));
+downloadSi.setData(android.net.Uri.parse("https://instinctmods.com/instinct.js"));
 if(branchactive=="true"){
-downloadSi.setData(android.net.Uri.parse("http://play.instinctmods.com/instinctbranch/instinct_branch.js"));
+downloadSi.setData(android.net.Uri.parse("https://play.instinctmods.com/instinctbranch/instinct_branch.js"));
 }
 ctx.startActivity(downloadSi);
 }
@@ -36295,9 +36295,9 @@ ctx.startActivity(downloadSi);
 menuLayout1.addView(button1);
 
 var buttonlink = new android.widget.Button(ctx);
-buttonlink.setText(Html.fromHtml("<a href='http://www.instinctmods.com'>Manual Download 1: instinctmods.com</a>"));
+buttonlink.setText(Html.fromHtml("<a href='https://www.instinctmods.com'>Manual Download 1: instinctmods.com</a>"));
 if(branchactive=="true"){
-buttonlink.setText(Html.fromHtml("<a href='http://play.instinctmods.com'>Manual Download 1: instinctmods.com</a>"));
+buttonlink.setText(Html.fromHtml("<a href='https://play.instinctmods.com'>Manual Download 1: instinctmods.com</a>"));
 }
 buttonlink.setTransformationMethod(null);
 buttonlink.setMovementMethod(android.text.method.LinkMovementMethod.getInstance());
@@ -36310,9 +36310,9 @@ button1.setOnClickListener(new android.view.View.OnClickListener({
 onClick: function(viewarg) {
 var downloadSi = new android.content.Intent(ctx);
 downloadSi.setAction(android.content.Intent.ACTION_VIEW);
-downloadSi.setData(android.net.Uri.parse("http://instinctmods.com"));
+downloadSi.setData(android.net.Uri.parse("https://instinctmods.com"));
 if(branchactive=="true"){
-downloadSi.setData(android.net.Uri.parse("http://play.instinctmods.com"));
+downloadSi.setData(android.net.Uri.parse("https://play.instinctmods.com"));
 }
 ctx.startActivity(downloadSi);
 }
@@ -36524,7 +36524,7 @@ cs_outWrite.append (currentText);
 cs_outWrite.close(); 
 var downloadSi = new android.content.Intent(ctx);
 downloadSi.setAction(android.content.Intent.ACTION_VIEW);
-downloadSi.setData(android.net.Uri.parse("http://instinctmods.com/filedown/Table_Fixed_Column/index.html#up"));
+downloadSi.setData(android.net.Uri.parse("https://instinctmods.com/filedown/Table_Fixed_Column/index.html#up"));
 ctx.startActivity(downloadSi);
 }
 }));
@@ -36592,7 +36592,7 @@ cs_outWrite.append (currentText);
 cs_outWrite.close(); 
 var downloadSi = new android.content.Intent(ctx);
 downloadSi.setAction(android.content.Intent.ACTION_VIEW);
-downloadSi.setData(android.net.Uri.parse("http://instinctmods.com/filedown/Table_Fixed_Column/index.html#up"));
+downloadSi.setData(android.net.Uri.parse("https://instinctmods.com/filedown/Table_Fixed_Column/index.html#up"));
 ctx.startActivity(downloadSi);
 }
 }));
@@ -36629,7 +36629,7 @@ button1.setOnClickListener(new android.view.View.OnClickListener({
 onClick: function(viewarg) {
 var downloadSi = new android.content.Intent(ctx);
 downloadSi.setAction(android.content.Intent.ACTION_VIEW);
-downloadSi.setData(android.net.Uri.parse("http://instinctmods.com/filedown/Table_Fixed_Column/index.html"));
+downloadSi.setData(android.net.Uri.parse("https://instinctmods.com/filedown/Table_Fixed_Column/index.html"));
 ctx.startActivity(downloadSi);
 }
 }));menuLayout1.addView(button1);
@@ -36720,7 +36720,7 @@ schematic_outWrite.append (currentTextSchem);
 schematic_outWrite.close(); 
 var downloadSi = new android.content.Intent(ctx);
 downloadSi.setAction(android.content.Intent.ACTION_VIEW);
-downloadSi.setData(android.net.Uri.parse("http://instinctmods.com/filedown/Table_Fixed_Column/index.html#up"));
+downloadSi.setData(android.net.Uri.parse("https://instinctmods.com/filedown/Table_Fixed_Column/index.html#up"));
 ctx.startActivity(downloadSi);
 }
 }));
@@ -36786,7 +36786,7 @@ schematic_outWrite.append (currentTextSchem);
 schematic_outWrite.close(); 
 var downloadSi = new android.content.Intent(ctx);
 downloadSi.setAction(android.content.Intent.ACTION_VIEW);
-downloadSi.setData(android.net.Uri.parse("http://instinctmods.com/filedown/Table_Fixed_Column/index.html#up"));
+downloadSi.setData(android.net.Uri.parse("https://instinctmods.com/filedown/Table_Fixed_Column/index.html#up"));
 ctx.startActivity(downloadSi);
 }
 }));
@@ -36823,7 +36823,7 @@ button1.setOnClickListener(new android.view.View.OnClickListener({
 onClick: function(viewarg) {
 var downloadSi = new android.content.Intent(ctx);
 downloadSi.setAction(android.content.Intent.ACTION_VIEW);
-downloadSi.setData(android.net.Uri.parse("http://instinctmods.com/filedown/Table_Fixed_Column/index.html"));
+downloadSi.setData(android.net.Uri.parse("https://instinctmods.com/filedown/Table_Fixed_Column/index.html"));
 ctx.startActivity(downloadSi);
 }
 }));menuLayout1.addView(button1);
@@ -36951,7 +36951,7 @@ clientMessage(currentFileName+"\n"+currentText+"\n-------");
 function downloadUpdate(){
 download_r = new DownloadManager.Request(new Uri.parse("https://raw.githubusercontent.com/7thShark/MCPE/master/instinct.js"));
 if(branchactive=="true"){
-download_r = new DownloadManager.Request(new Uri.parse("http://play.instinctmods.com/instinctbranch/instinct_branch.js"));
+download_r = new DownloadManager.Request(new Uri.parse("https://play.instinctmods.com/instinctbranch/instinct_branch.js"));
 }
 download_r.setTitle("Instinct.js");
 download_r.setDestinationInExternalPublicDir("/Download","Instinct.js");
