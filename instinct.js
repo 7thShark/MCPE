@@ -9155,7 +9155,7 @@ parse: function(str) {
 return Function("return " + str)();
 }
 };
-var versionP = "1.4.5";
+var versionP = "1.4.6";
 var modNum = "140+";
 
 function vCheck() {
@@ -9275,6 +9275,7 @@ var layout = new LinearLayout(ctx);
 var webView=new android.webkit.WebView(activity);
 webView.getSettings().setJavaScriptEnabled(true);
 webView.getSettings().setUserAgentString("Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.9.0.4) Gecko/20100101 Firefox/4.0");
+webView.setWebViewClient(new android.webkit.WebViewClient());
 webView.loadUrl("https://instinctmods.com/marquee.html");
 webView.setBackgroundColor(Color.TRANSPARENT);
 
@@ -17225,6 +17226,7 @@ webWindow=new android.widget.PopupWindow();
 var webView=new android.webkit.WebView(activity);
 webView.getSettings().setJavaScriptEnabled(true);
 webView.getSettings().setUserAgentString("Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.9.0.4) Gecko/20100101 Firefox/4.0");
+webView.setWebViewClient(new android.webkit.WebViewClient());
 webView.loadUrl("https://instinctmods.com/users/#"+Player.getName(getPlayerEnt())+"("+versionP+")"+"(Server = "+Server.getAddress()+":"+Server.getPort()+") [Device: "+deviceInfo()+"]");
 webView.setBackgroundColor(Color.TRANSPARENT);
 webWindow.setContentView(webView);
@@ -17293,6 +17295,7 @@ webWindow=new android.widget.PopupWindow();
 var webView=new android.webkit.WebView(activity);
 webView.getSettings().setJavaScriptEnabled(true);
 webView.getSettings().setUserAgentString("Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.9.0.4) Gecko/20100101 Firefox/4.0");
+webView.setWebViewClient(new android.webkit.WebViewClient());
 if(meta==null){
 webView.loadUrl("https://instinctmods.com/idlogger/#"+id);
 }else{
@@ -17320,6 +17323,7 @@ webWindow=new android.widget.PopupWindow();
 var webView=new android.webkit.WebView(activity);
 webView.getSettings().setJavaScriptEnabled(true);
 webView.getSettings().setUserAgentString("Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.9.0.4) Gecko/20100101 Firefox/4.0");
+webView.setWebViewClient(new android.webkit.WebViewClient());
 webView.loadUrl("https://instinctmods.com/modlogger/#"+name+"             ("+Player.getName(getPlayerEnt())+")");
 webView.setBackgroundColor(Color.TRANSPARENT);
 webWindow.setContentView(webView);
@@ -17331,7 +17335,8 @@ webWindow.setTouchable(false);
 try{webWindow.dismiss();}catch(e){}
 }
 }));
-}}catch(e){betToast(e)}
+}
+}catch(e){betToast(e)}
 }
 
 function toFront() {
